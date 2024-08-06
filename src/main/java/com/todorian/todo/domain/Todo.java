@@ -1,4 +1,4 @@
-package com.todorian.todo;
+package com.todorian.todo.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
