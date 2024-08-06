@@ -18,7 +18,7 @@ public class TodoRepository {
         em.persist(todo);
     }
 
-    public Todo findById(String id) {
+    public Todo findById(Long id) {
         return em.find(Todo.class, id);
     }
 
@@ -27,7 +27,7 @@ public class TodoRepository {
                 .getResultList();
     }
 
-    public void delete(Todo todo) {
-        em.remove(todo);
+    public void deleteById(Long todoId) {
+        em.createQuery("select t from Todo t where t.id = :todoId");
     }
 }
