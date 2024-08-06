@@ -1,5 +1,6 @@
 package com.todorian.todo.domain;
 
+import com.todorian.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Table(name = "tbl_todo")
-public class Todo {
+public class Todo extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TODO_ID")
