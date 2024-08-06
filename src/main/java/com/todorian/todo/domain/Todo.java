@@ -23,12 +23,8 @@ public class Todo extends BaseTimeEntity {
     @Column(name = "TODO_CONTENT")
     private String todoContent;
 
-    @Column(name = "TODO_CREAT_AT")
-    private LocalDate todoCreatedAt;
-
     @Builder
-    public Todo(String todoContent, LocalDate todoCreatedAt) {
+    public Todo(String todoContent) {
         this.todoContent = todoContent;
-        this.todoCreatedAt = todoCreatedAt;
     }
 }
