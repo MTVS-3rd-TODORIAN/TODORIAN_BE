@@ -20,4 +20,7 @@ public class Item extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long itemId;
+    private String itemName;
+    private String itemDescription;
+    private ItemCategory itemCategory;
 }

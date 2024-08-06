@@ -19,8 +19,10 @@ public class ItemService {
     public void save(ItemDto itemDto) {
         Item item = Item.builder()
             .itemId(itemDto.getItemId())
+            .itemName(itemDto.getItemName())
+            .itemDescription(itemDto.getItemDescription())
+            .itemCategory(itemDto.getItemCategory())
             .build();
-
         itemRepository.save(item);
     }
 }
