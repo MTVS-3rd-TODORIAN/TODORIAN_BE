@@ -28,6 +28,8 @@ public class TodoRepository {
     }
 
     public void deleteById(Long todoId) {
-        em.createQuery("select t from Todo t where t.id = :todoId");
+        em.createQuery("delete from Todo t where t.id = :todoId")
+                .setParameter("todoId", todoId)
+                .executeUpdate();
     }
 }
