@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  * - 누가 얻었는가 ()
  * <p>
  * - 어떻게 얻었는가
- * <p> 
+ * <p>
  * - 왜얻었는가
  */
 @Entity
