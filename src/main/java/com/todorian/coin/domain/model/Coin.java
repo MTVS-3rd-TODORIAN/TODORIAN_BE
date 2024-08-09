@@ -11,10 +11,14 @@ import java.time.LocalDateTime;
 /**
  * 코인의 내역을 나타내기 위한 테이블.
  * - 언제 얻었는가 (LocalDateTime)
+ * <p>
  * - 어디에서 얻었는가 (FK-ID)
+ * <p>
  * - 누가 얻었는가 ()
+ * <p>
  * - 어떻게 얻었는가
- * - 왜 얻었는가
+ * <p> 
+ * - 왜얻었는가
  */
 @Entity
 @Table(name = "tbl_coin")
@@ -55,7 +59,8 @@ public class Coin {
     private long memberId;
 
     /**
-     * 얼마나? : 획득한 코인의 양을 나타내는 컬럼. 양수 뿐만 아니라 음수까지 표현할 수 있음. 소수점 단위는 표현되지 않음에 주의. BigInteger 또한 고려해 볼 만한 듯.
+     * 얼마나? : 획득한 코인의 양을 나타내는 컬럼. 양수 뿐만 아니라 음수까지 표현할 수 있음. 소수점 단위는 표현되지 않음에 주의. BigInteger 또한 고려해 볼
+     * 만한 듯.
      */
     @Column(name = "coin_amount")
     private long coinAmount;
@@ -65,4 +70,76 @@ public class Coin {
      */
     @Column(name = "coin_reason")
     private CoinReason coinReason;
+
+    public Coin() {
+    }
+
+    public Coin(LocalDateTime coinDateTime, Long characterId, Long advertisementId, Long gameId,
+        Long itemId, Long givenMemberId, long memberId, long coinAmount, CoinReason coinReason) {
+        this.coinDateTime = coinDateTime;
+        this.characterId = characterId;
+        this.advertisementId = advertisementId;
+        this.gameId = gameId;
+        this.itemId = itemId;
+        this.givenMemberId = givenMemberId;
+        this.memberId = memberId;
+        this.coinAmount = coinAmount;
+        this.coinReason = coinReason;
+    }
+
+    public long getCoinId() {
+        return coinId;
+    }
+
+    public LocalDateTime getCoinDateTime() {
+        return coinDateTime;
+    }
+
+    public Long getCharacterId() {
+        return characterId;
+    }
+
+    public Long getAdvertisementId() {
+        return advertisementId;
+    }
+
+    public Long getGameId() {
+        return gameId;
+    }
+
+    public Long getItemId() {
+        return itemId;
+    }
+
+    public Long getGivenMemberId() {
+        return givenMemberId;
+    }
+
+    public long getMemberId() {
+        return memberId;
+    }
+
+    public long getCoinAmount() {
+        return coinAmount;
+    }
+
+    public CoinReason getCoinReason() {
+        return coinReason;
+    }
+
+    @Override
+    public String toString() {
+        return "Coin{" +
+            "coinId=" + coinId +
+            ", coinDateTime=" + coinDateTime +
+            ", characterId=" + characterId +
+            ", advertisementId=" + advertisementId +
+            ", gameId=" + gameId +
+            ", itemId=" + itemId +
+            ", givenMemberId=" + givenMemberId +
+            ", memberId=" + memberId +
+            ", coinAmount=" + coinAmount +
+            ", coinReason=" + coinReason +
+            '}';
+    }
 }
