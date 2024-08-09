@@ -26,6 +26,7 @@ public class Coin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "coin_id")
     private long coinId;
 
     /**

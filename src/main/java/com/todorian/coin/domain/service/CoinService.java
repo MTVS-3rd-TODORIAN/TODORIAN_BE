@@ -2,6 +2,7 @@ package com.todorian.coin.domain.service;
 
 import com.todorian.coin.domain.model.Coin;
 import com.todorian.coin.domain.model.CoinCreateRequestDto;
+import com.todorian.coin.domain.model.CoinFindResponseDto;
 import com.todorian.coin.domain.repository.CoinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,5 +30,10 @@ public class CoinService {
             coinCreateRequestDto.getCoinReason()
         );
         coinrepository.save(coin);
+    }
+
+    public CoinFindResponseDto findById(long coinId) {
+        return new CoinFindResponseDto(
+            coinrepository.findById(coinId).orElseThrow(IllegalArgumentException::new));
     }
 }
