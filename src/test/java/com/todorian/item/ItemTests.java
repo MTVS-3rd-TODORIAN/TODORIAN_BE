@@ -1,8 +1,8 @@
 package com.todorian.item;
 
-import com.todorian.item.domain.ItemCategory;
-import com.todorian.item.dto.ItemDto;
-import com.todorian.item.service.ItemService;
+import com.todorian.item.domain.model.ItemCategory;
+import com.todorian.item.domain.model.ItemCreateDto;
+import com.todorian.item.domain.service.ItemService;
 import jakarta.transaction.Transactional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
@@ -22,24 +22,20 @@ class ItemTests {
 
     private static Stream<Arguments> createItem() {
         return Stream.of(
-//            Arguments.of(3L, "어마무시한 칼", "어~~마무시한 칼입니다..", ItemCategory.WEAPON),
-//            Arguments.of(4L, "어마무시한 모자", "어~~마무시한 모자입니다,,", ItemCategory.WEAPON)
-            Arguments.of("어마무시한 칼", "어~~마무시한 칼입니다..", ItemCategory.WEAPON),
-            Arguments.of("어마무시한 모자", "어~~마무시한 모자입니다,,", ItemCategory.WEAPON)
+            Arguments.of("어마무시한 칼", "어~~마무시한 칼입니다..", 10L, ItemCategory.WEAPON),
+            Arguments.of("어마무시한 모자", "어~~마무시한 모자입니다,,", 5L, ItemCategory.WEAPON)
         );
     }
 
-    @DisplayName("테이블 만들기 테스트")
+    @DisplayName("아이템 추가 테스트")
     @ParameterizedTest
     @MethodSource("createItem")
-    void createItem(String itemName, String itemDescription,
+    void createItem(String itemName, String itemDescription, long itemPrice,
         ItemCategory itemCategory) {
-        ItemDto itemDto = ItemDto.builder()
-            .itemName(itemName)
-            .itemDescription(itemDescription)
-            .itemCategory(itemCategory)
-            .build();
-
-        Assertions.assertDoesNotThrow(() -> itemService.save(itemDto));
+        ItemCreateDto itemCreateDto = new ItemCreateDto(itemName, itemDescription, itemPrice,
+            itemCategory);
+        Assertions.assertDoesNotThrow(
+            () -> itemService.save(itemCreateDto)
+        );
     }
 }
