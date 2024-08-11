@@ -54,6 +54,8 @@ public class MemberTests {
     @ValueSource(longs = {1})
     void deleteMember(long id) {
 
-
+        Assertions.assertDoesNotThrow(
+                () -> memberService.delete(id)
+        );
     }
 }
