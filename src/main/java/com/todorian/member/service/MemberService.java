@@ -27,4 +27,9 @@ public class MemberService {
 
         memberRepository.save(member);
     }
+
+    public void delete(long id) {
+
+        memberRepository.deleteById(id);
+    }
 }

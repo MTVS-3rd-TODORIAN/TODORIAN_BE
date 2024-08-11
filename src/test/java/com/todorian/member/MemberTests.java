@@ -3,10 +3,12 @@ package com.todorian.member;
 import com.todorian.member.dto.MemberCreateRequestDTO;
 import com.todorian.member.service.MemberService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,15 @@ public class MemberTests {
 
     @Autowired
     private MemberService memberService;
+
+    @BeforeEach
+    void setUp() {
+        MemberCreateRequestDTO memberCreateRequestDTO = new MemberCreateRequestDTO(
+                "user@test.com", "test1234!"
+        );
+
+        memberService.save(memberCreateRequestDTO);
+    }
 
     private static Stream<Arguments> createMember() {
         return Stream.of(
@@ -35,6 +46,16 @@ public class MemberTests {
 
         Assertions.assertDoesNotThrow(
                 () -> memberService.save(memberCreateRequestDTO)
+        );
+    }
+
+    @DisplayName("회원 삭제 테스트")
+    @ParameterizedTest
+    @ValueSource(longs = {1})
+    void deleteMember(long id) {
+
+        Assertions.assertDoesNotThrow(
+                () -> memberService.delete(id)
         );
     }
 }
