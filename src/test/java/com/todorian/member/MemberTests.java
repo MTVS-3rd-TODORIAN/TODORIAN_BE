@@ -1,5 +1,6 @@
 package com.todorian.member;
 
+import com.todorian.member.dto.MemberCreateRequestDTO;
 import com.todorian.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,6 +29,8 @@ public class MemberTests {
     @ParameterizedTest
     @MethodSource("createMember")
     void createMember(String email, String password) {
+
+        MemberCreateRequestDTO memberCreateRequestDTO  = new MemberCreateRequestDTO(email, password);
 
     }
 }
