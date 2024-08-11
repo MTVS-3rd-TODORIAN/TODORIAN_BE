@@ -1,5 +1,6 @@
 package com.todorian.member.service;
 
+import com.todorian.member.domain.Member;
 import com.todorian.member.dto.MemberCreateRequestDTO;
 import com.todorian.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,11 @@ public class MemberService {
 
     public void save(MemberCreateRequestDTO memberCreateRequestDTO) {
 
+        Member member = new Member(
+                memberCreateRequestDTO.getEmail(),
+                memberCreateRequestDTO.getPassword()
+        );
+
+        memberRepository.save(member);
     }
 }
