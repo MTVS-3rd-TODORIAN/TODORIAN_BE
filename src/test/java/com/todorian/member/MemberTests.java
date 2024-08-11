@@ -3,6 +3,7 @@ package com.todorian.member;
 import com.todorian.member.dto.MemberCreateRequestDTO;
 import com.todorian.member.service.MemberService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -19,6 +20,15 @@ public class MemberTests {
 
     @Autowired
     private MemberService memberService;
+
+    @BeforeEach
+    void setUp() {
+        MemberCreateRequestDTO memberCreateRequestDTO = new MemberCreateRequestDTO(
+                "user@test.com", "test1234!"
+        );
+
+        memberService.save(memberCreateRequestDTO);
+    }
 
     private static Stream<Arguments> createMember() {
         return Stream.of(
