@@ -3,7 +3,6 @@ package com.todorian.advertisement;
 import com.todorian.advertisement.domain.model.Advertisement;
 import com.todorian.advertisement.domain.model.AdvertisementType;
 import com.todorian.advertisement.domain.service.AdvertisementService;
-import com.todorian.item.domain.ItemCategory;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
