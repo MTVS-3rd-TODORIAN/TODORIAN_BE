@@ -1,4 +1,4 @@
-package com.todorian.item.domain;
+package com.todorian.item.domain.model;
 
 public enum ItemCategory {
     HEAD,           // 머리
