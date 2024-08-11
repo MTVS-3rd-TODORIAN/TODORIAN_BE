@@ -26,7 +26,7 @@ class ItemTests {
 //            Arguments.of(4L, "어마무시한 모자", "어~~마무시한 모자입니다,,", ItemCategory.WEAPON)
             Arguments.of("어마무시한 칼", "어~~마무시한 칼입니다..", ItemCategory.WEAPON),
             Arguments.of("어마무시한 모자", "어~~마무시한 모자입니다,,", ItemCategory.WEAPON)
-            );
+        );
     }
 
     @DisplayName("테이블 만들기 테스트")
