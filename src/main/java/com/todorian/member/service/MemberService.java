@@ -1,6 +1,8 @@
 package com.todorian.member.service;
 
+import com.todorian.member.domain.Authority;
 import com.todorian.member.domain.Member;
+import com.todorian.member.domain.SocialType;
 import com.todorian.member.dto.MemberCreateRequestDTO;
 import com.todorian.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,9 @@ public class MemberService {
 
         Member member = new Member(
                 memberCreateRequestDTO.getEmail(),
-                memberCreateRequestDTO.getPassword()
+                memberCreateRequestDTO.getPassword(),
+                SocialType.NONE,
+                Authority.USER
         );
 
         memberRepository.save(member);

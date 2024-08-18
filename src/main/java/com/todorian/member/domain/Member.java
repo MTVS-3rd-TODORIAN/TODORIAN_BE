@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Entity
@@ -22,10 +23,17 @@ public class Member extends BaseTimeEntity {
     @Column(length = 100, nullable = false)
     private String password;
 
+    @ColumnDefault("'NONE'")
+    private SocialType socialType;
+    @Enumerated(value = EnumType.STRING)
+    @ColumnDefault("'USER'")
+    private Authority authority;
 
     @Builder
-    public Member(String email, String password) {
+    public Member(String email, String password, SocialType socialType, Authority authority) {
         this.email = email;
         this.password = password;
+        this.socialType = socialType;
+        this.authority = authority;
     }
 }
