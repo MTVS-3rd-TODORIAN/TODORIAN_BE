@@ -4,7 +4,10 @@ import com.todorian.member.domain.Authority;
 import com.todorian.member.domain.Member;
 import com.todorian.member.domain.SocialType;
 import com.todorian.member.dto.MemberCreateRequestDTO;
+import com.todorian.member.dto.MemberRequestDTO;
+import com.todorian.member.dto.MemberResponseDTO;
 import com.todorian.member.repository.MemberRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,5 +39,21 @@ public class MemberService {
     public void delete(long id) {
 
         memberRepository.deleteById(id);
+    }
+
+    public void signUp(MemberRequestDTO.signUpDTO requestDTO) {
+
+    }
+
+    public MemberResponseDTO.authTokenDTO login(HttpServletRequest httpServletRequest, MemberRequestDTO.loginDTO requestDTO) {
+        return null;
+    }
+
+    public MemberResponseDTO.authTokenDTO reissueToken(HttpServletRequest httpServletRequest) {
+        return null;
+    }
+
+    public void logout(HttpServletRequest httpServletRequest) {
+
     }
 }
