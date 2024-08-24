@@ -10,6 +10,7 @@ import com.todorian.member.dto.MemberRequestDTO;
 import com.todorian.member.dto.MemberResponseDTO;
 import com.todorian.member.repository.MemberRepository;
 import com.todorian.redis.domain.RefreshToken;
+import com.todorian.redis.repository.RefreshTokenRedisRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ import java.util.Optional;
 public class MemberAuthService {
 
     private final MemberRepository memberRepository;
+    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
     private final PasswordEncoder passwordEncoder;
     private final JWTTokenProvider jwtTokenProvider;
