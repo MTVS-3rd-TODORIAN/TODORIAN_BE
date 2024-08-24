@@ -1,5 +1,8 @@
 package com.todorian.member.controller;
 
+import com.todorian._core.utils.ApiUtils;
+import com.todorian.member.dto.MemberRequestDTO;
+import com.todorian.member.dto.MemberResponseDTO;
 import com.todorian.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -23,7 +26,7 @@ public class MemberAuthController {
         기본 회원 가입
      */
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@Valid @RequestBody signUpDTO requestDTO) {
+    public ResponseEntity<?> signUp(@Valid @RequestBody MemberRequestDTO.signUpDTO requestDTO) {
 
         memberService.signUp(requestDTO);
 

@@ -18,6 +18,8 @@ public class Member extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private String nickName;
     @Column(length = 100, nullable = false, unique = true)
     private String email;
     @Column(length = 100, nullable = false)
@@ -30,7 +32,8 @@ public class Member extends BaseTimeEntity {
     private Authority authority;
 
     @Builder
-    public Member(String email, String password, SocialType socialType, Authority authority) {
+    public Member(String nickName, String email, String password, SocialType socialType, Authority authority) {
+        this.nickName = nickName;
         this.email = email;
         this.password = password;
         this.socialType = socialType;

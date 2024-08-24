@@ -25,7 +25,7 @@ public class MemberTests {
     @BeforeEach
     void setUp() {
         MemberCreateRequestDTO memberCreateRequestDTO = new MemberCreateRequestDTO(
-                "user@test.com", "test1234!"
+                "userNickName", "user@test.com", "test1234!"
         );
 
         memberService.save(memberCreateRequestDTO);
@@ -33,16 +33,16 @@ public class MemberTests {
 
     private static Stream<Arguments> createMember() {
         return Stream.of(
-                Arguments.of("user1@test.com", "test1234!")
+                Arguments.of("userNickName1", "user1@test.com", "test1234!")
         );
     }
 
     @DisplayName("회원 추가 테스트")
     @ParameterizedTest
     @MethodSource("createMember")
-    void createMember(String email, String password) {
+    void createMember(String nickName, String email, String password) {
 
-        MemberCreateRequestDTO memberCreateRequestDTO  = new MemberCreateRequestDTO(email, password);
+        MemberCreateRequestDTO memberCreateRequestDTO  = new MemberCreateRequestDTO(nickName, email, password);
 
         Assertions.assertDoesNotThrow(
                 () -> memberService.save(memberCreateRequestDTO)

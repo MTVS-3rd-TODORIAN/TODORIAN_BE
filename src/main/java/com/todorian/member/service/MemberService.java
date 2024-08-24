@@ -23,6 +23,7 @@ public class MemberService {
     public void save(MemberCreateRequestDTO memberCreateRequestDTO) {
 
         Member member = new Member(
+                memberCreateRequestDTO.getNickName(),
                 memberCreateRequestDTO.getEmail(),
                 memberCreateRequestDTO.getPassword(),
                 SocialType.NONE,
