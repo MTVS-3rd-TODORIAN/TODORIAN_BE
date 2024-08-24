@@ -1,6 +1,7 @@
 package com.todorian.member.controller;
 
 import com.todorian.member.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,5 +28,16 @@ public class MemberAuthController {
         memberService.signUp(requestDTO);
 
         return ResponseEntity.ok().body(ApiUtils.success(null));
+    }
+
+    /*
+        기본 로그인
+     */
+    @PostMapping("/login")
+    public ResponseEntity<?> login(HttpServletRequest httpServletRequest, @Valid @RequestBody loginDTO requestDTO) {
+
+        MemberResponseDTO.authTokenDTO responseDTO = memberService.login(httpServletRequest, requestDTO);
+
+        return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
 }
