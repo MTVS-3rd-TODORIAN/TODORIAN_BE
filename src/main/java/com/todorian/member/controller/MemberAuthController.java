@@ -40,4 +40,15 @@ public class MemberAuthController {
 
         return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
+
+    /*
+        Access Token 재발급 - Refresh Token 필요
+     */
+    @PostMapping("/reissue")
+    public ResponseEntity<?> reissueToken(HttpServletRequest httpServletRequest) {
+
+        MemberResponseDTO.authTokenDTO responseDTO = memberService.reissueToken(httpServletRequest);
+
+        return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
+    }
 }
