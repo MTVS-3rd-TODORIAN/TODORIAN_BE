@@ -127,8 +127,21 @@ public class MemberAuthService {
         return authTokenDTO;
     }
 
+    /*
+        로그아웃
+     */
     public void logout(HttpServletRequest httpServletRequest) {
 
+        log.info("로그아웃 - Refresh Token 확인");
+
+        String token = jwtTokenProvider.resolveToken(httpServletRequest);
+
+        if(token == null || !jwtTokenProvider.validateToken(token)) {
+            throw new Exception400("유효하지 않은 Refresh Token 입니다.");
+        }
+
+        RefreshToken refreshToken = refreshTokenRedisRepository.findByRefreshToken(token);
+        refreshTokenRedisRepository.delete(refreshToken);
     }
 
     // 이메일 중복 확인
