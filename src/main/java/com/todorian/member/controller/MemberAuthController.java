@@ -51,4 +51,17 @@ public class MemberAuthController {
 
         return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
+
+    /*
+        로그아웃 - Refresh Token 필요
+     */
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest httpServletRequest) {
+
+        log.info("로그아웃 시도");
+
+        memberService.logout(httpServletRequest);
+
+        return ResponseEntity.ok().body(ApiUtils.success(null));
+    }
 }
