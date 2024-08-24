@@ -87,8 +87,44 @@ public class MemberAuthService {
         return getAuthTokenDTO(requestDTO.email(), requestDTO.password(), httpServletRequest);
     }
 
+    /*
+        토큰 재발급
+     */
     public MemberResponseDTO.authTokenDTO reissueToken(HttpServletRequest httpServletRequest) {
-        return null;
+
+        // Request Header 에서 JWT Token 추출
+        String token = jwtTokenProvider.resolveToken(httpServletRequest);
+
+        // 토큰 유효성 검사
+        if(token == null || !jwtTokenProvider.validateToken(token)) {
+            throw new Exception400("유효하지 않은 Access Token 입니다.");
+        }
+
+        // type 확인
+        if(!jwtTokenProvider.isRefreshToken(token)) {
+            throw new Exception400("유효하지 않은 Refresh Token 입니다.");
+        }
+
+        // RefreshToken
+        RefreshToken refreshToken = refreshTokenRedisRepository.findByRefreshToken(token);
+
+        if(refreshToken == null) {
+            throw new Exception400("Refresh Token 이 비어있습니다.");
+        }
+
+        // Redis 에 저장된 RefreshToken 정보를 기반으로 JWT Token 생성
+        MemberResponseDTO.authTokenDTO authTokenDTO = jwtTokenProvider.generateToken(
+                refreshToken.getId(), refreshToken.getAuthorities()
+        );
+
+        // Redis 에 RefreshToken Update
+        refreshTokenRedisRepository.save(RefreshToken.builder()
+                .id(refreshToken.getId())
+                .authorities(refreshToken.getAuthorities())
+                .refreshToken(authTokenDTO.refreshToken())
+                .build());
+
+        return authTokenDTO;
     }
 
     public void logout(HttpServletRequest httpServletRequest) {
