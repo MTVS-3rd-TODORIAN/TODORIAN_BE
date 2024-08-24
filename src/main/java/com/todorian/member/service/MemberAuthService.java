@@ -9,6 +9,7 @@ import com.todorian.member.dto.MemberCreateRequestDTO;
 import com.todorian.member.dto.MemberRequestDTO;
 import com.todorian.member.dto.MemberResponseDTO;
 import com.todorian.member.repository.MemberRepository;
+import com.todorian.redis.domain.RefreshToken;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
