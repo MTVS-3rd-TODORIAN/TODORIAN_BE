@@ -1,7 +1,7 @@
 package com.todorian.member;
 
 import com.todorian.member.dto.MemberCreateRequestDTO;
-import com.todorian.member.service.MemberService;
+import com.todorian.member.service.MemberAuthService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 public class MemberTests {
 
     @Autowired
-    private MemberService memberService;
+    private MemberAuthService memberAuthService;
 
     @BeforeEach
     void setUp() {
@@ -28,7 +28,7 @@ public class MemberTests {
                 "userNickName", "user@test.com", "test1234!"
         );
 
-        memberService.save(memberCreateRequestDTO);
+        memberAuthService.save(memberCreateRequestDTO);
     }
 
     private static Stream<Arguments> createMember() {
@@ -45,7 +45,7 @@ public class MemberTests {
         MemberCreateRequestDTO memberCreateRequestDTO  = new MemberCreateRequestDTO(nickName, email, password);
 
         Assertions.assertDoesNotThrow(
-                () -> memberService.save(memberCreateRequestDTO)
+                () -> memberAuthService.save(memberCreateRequestDTO)
         );
     }
 
@@ -55,7 +55,7 @@ public class MemberTests {
     void deleteMember(long id) {
 
         Assertions.assertDoesNotThrow(
-                () -> memberService.delete(id)
+                () -> memberAuthService.delete(id)
         );
     }
 }

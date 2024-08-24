@@ -3,7 +3,7 @@ package com.todorian.member.controller;
 import com.todorian._core.utils.ApiUtils;
 import com.todorian.member.dto.MemberRequestDTO;
 import com.todorian.member.dto.MemberResponseDTO;
-import com.todorian.member.service.MemberService;
+import com.todorian.member.service.MemberAuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class MemberAuthController {
 
-    private final MemberService memberService;
+    private final MemberAuthService memberAuthService;
 
     /*
         기본 회원 가입
@@ -28,7 +28,7 @@ public class MemberAuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@Valid @RequestBody MemberRequestDTO.signUpDTO requestDTO) {
 
-        memberService.signUp(requestDTO);
+        memberAuthService.signUp(requestDTO);
 
         return ResponseEntity.ok().body(ApiUtils.success(null));
     }
@@ -39,7 +39,7 @@ public class MemberAuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(HttpServletRequest httpServletRequest, @Valid @RequestBody MemberRequestDTO.loginDTO requestDTO) {
 
-        MemberResponseDTO.authTokenDTO responseDTO = memberService.login(httpServletRequest, requestDTO);
+        MemberResponseDTO.authTokenDTO responseDTO = memberAuthService.login(httpServletRequest, requestDTO);
 
         return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
@@ -50,7 +50,7 @@ public class MemberAuthController {
     @PostMapping("/reissue")
     public ResponseEntity<?> reissueToken(HttpServletRequest httpServletRequest) {
 
-        MemberResponseDTO.authTokenDTO responseDTO = memberService.reissueToken(httpServletRequest);
+        MemberResponseDTO.authTokenDTO responseDTO = memberAuthService.reissueToken(httpServletRequest);
 
         return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
@@ -63,7 +63,7 @@ public class MemberAuthController {
 
         log.info("로그아웃 시도");
 
-        memberService.logout(httpServletRequest);
+        memberAuthService.logout(httpServletRequest);
 
         return ResponseEntity.ok().body(ApiUtils.success(null));
     }
