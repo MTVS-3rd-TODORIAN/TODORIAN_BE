@@ -115,6 +115,7 @@ public class MemberOAuthService {
     }
 
     // 카카오 회원 생성
+    @Transactional
     protected Member kakaoSignUp(MemberResponseDTO.KakaoInfoDTO profile) {
         log.info("카카오 회원 생성 : " + profile.kakaoAccount().email());
 
