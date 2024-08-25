@@ -5,6 +5,7 @@ import com.todorian._core.jwt.JWTTokenProvider;
 import com.todorian.member.domain.Authority;
 import com.todorian.member.domain.Member;
 import com.todorian.member.domain.SocialType;
+import com.todorian.member.domain.Status;
 import com.todorian.member.dto.MemberCreateRequestDTO;
 import com.todorian.member.dto.MemberRequestDTO;
 import com.todorian.member.dto.MemberResponseDTO;
@@ -45,7 +46,8 @@ public class MemberAuthService {
                 memberCreateRequestDTO.getEmail(),
                 memberCreateRequestDTO.getPassword(),
                 SocialType.NONE,
-                Authority.USER
+                Authority.USER,
+                Status.ACTIVE
         );
 
         memberRepository.save(member);
