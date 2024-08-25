@@ -1,8 +1,10 @@
 package com.todorian.member.service;
 
 
+import com.todorian._core.jwt.JWTTokenProvider;
 import com.todorian.member.domain.Member;
 import com.todorian.member.dto.MemberResponseDTO;
+import com.todorian.member.property.KakaoProperties;
 import com.todorian.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
@@ -24,6 +27,11 @@ import java.util.Optional;
 public class MemberOAuthService {
 
     private final MemberRepository memberRepository;
+
+    private final PasswordEncoder passwordEncoder;
+    private final JWTTokenProvider jwtTokenProvider;
+
+    private final KakaoProperties kakaoProperties;
 
     /*
         카카오 로그인
@@ -46,7 +54,7 @@ public class MemberOAuthService {
     }
 
     // kakao code 기반 AccessToken 발급
-    private String generateAccessToken(String code) {
+    protected String generateAccessToken(String code) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
