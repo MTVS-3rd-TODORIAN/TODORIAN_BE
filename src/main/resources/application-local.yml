@@ -22,3 +22,8 @@ spring:
 
 jwt:
   secret: ${JWT.SECRET}
+
+logging:
+  level:
+    '[com.todorian]': debug
+    '[org.hibernate.type]': trace
