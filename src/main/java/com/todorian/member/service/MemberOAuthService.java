@@ -7,6 +7,7 @@ import com.todorian._core.jwt.JWTTokenProvider;
 import com.todorian.member.domain.Authority;
 import com.todorian.member.domain.Member;
 import com.todorian.member.domain.SocialType;
+import com.todorian.member.domain.Status;
 import com.todorian.member.dto.MemberResponseDTO;
 import com.todorian.member.property.KakaoProperties;
 import com.todorian.member.repository.MemberRepository;
@@ -123,6 +124,7 @@ public class MemberOAuthService {
                 .password(passwordEncoder.encode(UUID.randomUUID().toString()))
                 .socialType(SocialType.KAKAO)
                 .authority(Authority.USER)
+                .status(Status.ACTIVE)
                 .build();
 
         memberRepository.save(member);

@@ -174,6 +174,7 @@ public class MemberAuthService {
                 .password(passwordEncoder.encode(requestDTO.password()))
                 .socialType(SocialType.NONE)
                 .authority(Authority.USER)
+                .status(Status.ACTIVE)
                 .build();
     }
 
