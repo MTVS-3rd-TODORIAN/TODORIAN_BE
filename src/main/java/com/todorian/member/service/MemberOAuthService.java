@@ -16,6 +16,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +28,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -129,5 +135,14 @@ public class MemberOAuthService {
         log.info("회원 확인 : {}", email);
 
         return memberRepository.findByEmail(email);
+    }
+
+    // OAuth Token 발급
+    protected MemberResponseDTO.authTokenDTO getOAuthTokenDTO(Member member) {
+        UserDetails userDetails = new User(member.getEmail(), "",
+                Collections.singletonList(new SimpleGrantedAuthority(member.getAuthority().toString())));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+        return jwtTokenProvider.generateToken(authentication);
     }
 }
