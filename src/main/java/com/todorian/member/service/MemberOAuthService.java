@@ -6,8 +6,14 @@ import com.todorian.member.dto.MemberResponseDTO;
 import com.todorian.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.Optional;
 
@@ -37,6 +43,32 @@ public class MemberOAuthService {
                 .orElseGet(() -> kakaoSignUp(profile));
 
         return getOAuthTokenDTO(member);
+    }
+
+    // kakao code 기반 AccessToken 발급
+    private String generateAccessToken(String code) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", kakaoProperties.getGrantType());
+        params.add("client_id", kakaoProperties.getClientId());
+        params.add("redirect_uri", kakaoProperties.getRedirectUri());
+        params.add("code", code);
+
+        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, headers);
+        ResponseEntity<MemberResponseDTO.KakaoTokenDTO> response = restTemplate.postForEntity(
+                kakaoProperties.getTokenUri(),
+                httpEntity,
+                MemberResponseDTO.KakaoTokenDTO.class
+        );
+
+        if(!response.getStatusCode().is2xxSuccessful()) {
+            throw new ApplicationException(ErrorCode.FAILED_GET_ACCESS_TOKEN);
+        }
+
+        return response.getBody().accessToken();
     }
 
     // 이메일 확인
