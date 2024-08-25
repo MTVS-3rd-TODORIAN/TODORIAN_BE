@@ -44,7 +44,7 @@ public class MemberAuthController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, responseDTO.grantType() + " " + responseDTO.accessToken())
-                .header("Refresh-Token", responseDTO.refreshToken())
+                .header("Refresh-Token", responseDTO.grantType() + " " + responseDTO.refreshToken())
                 .body(ApiUtils.success(null));
     }
 
@@ -56,7 +56,10 @@ public class MemberAuthController {
 
         MemberResponseDTO.authTokenDTO responseDTO = memberAuthService.reissueToken(httpServletRequest);
 
-        return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, responseDTO.grantType() + " " + responseDTO.accessToken())
+                .header("Refresh-Token", responseDTO.grantType() + " " + responseDTO.refreshToken())
+                .body(ApiUtils.success(null));
     }
 
     /*
