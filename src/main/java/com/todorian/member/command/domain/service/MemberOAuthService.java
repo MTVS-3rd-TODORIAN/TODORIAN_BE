@@ -1,16 +1,15 @@
-package com.todorian.member.service;
+package com.todorian.member.command.domain.service;
 
 
-import com.todorian._core.error.exception.Exception400;
 import com.todorian._core.error.exception.Exception500;
 import com.todorian._core.jwt.JWTTokenProvider;
-import com.todorian.member.domain.Authority;
-import com.todorian.member.domain.Member;
-import com.todorian.member.domain.SocialType;
-import com.todorian.member.domain.Status;
-import com.todorian.member.dto.MemberResponseDTO;
-import com.todorian.member.property.KakaoProperties;
-import com.todorian.member.repository.MemberRepository;
+import com.todorian.member.command.domain.model.Authority;
+import com.todorian.member.command.domain.model.Member;
+import com.todorian.member.command.domain.model.SocialType;
+import com.todorian.member.command.domain.model.Status;
+import com.todorian.member.command.application.dto.MemberResponseDTO;
+import com.todorian.member.command.domain.model.property.KakaoProperties;
+import com.todorian.member.command.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;

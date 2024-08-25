@@ -1,9 +1,9 @@
-package com.todorian.member.controller;
+package com.todorian.member.command.application.controller;
 
 import com.todorian._core.utils.ApiUtils;
-import com.todorian.member.dto.MemberRequestDTO;
-import com.todorian.member.dto.MemberResponseDTO;
-import com.todorian.member.service.MemberAuthService;
+import com.todorian.member.command.application.dto.MemberRequestDTO;
+import com.todorian.member.command.application.dto.MemberResponseDTO;
+import com.todorian.member.command.application.service.MemberAuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

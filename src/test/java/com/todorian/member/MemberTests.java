@@ -1,7 +1,7 @@
 package com.todorian.member;
 
-import com.todorian.member.dto.MemberCreateRequestDTO;
-import com.todorian.member.service.MemberAuthService;
+import com.todorian.member.command.application.dto.MemberCreateRequestDTO;
+import com.todorian.member.command.application.service.MemberAuthService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -1,4 +1,4 @@
-package com.todorian.member.property;
+package com.todorian.member.command.domain.model.property;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

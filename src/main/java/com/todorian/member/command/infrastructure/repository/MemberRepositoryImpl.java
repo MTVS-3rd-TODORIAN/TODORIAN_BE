@@ -1,4 +1,4 @@
-package com.todorian.member.repository;
+package com.todorian.member.command.infrastructure.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

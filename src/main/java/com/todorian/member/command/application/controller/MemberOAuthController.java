@@ -1,8 +1,8 @@
-package com.todorian.member.controller;
+package com.todorian.member.command.application.controller;
 
 import com.todorian._core.utils.ApiUtils;
-import com.todorian.member.dto.MemberResponseDTO;
-import com.todorian.member.service.MemberOAuthService;
+import com.todorian.member.command.application.dto.MemberResponseDTO;
+import com.todorian.member.command.domain.service.MemberOAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
