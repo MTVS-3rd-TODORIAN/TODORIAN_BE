@@ -2,6 +2,7 @@ package com.todorian.member.service;
 
 
 import com.todorian._core.error.exception.Exception400;
+import com.todorian._core.error.exception.Exception500;
 import com.todorian._core.jwt.JWTTokenProvider;
 import com.todorian.member.domain.Authority;
 import com.todorian.member.domain.Member;
@@ -80,10 +81,30 @@ public class MemberOAuthService {
         );
 
         if(!response.getStatusCode().is2xxSuccessful()) {
-            throw new Exception400("Access Token 을 가져오는데 실패했습니다.");
+            throw new Exception500("Access Token 을 가져오는데 실패했습니다.");
         }
 
         return Objects.requireNonNull(response.getBody()).accessToken();
+    }
+
+    // kakao 유저 프로필 확인
+    protected MemberResponseDTO.KakaoInfoDTO getKakaoProfile(String accessToken) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setBearerAuth(accessToken);
+
+        ResponseEntity<MemberResponseDTO.KakaoInfoDTO> response = restTemplate.postForEntity(
+                kakaoProperties.getUserInfoUri(),
+                new HttpEntity<>(headers),
+                MemberResponseDTO.KakaoInfoDTO.class
+        );
+
+        if(!response.getStatusCode().is2xxSuccessful()) {
+            throw new Exception500("Kakao 유저 프로필을 가져오는데 실패했습니다.");
+        }
+
+        return response.getBody();
     }
 
     // 카카오 회원 생성
