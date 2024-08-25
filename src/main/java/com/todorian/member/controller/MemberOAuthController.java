@@ -2,6 +2,7 @@ package com.todorian.member.controller;
 
 import com.todorian._core.utils.ApiUtils;
 import com.todorian.member.dto.MemberResponseDTO;
+import com.todorian.member.service.MemberOAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class MemberOAuthController {
     @GetMapping("/kakao/login")
     public ResponseEntity<?> kakaoLogin(@RequestParam(name = "code") String code) {
 
-        MemberResponseDTO.authTokenDTO responseDTO = memberSocialLoginService.kakaoLogin(code);
+        MemberResponseDTO.authTokenDTO responseDTO = memberOAuthService.kakaoLogin(code);
 
         return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
