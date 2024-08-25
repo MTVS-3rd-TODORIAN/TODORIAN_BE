@@ -1,8 +1,11 @@
 package com.todorian.member.service;
 
 
+import com.todorian._core.error.exception.Exception400;
 import com.todorian._core.jwt.JWTTokenProvider;
+import com.todorian.member.domain.Authority;
 import com.todorian.member.domain.Member;
+import com.todorian.member.domain.SocialType;
 import com.todorian.member.dto.MemberResponseDTO;
 import com.todorian.member.property.KakaoProperties;
 import com.todorian.member.repository.MemberRepository;
@@ -17,8 +20,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -32,6 +38,7 @@ public class MemberOAuthService {
     private final JWTTokenProvider jwtTokenProvider;
 
     private final KakaoProperties kakaoProperties;
+    private final RestTemplate restTemplate = new RestTemplate();
 
     /*
         카카오 로그인
@@ -73,10 +80,27 @@ public class MemberOAuthService {
         );
 
         if(!response.getStatusCode().is2xxSuccessful()) {
-            throw new ApplicationException(ErrorCode.FAILED_GET_ACCESS_TOKEN);
+            throw new Exception400("Access Token 을 가져오는데 실패했습니다.");
         }
 
-        return response.getBody().accessToken();
+        return Objects.requireNonNull(response.getBody()).accessToken();
+    }
+
+    // 카카오 회원 생성
+    protected Member kakaoSignUp(MemberResponseDTO.KakaoInfoDTO profile) {
+        log.info("카카오 회원 생성 : " + profile.kakaoAccount().email());
+
+        Member member = Member.builder()
+                .nickName(profile.properties().nickname())
+                .email(profile.kakaoAccount().email())
+                .password(passwordEncoder.encode(UUID.randomUUID().toString()))
+                .socialType(SocialType.KAKAO)
+                .authority(Authority.USER)
+                .build();
+
+        memberRepository.save(member);
+
+        return member;
     }
 
     // 이메일 확인
