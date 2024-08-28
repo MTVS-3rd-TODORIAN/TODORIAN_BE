@@ -31,4 +31,27 @@ public class MemberAuthServiceTest {
 
         memberAuthService.signUp(requestDTO);
     }
+
+    private static Stream<Arguments> createMember() {
+        return Stream.of(
+                Arguments.of("userNickName1", "user1@test.com", "test1234!", "test1234!")
+        );
+    }
+
+    @DisplayName("signUp 테스트")
+    @ParameterizedTest
+    @MethodSource("createMember")
+    void signUp(String userNickName, String userEmail, String userPassword, String userConfirmPassword) {
+
+        MemberRequestDTO.signUpDTO requestDTO = new MemberRequestDTO.signUpDTO(
+                userNickName,
+                userEmail,
+                userPassword,
+                userConfirmPassword
+        );
+
+        Assertions.assertDoesNotThrow(
+                () -> memberAuthService.signUp(requestDTO)
+        );
+    }
 }
