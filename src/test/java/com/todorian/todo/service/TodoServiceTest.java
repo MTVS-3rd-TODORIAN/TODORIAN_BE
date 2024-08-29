@@ -1,10 +1,9 @@
 package com.todorian.todo.service;
 
 import com.todorian.todo.domain.Todo;
-import com.todorian.todo.domain.TodoCreateRequestDTO;
+import com.todorian.todo.dto.TodoCreateRequestDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,8 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

@@ -1,9 +1,6 @@
-package com.todorian.todo.domain;
+package com.todorian.todo.dto;
 
-import jakarta.persistence.Column;
 import lombok.*;
-
-import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor

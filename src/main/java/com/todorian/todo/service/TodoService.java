@@ -1,7 +1,7 @@
 package com.todorian.todo.service;
 
 import com.todorian.todo.domain.Todo;
-import com.todorian.todo.domain.TodoCreateRequestDTO;
+import com.todorian.todo.dto.TodoCreateRequestDTO;
 import com.todorian.todo.repository.TodoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
