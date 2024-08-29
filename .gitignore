@@ -6,6 +6,10 @@ build/
 !**/src/test/**/build/
 /build/generated/
 /src/main/java/com/todorian/Q*.java
+/src/main/resources/application.properties
+*.log
+**/*.log
+/log/**.log
 
 ### STS ###
 .apt_generated
