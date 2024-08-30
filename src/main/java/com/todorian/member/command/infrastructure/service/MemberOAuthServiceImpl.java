@@ -1,15 +1,15 @@
-package com.todorian.member.service;
+package com.todorian.member.command.infrastructure.service;
 
-
-import com.todorian._core.error.exception.Exception400;
 import com.todorian._core.error.exception.Exception500;
 import com.todorian._core.jwt.JWTTokenProvider;
-import com.todorian.member.domain.Authority;
-import com.todorian.member.domain.Member;
-import com.todorian.member.domain.SocialType;
-import com.todorian.member.dto.MemberResponseDTO;
-import com.todorian.member.property.KakaoProperties;
-import com.todorian.member.repository.MemberRepository;
+import com.todorian.member.command.application.dto.MemberResponseDTO;
+import com.todorian.member.command.domain.model.Authority;
+import com.todorian.member.command.domain.model.Member;
+import com.todorian.member.command.domain.model.SocialType;
+import com.todorian.member.command.domain.model.Status;
+import com.todorian.member.command.domain.model.property.KakaoProperties;
+import com.todorian.member.command.domain.repository.MemberRepository;
+import com.todorian.member.command.domain.service.MemberOAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -37,7 +37,7 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
-public class MemberOAuthService {
+public class MemberOAuthServiceImpl implements MemberOAuthService {
 
     private final MemberRepository memberRepository;
 
@@ -114,6 +114,7 @@ public class MemberOAuthService {
     }
 
     // 카카오 회원 생성
+    @Transactional
     protected Member kakaoSignUp(MemberResponseDTO.KakaoInfoDTO profile) {
         log.info("카카오 회원 생성 : " + profile.kakaoAccount().email());
 
@@ -123,6 +124,7 @@ public class MemberOAuthService {
                 .password(passwordEncoder.encode(UUID.randomUUID().toString()))
                 .socialType(SocialType.KAKAO)
                 .authority(Authority.USER)
+                .status(Status.ACTIVE)
                 .build();
 
         memberRepository.save(member);
@@ -146,3 +148,4 @@ public class MemberOAuthService {
         return jwtTokenProvider.generateToken(authentication);
     }
 }
+

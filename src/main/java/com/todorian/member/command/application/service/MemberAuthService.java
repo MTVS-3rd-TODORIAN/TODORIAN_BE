@@ -1,20 +1,20 @@
-package com.todorian.member.service;
+package com.todorian.member.command.application.service;
 
 import com.todorian._core.error.exception.Exception400;
 import com.todorian._core.jwt.JWTTokenProvider;
-import com.todorian.member.domain.Authority;
-import com.todorian.member.domain.Member;
-import com.todorian.member.domain.SocialType;
-import com.todorian.member.dto.MemberCreateRequestDTO;
-import com.todorian.member.dto.MemberRequestDTO;
-import com.todorian.member.dto.MemberResponseDTO;
-import com.todorian.member.repository.MemberRepository;
+import com.todorian.member.command.domain.model.Authority;
+import com.todorian.member.command.domain.model.Member;
+import com.todorian.member.command.domain.model.SocialType;
+import com.todorian.member.command.domain.model.Status;
+import com.todorian.member.command.application.dto.MemberCreateRequestDTO;
+import com.todorian.member.command.application.dto.MemberRequestDTO;
+import com.todorian.member.command.application.dto.MemberResponseDTO;
+import com.todorian.member.command.domain.repository.MemberRepository;
 import com.todorian.redis.domain.RefreshToken;
 import com.todorian.redis.repository.RefreshTokenRedisRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -45,7 +45,8 @@ public class MemberAuthService {
                 memberCreateRequestDTO.getEmail(),
                 memberCreateRequestDTO.getPassword(),
                 SocialType.NONE,
-                Authority.USER
+                Authority.USER,
+                Status.ACTIVE
         );
 
         memberRepository.save(member);
@@ -172,6 +173,7 @@ public class MemberAuthService {
                 .password(passwordEncoder.encode(requestDTO.password()))
                 .socialType(SocialType.NONE)
                 .authority(Authority.USER)
+                .status(Status.ACTIVE)
                 .build();
     }
 

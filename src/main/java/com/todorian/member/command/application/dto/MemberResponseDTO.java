@@ -1,4 +1,4 @@
-package com.todorian.member.dto;
+package com.todorian.member.command.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

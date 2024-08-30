@@ -1,6 +1,6 @@
-package com.todorian.member.repository;
+package com.todorian.member.command.domain.repository;
 
-import com.todorian.member.domain.Member;
+import com.todorian.member.command.domain.model.Member;
 
 import java.util.Optional;
 

@@ -1,7 +1,6 @@
-package com.todorian.member.repository;
+package com.todorian.member.command.domain.repository;
 
-import com.querydsl.core.group.GroupBy;
-import com.todorian.member.domain.Member;
+import com.todorian.member.command.domain.model.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

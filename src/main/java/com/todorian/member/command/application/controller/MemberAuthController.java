@@ -1,9 +1,9 @@
-package com.todorian.member.controller;
+package com.todorian.member.command.application.controller;
 
 import com.todorian._core.utils.ApiUtils;
-import com.todorian.member.dto.MemberRequestDTO;
-import com.todorian.member.dto.MemberResponseDTO;
-import com.todorian.member.service.MemberAuthService;
+import com.todorian.member.command.application.dto.MemberRequestDTO;
+import com.todorian.member.command.application.dto.MemberResponseDTO;
+import com.todorian.member.command.application.service.MemberAuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +44,7 @@ public class MemberAuthController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, responseDTO.grantType() + " " + responseDTO.accessToken())
-                .header("Refresh-Token", responseDTO.refreshToken())
+                .header("Refresh-Token", responseDTO.grantType() + " " + responseDTO.refreshToken())
                 .body(ApiUtils.success(null));
     }
 
@@ -56,7 +56,10 @@ public class MemberAuthController {
 
         MemberResponseDTO.authTokenDTO responseDTO = memberAuthService.reissueToken(httpServletRequest);
 
-        return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, responseDTO.grantType() + " " + responseDTO.accessToken())
+                .header("Refresh-Token", responseDTO.grantType() + " " + responseDTO.refreshToken())
+                .body(ApiUtils.success(null));
     }
 
     /*

@@ -1,4 +1,4 @@
-package com.todorian.member.dto;
+package com.todorian.member.command.application.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
