@@ -1,5 +1,6 @@
 package com.todorian.membercharacter.command.domain.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class MemberCharacterUpdateRequestDTO {

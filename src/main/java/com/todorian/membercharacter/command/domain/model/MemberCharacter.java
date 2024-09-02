@@ -2,6 +2,7 @@ package com.todorian.membercharacter.command.domain.model;
 
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
