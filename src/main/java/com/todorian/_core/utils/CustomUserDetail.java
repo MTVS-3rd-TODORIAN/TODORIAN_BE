@@ -1,7 +1,7 @@
 package com.todorian._core.utils;
 
-import com.todorian.member.domain.Member;
-import com.todorian.member.repository.MemberRepository;
+import com.todorian.member.command.domain.model.Member;
+import com.todorian.member.command.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

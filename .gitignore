@@ -7,6 +7,7 @@ build/
 /build/generated/
 /src/main/java/com/todorian/Q*.java
 /src/main/resources/application.properties
+application.properties
 *.log
 **/*.log
 /log/**.log
