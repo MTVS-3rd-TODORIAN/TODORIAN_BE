@@ -3,6 +3,8 @@ package com.todorian.member.service;
 import com.todorian.member.command.application.dto.MemberRequestDTO;
 import com.todorian.member.command.application.dto.MemberResponseDTO;
 import com.todorian.member.command.application.service.MemberAuthService;
+import com.todorian.redis.domain.RefreshToken;
+import com.todorian.redis.repository.RefreshTokenRedisRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,8 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -27,6 +28,9 @@ public class MemberAuthServiceTest {
 
     @Autowired
     private MemberAuthService memberAuthService;
+
+    @Autowired
+    private RefreshTokenRedisRepository refreshTokenRedisRepository;
 
     @Mock
     private HttpServletRequest httpServletRequest;
@@ -96,15 +100,39 @@ public class MemberAuthServiceTest {
                 "test1234"
         );
 
-        // 실제 HTTP 요청에서 토큰 추출
         MemberResponseDTO.authTokenDTO authTokenDTO = memberAuthService.login(httpServletRequest, loginDTO);
 
-        // when
+        // 실제 HTTP 요청에서 토큰 추출
         when(httpServletRequest.getHeader("Authorization")).thenReturn("Bearer " + authTokenDTO.refreshToken());
+
+        // when
         MemberResponseDTO.authTokenDTO newAuthTokenDTO = memberAuthService.reissueToken(httpServletRequest);
 
         // then
         assertNotNull(newAuthTokenDTO);
         System.out.println("newAuthTokenDTO = " + newAuthTokenDTO);
+    }
+
+    @DisplayName("logout 테스트")
+    @Test
+    void logout() {
+
+        // given
+        MemberRequestDTO.loginDTO loginDTO = new MemberRequestDTO.loginDTO(
+                "user@test.com",
+                "test1234"
+        );
+
+        MemberResponseDTO.authTokenDTO authTokenDTO = memberAuthService.login(httpServletRequest, loginDTO);
+
+        // 실제 HTTP 요청에서 토큰 추출
+        when(httpServletRequest.getHeader("Authorization")).thenReturn("Bearer " + authTokenDTO.refreshToken());
+
+        // when
+        memberAuthService.logout(httpServletRequest);
+
+        // then
+        RefreshToken refreshToken = refreshTokenRedisRepository.findByRefreshToken(authTokenDTO.refreshToken());
+        assertNull(refreshToken);
     }
 }
