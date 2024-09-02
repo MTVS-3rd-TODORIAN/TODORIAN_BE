@@ -5,6 +5,7 @@ import com.todorian.membercharacter.command.domain.model.MemberCharacterCreateRe
 import com.todorian.membercharacter.command.domain.repository.MemberCharacterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MemberCharacterService {
@@ -24,5 +25,9 @@ public class MemberCharacterService {
         );
 
         memberCharacterRepository.save(memberCharacter);
+    }
+
+    public void delete(long memberCharacterId) {
+        memberCharacterRepository.deleteById(memberCharacterId);
     }
 }
