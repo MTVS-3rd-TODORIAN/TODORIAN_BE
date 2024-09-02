@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class MemberCharacterService {
 
@@ -29,5 +31,15 @@ public class MemberCharacterService {
 
     public void delete(long memberCharacterId) {
         memberCharacterRepository.deleteById(memberCharacterId);
+    }
+
+    public List<MemberCharacter> findAll(){
+        List<MemberCharacter> memberCharacterList = memberCharacterRepository.findAll();
+
+        return memberCharacterList;
+    }
+
+    public MemberCharacter findById(long memberCharacterId) {
+        return memberCharacterRepository.findById(memberCharacterId).get();
     }
 }

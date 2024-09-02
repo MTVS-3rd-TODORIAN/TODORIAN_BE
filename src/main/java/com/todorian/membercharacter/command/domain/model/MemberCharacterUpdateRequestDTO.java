@@ -1,30 +1,18 @@
 package com.todorian.membercharacter.command.domain.model;
 
-import jakarta.persistence.*;
-
 import java.util.Date;
 
-@Entity
-@Table(name="tbl_membercharacter")
-public class MemberCharacter {
+public class MemberCharacterUpdateRequestDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="membercharacter_id")
     private long memberCharacterId;
-
-    @Column(name="member_id")
     private long memberId;
-
-    @Column(name="character_id")
     private long characterId;
-
-    @Column(name="acquisition_time")
     private Date acquisitionTime;
 
-    public MemberCharacter() {}
+    public MemberCharacterUpdateRequestDTO() {
+    }
 
-    public MemberCharacter(long memberId, long characterId, Date acquisitionTime) {
+    public MemberCharacterUpdateRequestDTO(long memberId, long characterId, Date acquisitionTime) {
         this.memberId = memberId;
         this.characterId = characterId;
         this.acquisitionTime = acquisitionTime;
@@ -48,11 +36,12 @@ public class MemberCharacter {
 
     @Override
     public String toString() {
-        return "MemberCharacter{" +
+        return "MemberCharacterUpdateRequestDTO{" +
                 "memberCharacterId=" + memberCharacterId +
                 ", memberId=" + memberId +
                 ", characterId=" + characterId +
                 ", acquisitionTime=" + acquisitionTime +
                 '}';
+
     }
 }
