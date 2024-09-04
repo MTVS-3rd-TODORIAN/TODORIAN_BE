@@ -42,4 +42,8 @@ public class Member extends BaseTimeEntity {
         this.authority = authority;
         this.status = status;
     }
+
+    public void deactivate() {
+        this.status = Status.DEACTIVATED;
+    }
 }

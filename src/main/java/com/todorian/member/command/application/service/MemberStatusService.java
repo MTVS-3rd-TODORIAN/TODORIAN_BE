@@ -1,5 +1,8 @@
 package com.todorian.member.command.application.service;
 
+import com.todorian._core.error.exception.Exception400;
+import com.todorian.member.command.domain.model.Member;
+import com.todorian.member.command.domain.model.Status;
 import com.todorian.member.command.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,4 +16,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberStatusService {
 
     private final MemberRepository memberRepository;
+
+    @Transactional
+    public void deleteMember(Long memberId) {
+
+        // 회원 확인
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new Exception400("가입되지 않은 회원입니다."));
+
+        // Soft Delete
+        member.deactivate();
+    }
 }
