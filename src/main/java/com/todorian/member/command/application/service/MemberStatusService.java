@@ -24,7 +24,14 @@ public class MemberStatusService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new Exception400("가입되지 않은 회원입니다."));
 
+        // 이미 탈퇴된 회원인지 확인
+        if (member.getStatus() == Status.DEACTIVATED) {
+            throw new Exception400("이미 탈퇴된 회원입니다.");
+        }
+
         // Soft Delete
         member.deactivate();
+
+        log.info("회원 ID: {}가 탈퇴 처리되었습니다.", memberId);
     }
 }
