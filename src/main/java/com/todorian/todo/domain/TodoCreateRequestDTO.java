@@ -14,6 +14,4 @@ public class TodoCreateRequestDTO {
 
     private String todoContent;
 
-    private LocalDate todoCreatedAt;
-
 }

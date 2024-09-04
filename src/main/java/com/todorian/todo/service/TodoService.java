@@ -22,7 +22,6 @@ public class TodoService {
     public void createTodo(TodoCreateRequestDTO todoCreateRequestDTO) {
         Todo todo = Todo.builder()
                 .todoContent(todoCreateRequestDTO.getTodoContent())
-                .todoCreatedAt(todoCreateRequestDTO.getTodoCreatedAt())
                 .build();
 
         todoRepository.save(todo);
