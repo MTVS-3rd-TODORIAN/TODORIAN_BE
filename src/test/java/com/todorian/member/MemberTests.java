@@ -1,7 +1,7 @@
 package com.todorian.member;
 
-import com.todorian.member.command.application.dto.MemberCreateRequestDTO;
-import com.todorian.member.command.application.service.MemberAuthService;
+import com.todorian.member.dto.MemberCreateRequestDTO;
+import com.todorian.member.service.MemberService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,32 +20,32 @@ import java.util.stream.Stream;
 public class MemberTests {
 
     @Autowired
-    private MemberAuthService memberAuthService;
+    private MemberService memberService;
 
     @BeforeEach
     void setUp() {
         MemberCreateRequestDTO memberCreateRequestDTO = new MemberCreateRequestDTO(
-                "userNickName", "user@test.com", "test1234!"
+                "user@test.com", "test1234!"
         );
 
-        memberAuthService.save(memberCreateRequestDTO);
+        memberService.save(memberCreateRequestDTO);
     }
 
     private static Stream<Arguments> createMember() {
         return Stream.of(
-                Arguments.of("userNickName1", "user1@test.com", "test1234!")
+                Arguments.of("user1@test.com", "test1234!")
         );
     }
 
     @DisplayName("회원 추가 테스트")
     @ParameterizedTest
     @MethodSource("createMember")
-    void createMember(String nickName, String email, String password) {
+    void createMember(String email, String password) {
 
-        MemberCreateRequestDTO memberCreateRequestDTO  = new MemberCreateRequestDTO(nickName, email, password);
+        MemberCreateRequestDTO memberCreateRequestDTO  = new MemberCreateRequestDTO(email, password);
 
         Assertions.assertDoesNotThrow(
-                () -> memberAuthService.save(memberCreateRequestDTO)
+                () -> memberService.save(memberCreateRequestDTO)
         );
     }
 
@@ -55,7 +55,7 @@ public class MemberTests {
     void deleteMember(long id) {
 
         Assertions.assertDoesNotThrow(
-                () -> memberAuthService.delete(id)
+                () -> memberService.delete(id)
         );
     }
 }

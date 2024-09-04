@@ -1,18 +1,21 @@
-package com.todorian.member.command.application.dto;
+package com.todorian.member.dto;
 
-import lombok.Getter;
-
-@Getter
 public class MemberCreateRequestDTO {
 
-    private String nickName;
     private String email;
     private String password;
 
-    public MemberCreateRequestDTO(String nickName, String email, String password) {
-        this.nickName = nickName;
+    public MemberCreateRequestDTO(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     @Override
