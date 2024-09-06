@@ -76,6 +76,9 @@ public class MemberAuthService {
         memberRepository.save(member);
     }
 
+    /*
+        기본 로그인
+     */
     public MemberResponseDTO.authTokenDTO login(HttpServletRequest httpServletRequest, MemberRequestDTO.loginDTO requestDTO) {
 
         // 1. 이메일 확인
