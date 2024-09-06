@@ -2,7 +2,6 @@ package com.todorian.weeklygoals.command.application.controller;
 
 import com.todorian._core.utils.ApiUtils;
 import com.todorian.weeklygoals.command.application.service.WeeklyGoalsService;
-import com.todorian.weeklygoals.command.domain.model.WeeklyGoals;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

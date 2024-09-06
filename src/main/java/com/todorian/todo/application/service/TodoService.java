@@ -1,23 +1,20 @@
-package com.todorian.todo.service;
+package com.todorian.todo.application.service;
 
-import com.todorian.todo.domain.Todo;
-import com.todorian.todo.dto.TodoCreateRequestDTO;
-import com.todorian.todo.repository.TodoRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.todorian.todo.application.dto.TodoCreateRequestDTO;
+import com.todorian.todo.domain.model.Todo;
+import com.todorian.todo.domain.repository.TodoRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class TodoService {
     private final TodoRepository todoRepository;
-
-    @Autowired
-    public TodoService(TodoRepository todoRepository) {
-        this.todoRepository = todoRepository;
-    }
 
     public void createTodo(TodoCreateRequestDTO todoCreateRequestDTO) {
         Todo todo = Todo.builder()
@@ -27,7 +24,7 @@ public class TodoService {
         todoRepository.save(todo);
     }
 
-    public Todo findTodoById(Long todoId) {
+    public Optional<Todo> findTodoById(Long todoId) {
         return todoRepository.findById(todoId);
     }
 

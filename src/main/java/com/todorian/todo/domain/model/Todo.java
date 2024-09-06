@@ -1,4 +1,4 @@
-package com.todorian.todo.domain;
+package com.todorian.todo.domain.model;
 
 import com.todorian.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Entity
 @AllArgsConstructor

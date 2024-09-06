@@ -1,4 +1,4 @@
-package com.todorian.todo.dto;
+package com.todorian.todo.application.dto;
 
 import lombok.*;
 
