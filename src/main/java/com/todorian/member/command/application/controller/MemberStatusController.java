@@ -5,10 +5,7 @@ import com.todorian.member.command.application.service.MemberStatusService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.todorian._core.utils.SecurityUtils.getCurrentMemberId;
 
@@ -31,8 +28,14 @@ public class MemberStatusController {
         return ResponseEntity.ok().body(ApiUtils.success(null));
     }
 
-
     /*
         회원 복구
      */
+    @PutMapping("/")
+    public ResponseEntity<?> restoreMember() {
+
+        memberStatusService.restoreMember(getCurrentMemberId());
+
+        return ResponseEntity.ok().body(ApiUtils.success(null));
+    }
 }
