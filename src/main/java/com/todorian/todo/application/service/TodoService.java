@@ -7,11 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class TodoService {
     private final TodoRepository todoRepository;
@@ -32,7 +33,15 @@ public class TodoService {
         return todoRepository.findAll();
     }
 
+    public List<Todo> findAllTodosByMemberId(Long memberId) {
+        return todoRepository.findAllByMemberId(memberId);
+    }
+
     public void deleteTodo(Long todoId) {
         todoRepository.deleteById(todoId);
+    }
+
+    public List<Todo> findAllByMemberIdAndCreateAt(Long memberId, LocalDateTime day) {
+        return todoRepository.findAllByMemberIdAndCreateAt(memberId, day);
     }
 }
