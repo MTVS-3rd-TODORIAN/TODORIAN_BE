@@ -20,7 +20,8 @@ public class MemberRequestDTO {
     }
 
     // 기본 로그인
-    public record loginDTO(
+    // 회원 복구
+    public record authDTO(
             @Email(message = "올바른 이메일 주소를 입력해 주세요.")
             @NotBlank(message = "이메일을 입력해 주세요.")
             String email,

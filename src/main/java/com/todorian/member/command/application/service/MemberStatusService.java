@@ -36,7 +36,8 @@ public class MemberStatusService {
     }
 
     @Transactional
-    public void restoreMember(Long memberId) {
+    public void restoreMember() {
+
 
     }
 }

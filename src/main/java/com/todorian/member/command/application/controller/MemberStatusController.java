@@ -34,7 +34,7 @@ public class MemberStatusController {
     @PutMapping("/")
     public ResponseEntity<?> restoreMember() {
 
-        memberStatusService.restoreMember(getCurrentMemberId());
+        memberStatusService.restoreMember();
 
         return ResponseEntity.ok().body(ApiUtils.success(null));
     }

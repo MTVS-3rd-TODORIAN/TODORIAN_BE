@@ -6,7 +6,6 @@ import com.todorian.member.command.application.service.MemberAuthService;
 import com.todorian.redis.domain.RefreshToken;
 import com.todorian.redis.repository.RefreshTokenRedisRepository;
 import jakarta.servlet.http.HttpServletRequest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Stream;
 
@@ -74,7 +72,7 @@ public class MemberAuthServiceTest {
     @Test
     void login() {
 
-        MemberRequestDTO.loginDTO requestDTO = new MemberRequestDTO.loginDTO(
+        MemberRequestDTO.authDTO requestDTO = new MemberRequestDTO.authDTO(
                 "user@test.com",
                 "test1234"
         );
@@ -95,12 +93,12 @@ public class MemberAuthServiceTest {
     void reissueToken() {
 
         // given
-        MemberRequestDTO.loginDTO loginDTO = new MemberRequestDTO.loginDTO(
+        MemberRequestDTO.authDTO authDTO = new MemberRequestDTO.authDTO(
                 "user@test.com",
                 "test1234"
         );
 
-        MemberResponseDTO.authTokenDTO authTokenDTO = memberAuthService.login(httpServletRequest, loginDTO);
+        MemberResponseDTO.authTokenDTO authTokenDTO = memberAuthService.login(httpServletRequest, authDTO);
 
         // 실제 HTTP 요청에서 토큰 추출
         when(httpServletRequest.getHeader("Authorization")).thenReturn("Bearer " + authTokenDTO.refreshToken());
@@ -118,12 +116,12 @@ public class MemberAuthServiceTest {
     void logout() {
 
         // given
-        MemberRequestDTO.loginDTO loginDTO = new MemberRequestDTO.loginDTO(
+        MemberRequestDTO.authDTO authDTO = new MemberRequestDTO.authDTO(
                 "user@test.com",
                 "test1234"
         );
 
-        MemberResponseDTO.authTokenDTO authTokenDTO = memberAuthService.login(httpServletRequest, loginDTO);
+        MemberResponseDTO.authTokenDTO authTokenDTO = memberAuthService.login(httpServletRequest, authDTO);
 
         // 실제 HTTP 요청에서 토큰 추출
         when(httpServletRequest.getHeader("Authorization")).thenReturn("Bearer " + authTokenDTO.refreshToken());
