@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.todorian._core.utils.SecurityUtils.getCurrentMemberId;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -21,10 +23,10 @@ public class MemberStatusController {
     /*
         회원 탈퇴
      */
-    @DeleteMapping("/{memberId}")
-    public ResponseEntity<?> deleteMember(@PathVariable Long memberId) {
+    @DeleteMapping("/")
+    public ResponseEntity<?> deleteMember() {
 
-        memberStatusService.deleteMember(memberId);
+        memberStatusService.deleteMember(getCurrentMemberId());
 
         return ResponseEntity.ok().body(ApiUtils.success(null));
     }

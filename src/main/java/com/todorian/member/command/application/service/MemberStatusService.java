@@ -34,4 +34,9 @@ public class MemberStatusService {
 
         log.info("회원 ID: {}가 탈퇴 처리되었습니다.", memberId);
     }
+
+    @Transactional
+    public void restoreMember(Long memberId) {
+
+    }
 }
