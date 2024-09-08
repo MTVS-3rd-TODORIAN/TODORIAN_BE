@@ -1,7 +1,7 @@
 package com.todorian.friendship.command.domain.model;
 
 public enum FriendshipStatus {
-    PENDING, // 친구 요청 중
-    ACCEPTED, // 친구 수락
-    REJECTED // 친구 거절
+    ACTIVE,   // 친구 관계가 활성 상태
+    BLOCKED,  // 친구 관계가 차단됨
+    REMOVED   // 친구 관계가 삭제됨
 }

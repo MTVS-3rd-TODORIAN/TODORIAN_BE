@@ -2,7 +2,7 @@ package com.todorian.friendship.command.domain.model;
 
 import com.todorian.member.command.domain.model.Member;
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_friendship")
@@ -11,37 +11,42 @@ public class Friendship {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "friendship_id")
-    private long friendshipId;
+    private long friendshipId;  // 자동 생성되는 ID
 
     @Column(name = "created_at", nullable = false)
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;  // 관계 생성 시간
 
     @Column(name = "modified_at")
-    private LocalDate modifiedAt;
+    private LocalDateTime modifiedAt;  // 관계 수정 시간
 
-    // Enum 타입을 사용하는 상태 필드
-    @Enumerated(EnumType.STRING)  // Enum 값을 문자열로 데이터베이스에 저장
+    // Enum 타입을 사용하는 상태 필드 (ACTIVE 활성, BLOCKED 차단 , REMOVED 삭제)
+    @Enumerated(EnumType.STRING)
     @Column(name = "friendship_status", nullable = false)
     private FriendshipStatus friendshipStatus;
 
-    // 회원(Member)와의 연관관계 (Many-to-One) 설정
-    @ManyToOne
-    @JoinColumn(name = "member_id_1", nullable = false)  // 첫 번째 회원
-    private Member member1;
+    // 회원(Member)와의 연관관계 설정 (Many-to-One 관계)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id_1", nullable = false)
+    private Member member1;  // 첫 번째 회원
 
-    @ManyToOne
-    @JoinColumn(name = "member_id_2", nullable = false)  // 두 번째 회원
-    private Member member2;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id_2", nullable = false)
+    private Member member2;  // 두 번째 회원
 
     public Friendship() {}
 
-    public Friendship(long friendshipId, LocalDate createdAt, LocalDate modifiedAt, FriendshipStatus friendshipStatus, Member member1, Member member2) {
-        this.friendshipId = friendshipId;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-        this.friendshipStatus = friendshipStatus;
+    // 필수 필드를 초기화하는 생성자
+    public Friendship(Member member1, Member member2) {
+        if (member1 == null || member2 == null) {
+            throw new IllegalArgumentException("Members cannot be null");
+        }
+        if (member1.equals(member2)) {
+            throw new IllegalArgumentException("Members cannot be the same.");
+        }
         this.member1 = member1;
         this.member2 = member2;
+        this.createdAt = LocalDateTime.now();
+        this.friendshipStatus = FriendshipStatus.ACTIVE;  // 기본 상태는 ACTIVE
     }
 
     public long getFriendshipId() {
@@ -52,19 +57,19 @@ public class Friendship {
         this.friendshipId = friendshipId;
     }
 
-    public LocalDate getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDate getModifiedAt() {
+    public LocalDateTime getModifiedAt() {
         return modifiedAt;
     }
 
-    public void setModifiedAt(LocalDate modifiedAt) {
+    public void setModifiedAt(LocalDateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
 
