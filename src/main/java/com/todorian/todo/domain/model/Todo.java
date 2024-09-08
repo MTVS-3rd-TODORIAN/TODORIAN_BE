@@ -21,6 +21,9 @@ public class Todo extends BaseTimeEntity {
     @Column(name = "TODO_CONTENT")
     private String todoContent;
 
+    @Column(name = "MEMBER_ID")
+    private Long memberId;
+
     @Builder
     public Todo(String todoContent) {
         this.todoContent = todoContent;

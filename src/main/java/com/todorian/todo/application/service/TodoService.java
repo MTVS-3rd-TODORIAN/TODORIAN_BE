@@ -42,6 +42,7 @@ public class TodoService {
     }
 
     public List<Todo> findAllByMemberIdAndCreateAt(Long memberId, LocalDateTime day) {
-        return todoRepository.findAllByMemberIdAndCreateAt(memberId, day);
+//        return todoRepository.findAllByMemberIdAndCreateAt(memberId, day);
+        return null;
     }
 }

@@ -20,7 +20,7 @@ public class WeeklyGoals extends BaseTimeEntity {
 
     private String content;
     private String week;
-    @ColumnDefault("N")
+    @ColumnDefault("'N'")
     private String successYN;
     private Long memberId;
 
