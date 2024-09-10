@@ -73,7 +73,7 @@ public class MemberAuthServiceTest {
     void login() {
 
         MemberRequestDTO.authDTO requestDTO = new MemberRequestDTO.authDTO(
-                "user@test.com",
+                "user1@test.com",
                 "test1234"
         );
 
@@ -94,7 +94,7 @@ public class MemberAuthServiceTest {
 
         // given
         MemberRequestDTO.authDTO authDTO = new MemberRequestDTO.authDTO(
-                "user@test.com",
+                "user1@test.com",
                 "test1234"
         );
 
@@ -117,7 +117,7 @@ public class MemberAuthServiceTest {
 
         // given
         MemberRequestDTO.authDTO authDTO = new MemberRequestDTO.authDTO(
-                "user@test.com",
+                "user1@test.com",
                 "test1234"
         );
 

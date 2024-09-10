@@ -30,9 +30,7 @@ public class MemberStatusService {
                 .orElseThrow(() -> new Exception400("가입되지 않은 회원입니다."));
 
         // 이미 탈퇴된 회원인지 확인
-        if (member.getStatus() == Status.DEACTIVATED) {
-            throw new Exception400("이미 탈퇴된 회원입니다.");
-        }
+        member.getStatus().checkActive();
 
         // Soft Delete
         member.deactivate();
@@ -67,8 +65,6 @@ public class MemberStatusService {
 
     // 비밀번호 확인
     private void checkValidPassword(String rawPassword, String encodedPassword) {
-
-        log.info("{} {}", rawPassword, encodedPassword);
 
         if(!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw new Exception400("비밀번호가 유효하지 않습니다.");

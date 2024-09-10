@@ -89,7 +89,7 @@ public class MemberAuthService {
         checkValidPassword(requestDTO.password(), member.getPassword());
 
         // 3. 회원 상태 확인
-        checkMemberStatus(member.getStatus());
+        member.getStatus().checkActive();
 
         return getAuthTokenDTO(requestDTO.email(), requestDTO.password(), httpServletRequest);
     }
@@ -166,16 +166,6 @@ public class MemberAuthService {
 
         if(!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw new Exception400("비밀번호가 유효하지 않습니다.");
-        }
-    }
-
-    // 현재 회원 상태 확인
-    private void checkMemberStatus(Status status) {
-
-        switch (status) {
-            case DORMANT -> throw new Exception400("휴면 계정입니다.");
-            case DEACTIVATED -> throw new Exception400("탈퇴한 계정입니다.");
-            case SUSPENDED -> throw new Exception400("정지된 계정입니다.");
         }
     }
 
