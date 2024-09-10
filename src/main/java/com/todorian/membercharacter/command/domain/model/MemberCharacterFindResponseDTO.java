@@ -3,16 +3,15 @@ package com.todorian.membercharacter.command.domain.model;
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class MemberCharacterCreateRequestDTO {
-
+public class MemberCharacterFindResponseDTO {
     private long memberCharacterId;
     private long memberId;
     private long characterId;
     private Date acquisitionTime;
 
-    public MemberCharacterCreateRequestDTO() {}
+    public MemberCharacterFindResponseDTO() {}
 
-    public MemberCharacterCreateRequestDTO(long memberId, long characterId, Date acquisitionTime) {
+    public MemberCharacterFindResponseDTO(long memberId, long characterId, Date acquisitionTime) {
         this.memberId = memberId;
         this.characterId = characterId;
         this.acquisitionTime = acquisitionTime;
@@ -36,7 +35,7 @@ public class MemberCharacterCreateRequestDTO {
 
     @Override
     public String toString() {
-        return "MemberCharacterCreateRequestDTO{" +
+        return "MemberCharacterFindResponseDTO{" +
                 "memberCharacterId=" + memberCharacterId +
                 ", memberId=" + memberId +
                 ", characterId=" + characterId +
