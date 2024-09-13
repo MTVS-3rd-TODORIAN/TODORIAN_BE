@@ -38,7 +38,7 @@ public class MemberAuthController {
         기본 로그인
      */
     @PostMapping("/login")
-    public ResponseEntity<?> login(HttpServletRequest httpServletRequest, @Valid @RequestBody MemberRequestDTO.loginDTO requestDTO) {
+    public ResponseEntity<?> login(HttpServletRequest httpServletRequest, @Valid @RequestBody MemberRequestDTO.authDTO requestDTO) {
 
         MemberResponseDTO.authTokenDTO responseDTO = memberAuthService.login(httpServletRequest, requestDTO);
 

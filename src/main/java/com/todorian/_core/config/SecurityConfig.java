@@ -1,11 +1,9 @@
 package com.todorian._core.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.todorian._core.error.exception.Exception401;
 import com.todorian._core.error.exception.Exception403;
 import com.todorian._core.jwt.JWTTokenFilter;
 import com.todorian._core.jwt.JWTTokenProvider;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +31,8 @@ public class SecurityConfig {
     private final JWTTokenProvider jwtTokenProvider;
 
     private static final String[] WHITE_LIST = {
-            "/api/auth/**"
+            "/api/auth/**",
+            "/h2-console/**"  // h2-console 경로 추가
     };
 
     @Bean
@@ -58,8 +57,11 @@ public class SecurityConfig {
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((request) -> request
-                        .requestMatchers(this.createMvcRequestMatcherForWhiteList(mvc)).permitAll()
+                        .requestMatchers(WHITE_LIST).permitAll()
                         .anyRequest().authenticated())
+                .headers(headers -> headers
+                        .frameOptions().disable()  // H2 콘솔에서 프레임 사용 허용
+                )
                 .exceptionHandling(exception -> {
                     exception.authenticationEntryPoint(authenticationEntryPoint());
                     exception.accessDeniedHandler(accessDeniedHandler());
@@ -68,10 +70,6 @@ public class SecurityConfig {
         // Spring Security Custom Filter 적용 - Form '인증'에 대해서 적용
 
         return httpSecurity.build();
-    }
-
-    private MvcRequestMatcher[] createMvcRequestMatcherForWhiteList(MvcRequestMatcher.Builder mvc) {
-        return Stream.of(WHITE_LIST).map(mvc::pattern).toArray(MvcRequestMatcher[]::new);
     }
 
     private AuthenticationEntryPoint authenticationEntryPoint() {

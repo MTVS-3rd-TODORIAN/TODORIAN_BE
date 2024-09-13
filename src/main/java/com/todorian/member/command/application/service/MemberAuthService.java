@@ -79,7 +79,7 @@ public class MemberAuthService {
     /*
         기본 로그인
      */
-    public MemberResponseDTO.authTokenDTO login(HttpServletRequest httpServletRequest, MemberRequestDTO.loginDTO requestDTO) {
+    public MemberResponseDTO.authTokenDTO login(HttpServletRequest httpServletRequest, MemberRequestDTO.authDTO requestDTO) {
 
         // 1. 이메일 확인
         Member member = memberRepository.findByEmail(requestDTO.email())
@@ -87,6 +87,9 @@ public class MemberAuthService {
 
         // 2. 비밀번호 확인
         checkValidPassword(requestDTO.password(), member.getPassword());
+
+        // 3. 회원 상태 확인
+        member.getStatus().checkActive();
 
         return getAuthTokenDTO(requestDTO.email(), requestDTO.password(), httpServletRequest);
     }
@@ -160,8 +163,6 @@ public class MemberAuthService {
 
     // 비밀번호 확인
     private void checkValidPassword(String rawPassword, String encodedPassword) {
-
-        log.info("{} {}", rawPassword, encodedPassword);
 
         if(!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw new Exception400("비밀번호가 유효하지 않습니다.");
