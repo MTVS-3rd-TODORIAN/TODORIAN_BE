@@ -1,6 +1,9 @@
 package com.todorian.member.command.domain.model;
 
 import com.todorian.BaseTimeEntity;
+import com.todorian.member.command.domain.model.property.Authority;
+import com.todorian.member.command.domain.model.property.SocialType;
+import com.todorian.member.command.domain.model.property.Status;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

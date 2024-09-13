@@ -2,10 +2,10 @@ package com.todorian.member.command.application.service;
 
 import com.todorian._core.error.exception.Exception400;
 import com.todorian._core.jwt.JWTTokenProvider;
-import com.todorian.member.command.domain.model.Authority;
+import com.todorian.member.command.domain.model.property.Authority;
 import com.todorian.member.command.domain.model.Member;
-import com.todorian.member.command.domain.model.SocialType;
-import com.todorian.member.command.domain.model.Status;
+import com.todorian.member.command.domain.model.property.SocialType;
+import com.todorian.member.command.domain.model.property.Status;
 import com.todorian.member.command.application.dto.MemberCreateRequestDTO;
 import com.todorian.member.command.application.dto.MemberRequestDTO;
 import com.todorian.member.command.application.dto.MemberResponseDTO;

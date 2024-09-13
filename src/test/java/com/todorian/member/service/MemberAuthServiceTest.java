@@ -36,8 +36,8 @@ public class MemberAuthServiceTest {
     @BeforeEach
     void setUp() {
         MemberRequestDTO.signUpDTO signUpDTO = new MemberRequestDTO.signUpDTO(
-                "userNickName",
-                "user@test.com",
+                "testNickName",
+                "test@test.com",
                 "test1234",
                 "test1234"
         );
@@ -47,7 +47,7 @@ public class MemberAuthServiceTest {
 
     private static Stream<Arguments> createMember() {
         return Stream.of(
-                Arguments.of("userNickName1", "user1@test.com", "test1234!", "test1234!")
+                Arguments.of("testNickName1", "test1@test.com", "test1234!", "test1234!")
         );
     }
 
@@ -73,7 +73,7 @@ public class MemberAuthServiceTest {
     void login() {
 
         MemberRequestDTO.authDTO requestDTO = new MemberRequestDTO.authDTO(
-                "user1@test.com",
+                "test1@test.com",
                 "test1234"
         );
 
@@ -94,7 +94,7 @@ public class MemberAuthServiceTest {
 
         // given
         MemberRequestDTO.authDTO authDTO = new MemberRequestDTO.authDTO(
-                "user1@test.com",
+                "test1@test.com",
                 "test1234"
         );
 
@@ -117,7 +117,7 @@ public class MemberAuthServiceTest {
 
         // given
         MemberRequestDTO.authDTO authDTO = new MemberRequestDTO.authDTO(
-                "user1@test.com",
+                "test1@test.com",
                 "test1234"
         );
 

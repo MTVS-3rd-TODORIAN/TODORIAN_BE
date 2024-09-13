@@ -1,9 +1,9 @@
 package com.todorian;
 
-import com.todorian.member.command.domain.model.Authority;
+import com.todorian.member.command.domain.model.property.Authority;
 import com.todorian.member.command.domain.model.Member;
-import com.todorian.member.command.domain.model.SocialType;
-import com.todorian.member.command.domain.model.Status;
+import com.todorian.member.command.domain.model.property.SocialType;
+import com.todorian.member.command.domain.model.property.Status;
 import com.todorian.member.command.domain.repository.MemberRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
