@@ -2,6 +2,7 @@ package com.todorian.membercharacter.command.domain.service;
 
 import com.todorian.membercharacter.command.domain.model.MemberCharacter;
 import com.todorian.membercharacter.command.domain.model.MemberCharacterCreateRequestDTO;
+import com.todorian.membercharacter.command.domain.model.MemberCharacterFindResponseDTO;
 import com.todorian.membercharacter.command.domain.repository.MemberCharacterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,14 +13,15 @@ import java.util.List;
 @Service
 public class MemberCharacterService {
 
-    @Autowired
+
     private MemberCharacterRepository memberCharacterRepository;
 
+    @Autowired
     public MemberCharacterService(MemberCharacterRepository memberCharacterRepository) {
         this.memberCharacterRepository = memberCharacterRepository;
     }
 
-    public void save(MemberCharacterCreateRequestDTO memberCharacterInfo) {
+    public void createMemberCharacter(MemberCharacterCreateRequestDTO memberCharacterInfo) {
         MemberCharacter memberCharacter = new MemberCharacter(
                 memberCharacterInfo.getMemberId(),
                 memberCharacterInfo.getCharacterId(),
@@ -29,17 +31,17 @@ public class MemberCharacterService {
         memberCharacterRepository.save(memberCharacter);
     }
 
-    public void delete(long memberCharacterId) {
+    public void removeMemberCharacter(long memberCharacterId) {
         memberCharacterRepository.deleteById(memberCharacterId);
     }
 
-    public List<MemberCharacter> findAll(){
+    public List<MemberCharacter> findAllMemberCharacters(){
         List<MemberCharacter> memberCharacterList = memberCharacterRepository.findAll();
 
         return memberCharacterList;
     }
 
-    public MemberCharacter findById(long memberCharacterId) {
+    public MemberCharacter findMemberCharacterById(long memberCharacterId) {
         return memberCharacterRepository.findById(memberCharacterId).get();
     }
 }
