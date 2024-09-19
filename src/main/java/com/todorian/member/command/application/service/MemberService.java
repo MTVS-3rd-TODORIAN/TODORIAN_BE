@@ -1,6 +1,7 @@
 package com.todorian.member.command.application.service;
 
 
+import com.todorian.member.command.application.dto.MemberResponseDTO;
 import com.todorian.member.command.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,4 +17,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
 
+    public MemberResponseDTO.getMemberProfileDTO getMemberProfile(Long currentMemberId) {
+        return null;
+    }
 }
