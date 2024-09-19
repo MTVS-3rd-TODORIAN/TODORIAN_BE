@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 
-public class MemberResponseDTO {
+public class MemberAuthResponseDTO {
 
     // 토큰 발급
     public record authTokenDTO(

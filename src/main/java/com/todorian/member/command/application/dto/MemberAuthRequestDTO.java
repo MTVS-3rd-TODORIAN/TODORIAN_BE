@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public class MemberRequestDTO {
+public class MemberAuthRequestDTO {
 
     // 기본 회원 가입
     public record signUpDTO(

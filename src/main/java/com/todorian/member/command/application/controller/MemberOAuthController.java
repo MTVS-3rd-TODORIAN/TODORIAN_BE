@@ -1,7 +1,7 @@
 package com.todorian.member.command.application.controller;
 
 import com.todorian._core.utils.ApiUtils;
-import com.todorian.member.command.application.dto.MemberResponseDTO;
+import com.todorian.member.command.application.dto.MemberAuthResponseDTO;
 import com.todorian.member.command.domain.service.MemberOAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class MemberOAuthController {
     @GetMapping("/kakao/login")
     public ResponseEntity<?> kakaoLogin(@RequestParam(name = "code") String code) {
 
-        MemberResponseDTO.authTokenDTO responseDTO = memberOAuthService.kakaoLogin(code);
+        MemberAuthResponseDTO.authTokenDTO responseDTO = memberOAuthService.kakaoLogin(code);
 
         return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
