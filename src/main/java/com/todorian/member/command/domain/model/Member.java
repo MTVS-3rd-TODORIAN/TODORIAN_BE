@@ -28,11 +28,13 @@ public class Member extends BaseTimeEntity {
     @Column(length = 100, nullable = false)
     private String password;
 
+    @Enumerated(value = EnumType.STRING)
     @ColumnDefault("'NONE'")
     private SocialType socialType;
     @Enumerated(value = EnumType.STRING)
     @ColumnDefault("'USER'")
     private Authority authority;
+    @Enumerated(value = EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
     private Status status;
 
