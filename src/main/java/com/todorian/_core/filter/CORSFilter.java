@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import java.io.IOException;
 
@@ -33,7 +34,11 @@ public class CORSFilter implements Filter {
         response.setHeader("Access-Control-Max-Age", "3600");
         // 클라이언트가 요청할 때 허용할 헤더 목록 설정
         response.setHeader("Access-Control-Allow-Headers",
-                "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+                "Origin, X-Requested-With, Content-Type, Accept, Authorization, Refresh-Token");
+        // 클라이언트가 응답에서 접근할 수 있는 헤더 목록 설정
+        response.setHeader("Access-Control-Expose-Headers", "Authorization, Refresh-Token");
+
+
 
         if("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
