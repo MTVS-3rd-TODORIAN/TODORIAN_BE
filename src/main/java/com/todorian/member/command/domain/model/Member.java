@@ -11,11 +11,12 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "member_tb")
+@Table(name = "tbl_member")
 public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
     private Long id;
 
     @Column
@@ -25,11 +26,13 @@ public class Member extends BaseTimeEntity {
     @Column(length = 100, nullable = false)
     private String password;
 
+    @Enumerated(value = EnumType.STRING)
     @ColumnDefault("'NONE'")
     private SocialType socialType;
     @Enumerated(value = EnumType.STRING)
     @ColumnDefault("'USER'")
     private Authority authority;
+    @Enumerated(value = EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
     private Status status;
 
