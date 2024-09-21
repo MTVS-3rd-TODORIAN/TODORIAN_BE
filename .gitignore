@@ -11,6 +11,7 @@ application.properties
 *.log
 **/*.log
 /log/**.log
+/log
 
 ### STS ###
 .apt_generated
