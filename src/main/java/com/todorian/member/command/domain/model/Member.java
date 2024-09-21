@@ -1,6 +1,9 @@
 package com.todorian.member.command.domain.model;
 
 import com.todorian.BaseTimeEntity;
+import com.todorian.member.command.domain.model.property.Authority;
+import com.todorian.member.command.domain.model.property.SocialType;
+import com.todorian.member.command.domain.model.property.Status;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -25,11 +28,13 @@ public class Member extends BaseTimeEntity {
     @Column(length = 100, nullable = false)
     private String password;
 
+    @Enumerated(value = EnumType.STRING)
     @ColumnDefault("'NONE'")
     private SocialType socialType;
     @Enumerated(value = EnumType.STRING)
     @ColumnDefault("'USER'")
     private Authority authority;
+    @Enumerated(value = EnumType.STRING)
     @ColumnDefault("'ACTIVE'")
     private Status status;
 

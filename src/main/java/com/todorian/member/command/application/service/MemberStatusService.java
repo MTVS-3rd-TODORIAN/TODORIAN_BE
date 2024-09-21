@@ -1,11 +1,10 @@
 package com.todorian.member.command.application.service;
 
 import com.todorian._core.error.exception.Exception400;
-import com.todorian.member.command.application.dto.MemberRequestDTO;
+import com.todorian.member.command.application.dto.MemberAuthRequestDTO;
 import com.todorian.member.command.domain.model.Member;
-import com.todorian.member.command.domain.model.Status;
+import com.todorian.member.command.domain.model.property.Status;
 import com.todorian.member.command.domain.repository.MemberRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,7 +38,7 @@ public class MemberStatusService {
     }
 
     @Transactional
-    public void restoreMember(MemberRequestDTO.authDTO requestDTO) {
+    public void restoreMember(MemberAuthRequestDTO.authDTO requestDTO) {
 
         // 1. 이메일 확인
         Member member = memberRepository.findByEmail(requestDTO.email())

@@ -2,11 +2,11 @@ package com.todorian.member.command.infrastructure.service;
 
 import com.todorian._core.error.exception.Exception500;
 import com.todorian._core.jwt.JWTTokenProvider;
-import com.todorian.member.command.application.dto.MemberResponseDTO;
-import com.todorian.member.command.domain.model.Authority;
+import com.todorian.member.command.application.dto.MemberAuthResponseDTO;
+import com.todorian.member.command.domain.model.property.Authority;
 import com.todorian.member.command.domain.model.Member;
-import com.todorian.member.command.domain.model.SocialType;
-import com.todorian.member.command.domain.model.Status;
+import com.todorian.member.command.domain.model.property.SocialType;
+import com.todorian.member.command.domain.model.property.Status;
 import com.todorian.member.command.domain.model.property.KakaoProperties;
 import com.todorian.member.command.domain.repository.MemberRepository;
 import com.todorian.member.command.domain.service.MemberOAuthService;
@@ -52,13 +52,13 @@ public class MemberOAuthServiceImpl implements MemberOAuthService {
      */
     // 카카오로부터 받은 최신 사용자 정보로 데이터베이스 내의 사용자 정보를 갱신할 필요가 있을까?
     @Transactional
-    public MemberResponseDTO.authTokenDTO kakaoLogin(String code) {
+    public MemberAuthResponseDTO.authTokenDTO kakaoLogin(String code) {
 
         // 토큰 발급
         String accessToken = generateAccessToken(code);
 
         // 사용자 정보
-        MemberResponseDTO.KakaoInfoDTO profile = getKakaoProfile(accessToken);
+        MemberAuthResponseDTO.KakaoInfoDTO profile = getKakaoProfile(accessToken);
 
         // 회원 확인
         Member member = findMemberByEmail(profile.kakaoAccount().email())
@@ -80,10 +80,10 @@ public class MemberOAuthServiceImpl implements MemberOAuthService {
         params.add("code", code);
 
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, headers);
-        ResponseEntity<MemberResponseDTO.KakaoTokenDTO> response = restTemplate.postForEntity(
+        ResponseEntity<MemberAuthResponseDTO.KakaoTokenDTO> response = restTemplate.postForEntity(
                 kakaoProperties.getTokenUri(),
                 httpEntity,
-                MemberResponseDTO.KakaoTokenDTO.class
+                MemberAuthResponseDTO.KakaoTokenDTO.class
         );
 
         if(!response.getStatusCode().is2xxSuccessful()) {
@@ -94,16 +94,16 @@ public class MemberOAuthServiceImpl implements MemberOAuthService {
     }
 
     // kakao 유저 프로필 확인
-    protected MemberResponseDTO.KakaoInfoDTO getKakaoProfile(String accessToken) {
+    protected MemberAuthResponseDTO.KakaoInfoDTO getKakaoProfile(String accessToken) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.setBearerAuth(accessToken);
 
-        ResponseEntity<MemberResponseDTO.KakaoInfoDTO> response = restTemplate.postForEntity(
+        ResponseEntity<MemberAuthResponseDTO.KakaoInfoDTO> response = restTemplate.postForEntity(
                 kakaoProperties.getUserInfoUri(),
                 new HttpEntity<>(headers),
-                MemberResponseDTO.KakaoInfoDTO.class
+                MemberAuthResponseDTO.KakaoInfoDTO.class
         );
 
         if(!response.getStatusCode().is2xxSuccessful()) {
@@ -115,7 +115,7 @@ public class MemberOAuthServiceImpl implements MemberOAuthService {
 
     // 카카오 회원 생성
     @Transactional
-    protected Member kakaoSignUp(MemberResponseDTO.KakaoInfoDTO profile) {
+    protected Member kakaoSignUp(MemberAuthResponseDTO.KakaoInfoDTO profile) {
         log.info("카카오 회원 생성 : " + profile.kakaoAccount().email());
 
         Member member = Member.builder()
@@ -140,7 +140,7 @@ public class MemberOAuthServiceImpl implements MemberOAuthService {
     }
 
     // OAuth Token 발급
-    protected MemberResponseDTO.authTokenDTO getOAuthTokenDTO(Member member) {
+    protected MemberAuthResponseDTO.authTokenDTO getOAuthTokenDTO(Member member) {
         UserDetails userDetails = new User(member.getEmail(), "",
                 Collections.singletonList(new SimpleGrantedAuthority(member.getAuthority().toString())));
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

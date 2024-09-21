@@ -1,4 +1,4 @@
-package com.todorian.member.command.domain.model;
+package com.todorian.member.command.domain.model.property;
 
 import com.todorian._core.error.exception.Exception400;
 import lombok.Getter;
