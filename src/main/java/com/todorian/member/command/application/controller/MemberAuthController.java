@@ -1,8 +1,8 @@
 package com.todorian.member.command.application.controller;
 
 import com.todorian._core.utils.ApiUtils;
-import com.todorian.member.command.application.dto.MemberRequestDTO;
-import com.todorian.member.command.application.dto.MemberResponseDTO;
+import com.todorian.member.command.application.dto.MemberAuthRequestDTO;
+import com.todorian.member.command.application.dto.MemberAuthResponseDTO;
 import com.todorian.member.command.application.service.MemberAuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -27,7 +27,7 @@ public class MemberAuthController {
         기본 회원 가입
      */
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@Valid @RequestBody MemberRequestDTO.signUpDTO requestDTO) {
+    public ResponseEntity<?> signUp(@Valid @RequestBody MemberAuthRequestDTO.signUpDTO requestDTO) {
 
         memberAuthService.signUp(requestDTO);
 
@@ -38,9 +38,9 @@ public class MemberAuthController {
         기본 로그인
      */
     @PostMapping("/login")
-    public ResponseEntity<?> login(HttpServletRequest httpServletRequest, @Valid @RequestBody MemberRequestDTO.loginDTO requestDTO) {
+    public ResponseEntity<?> login(HttpServletRequest httpServletRequest, @Valid @RequestBody MemberAuthRequestDTO.authDTO requestDTO) {
 
-        MemberResponseDTO.authTokenDTO responseDTO = memberAuthService.login(httpServletRequest, requestDTO);
+        MemberAuthResponseDTO.authTokenDTO responseDTO = memberAuthService.login(httpServletRequest, requestDTO);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, responseDTO.grantType() + " " + responseDTO.accessToken())
@@ -54,7 +54,7 @@ public class MemberAuthController {
     @PostMapping("/reissue")
     public ResponseEntity<?> reissueToken(HttpServletRequest httpServletRequest) {
 
-        MemberResponseDTO.authTokenDTO responseDTO = memberAuthService.reissueToken(httpServletRequest);
+        MemberAuthResponseDTO.authTokenDTO responseDTO = memberAuthService.reissueToken(httpServletRequest);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, responseDTO.grantType() + " " + responseDTO.accessToken())

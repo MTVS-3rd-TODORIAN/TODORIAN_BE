@@ -1,12 +1,11 @@
 package com.todorian.member.service;
 
-import com.todorian.member.command.application.dto.MemberRequestDTO;
-import com.todorian.member.command.application.dto.MemberResponseDTO;
+import com.todorian.member.command.application.dto.MemberAuthRequestDTO;
+import com.todorian.member.command.application.dto.MemberAuthResponseDTO;
 import com.todorian.member.command.application.service.MemberAuthService;
 import com.todorian.redis.domain.RefreshToken;
 import com.todorian.redis.repository.RefreshTokenRedisRepository;
 import jakarta.servlet.http.HttpServletRequest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Stream;
 
@@ -37,9 +35,9 @@ public class MemberAuthServiceTest {
 
     @BeforeEach
     void setUp() {
-        MemberRequestDTO.signUpDTO signUpDTO = new MemberRequestDTO.signUpDTO(
-                "userNickName",
-                "user@test.com",
+        MemberAuthRequestDTO.signUpDTO signUpDTO = new MemberAuthRequestDTO.signUpDTO(
+                "testNickName",
+                "test@test.com",
                 "test1234",
                 "test1234"
         );
@@ -49,7 +47,7 @@ public class MemberAuthServiceTest {
 
     private static Stream<Arguments> createMember() {
         return Stream.of(
-                Arguments.of("userNickName1", "user1@test.com", "test1234!", "test1234!")
+                Arguments.of("testNickName1", "test1@test.com", "test1234!", "test1234!")
         );
     }
 
@@ -58,7 +56,7 @@ public class MemberAuthServiceTest {
     @MethodSource("createMember")
     void signUp(String userNickName, String userEmail, String userPassword, String userConfirmPassword) {
 
-        MemberRequestDTO.signUpDTO requestDTO = new MemberRequestDTO.signUpDTO(
+        MemberAuthRequestDTO.signUpDTO requestDTO = new MemberAuthRequestDTO.signUpDTO(
                 userNickName,
                 userEmail,
                 userPassword,
@@ -74,13 +72,13 @@ public class MemberAuthServiceTest {
     @Test
     void login() {
 
-        MemberRequestDTO.loginDTO requestDTO = new MemberRequestDTO.loginDTO(
-                "user@test.com",
+        MemberAuthRequestDTO.authDTO requestDTO = new MemberAuthRequestDTO.authDTO(
+                "test1@test.com",
                 "test1234"
         );
 
         // when
-        MemberResponseDTO.authTokenDTO authTokenDTO = memberAuthService.login(httpServletRequest, requestDTO);
+        MemberAuthResponseDTO.authTokenDTO authTokenDTO = memberAuthService.login(httpServletRequest, requestDTO);
 
         // then
         System.out.println("authTokenDTO = " + authTokenDTO);
@@ -95,18 +93,18 @@ public class MemberAuthServiceTest {
     void reissueToken() {
 
         // given
-        MemberRequestDTO.loginDTO loginDTO = new MemberRequestDTO.loginDTO(
-                "user@test.com",
+        MemberAuthRequestDTO.authDTO authDTO = new MemberAuthRequestDTO.authDTO(
+                "test1@test.com",
                 "test1234"
         );
 
-        MemberResponseDTO.authTokenDTO authTokenDTO = memberAuthService.login(httpServletRequest, loginDTO);
+        MemberAuthResponseDTO.authTokenDTO authTokenDTO = memberAuthService.login(httpServletRequest, authDTO);
 
         // 실제 HTTP 요청에서 토큰 추출
         when(httpServletRequest.getHeader("Authorization")).thenReturn("Bearer " + authTokenDTO.refreshToken());
 
         // when
-        MemberResponseDTO.authTokenDTO newAuthTokenDTO = memberAuthService.reissueToken(httpServletRequest);
+        MemberAuthResponseDTO.authTokenDTO newAuthTokenDTO = memberAuthService.reissueToken(httpServletRequest);
 
         // then
         assertNotNull(newAuthTokenDTO);
@@ -118,12 +116,12 @@ public class MemberAuthServiceTest {
     void logout() {
 
         // given
-        MemberRequestDTO.loginDTO loginDTO = new MemberRequestDTO.loginDTO(
-                "user@test.com",
+        MemberAuthRequestDTO.authDTO authDTO = new MemberAuthRequestDTO.authDTO(
+                "test1@test.com",
                 "test1234"
         );
 
-        MemberResponseDTO.authTokenDTO authTokenDTO = memberAuthService.login(httpServletRequest, loginDTO);
+        MemberAuthResponseDTO.authTokenDTO authTokenDTO = memberAuthService.login(httpServletRequest, authDTO);
 
         // 실제 HTTP 요청에서 토큰 추출
         when(httpServletRequest.getHeader("Authorization")).thenReturn("Bearer " + authTokenDTO.refreshToken());

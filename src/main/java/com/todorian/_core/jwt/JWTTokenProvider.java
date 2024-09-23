@@ -1,6 +1,6 @@
 package com.todorian._core.jwt;
 
-import com.todorian.member.command.application.dto.MemberResponseDTO;
+import com.todorian.member.command.application.dto.MemberAuthResponseDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -45,11 +45,11 @@ public class JWTTokenProvider {
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public MemberResponseDTO.authTokenDTO generateToken(Authentication authentication) {
+    public MemberAuthResponseDTO.authTokenDTO generateToken(Authentication authentication) {
         return generateToken(authentication.getName(), authentication.getAuthorities());
     }
 
-    public MemberResponseDTO.authTokenDTO generateToken(String name, Collection<? extends GrantedAuthority> grantedAuthorities) {
+    public MemberAuthResponseDTO.authTokenDTO generateToken(String name, Collection<? extends GrantedAuthority> grantedAuthorities) {
         // 권한 확인
         String authorities = grantedAuthorities.stream()
                 .map(GrantedAuthority::getAuthority)
@@ -81,7 +81,7 @@ public class JWTTokenProvider {
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
 
-        return new MemberResponseDTO.authTokenDTO(BEARER_TYPE, accessToken, ACCESS_TOKEN_LIFETIME, refreshToken, REFRESH_TOKEN_LIFETIME);
+        return new MemberAuthResponseDTO.authTokenDTO(BEARER_TYPE, accessToken, ACCESS_TOKEN_LIFETIME, refreshToken, REFRESH_TOKEN_LIFETIME);
     }
 
     public boolean validateToken(String token) {

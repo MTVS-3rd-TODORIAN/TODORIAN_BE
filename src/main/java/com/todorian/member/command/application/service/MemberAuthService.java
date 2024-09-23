@@ -2,13 +2,13 @@ package com.todorian.member.command.application.service;
 
 import com.todorian._core.error.exception.Exception400;
 import com.todorian._core.jwt.JWTTokenProvider;
-import com.todorian.member.command.domain.model.Authority;
+import com.todorian.member.command.domain.model.property.Authority;
 import com.todorian.member.command.domain.model.Member;
-import com.todorian.member.command.domain.model.SocialType;
-import com.todorian.member.command.domain.model.Status;
+import com.todorian.member.command.domain.model.property.SocialType;
+import com.todorian.member.command.domain.model.property.Status;
 import com.todorian.member.command.application.dto.MemberCreateRequestDTO;
-import com.todorian.member.command.application.dto.MemberRequestDTO;
-import com.todorian.member.command.application.dto.MemberResponseDTO;
+import com.todorian.member.command.application.dto.MemberAuthRequestDTO;
+import com.todorian.member.command.application.dto.MemberAuthResponseDTO;
 import com.todorian.member.command.domain.repository.MemberRepository;
 import com.todorian.redis.domain.RefreshToken;
 import com.todorian.redis.repository.RefreshTokenRedisRepository;
@@ -61,7 +61,7 @@ public class MemberAuthService {
         기본 회원 가입
      */
     @Transactional
-    public void signUp(MemberRequestDTO.signUpDTO requestDTO) {
+    public void signUp(MemberAuthRequestDTO.signUpDTO requestDTO) {
 
         // 이메일 중복 확인
         checkDuplicatedEmail(requestDTO.email());
@@ -79,7 +79,7 @@ public class MemberAuthService {
     /*
         기본 로그인
      */
-    public MemberResponseDTO.authTokenDTO login(HttpServletRequest httpServletRequest, MemberRequestDTO.loginDTO requestDTO) {
+    public MemberAuthResponseDTO.authTokenDTO login(HttpServletRequest httpServletRequest, MemberAuthRequestDTO.authDTO requestDTO) {
 
         // 1. 이메일 확인
         Member member = memberRepository.findByEmail(requestDTO.email())
@@ -88,13 +88,16 @@ public class MemberAuthService {
         // 2. 비밀번호 확인
         checkValidPassword(requestDTO.password(), member.getPassword());
 
+        // 3. 회원 상태 확인
+        member.getStatus().checkActive();
+
         return getAuthTokenDTO(requestDTO.email(), requestDTO.password(), httpServletRequest);
     }
 
     /*
         토큰 재발급
      */
-    public MemberResponseDTO.authTokenDTO reissueToken(HttpServletRequest httpServletRequest) {
+    public MemberAuthResponseDTO.authTokenDTO reissueToken(HttpServletRequest httpServletRequest) {
 
         // Request Header 에서 JWT Token 추출
         String token = jwtTokenProvider.resolveToken(httpServletRequest);
@@ -117,7 +120,7 @@ public class MemberAuthService {
         }
 
         // Redis 에 저장된 RefreshToken 정보를 기반으로 JWT Token 생성
-        MemberResponseDTO.authTokenDTO authTokenDTO = jwtTokenProvider.generateToken(
+        MemberAuthResponseDTO.authTokenDTO authTokenDTO = jwtTokenProvider.generateToken(
                 refreshToken.getId(), refreshToken.getAuthorities()
         );
 
@@ -161,15 +164,13 @@ public class MemberAuthService {
     // 비밀번호 확인
     private void checkValidPassword(String rawPassword, String encodedPassword) {
 
-        log.info("{} {}", rawPassword, encodedPassword);
-
         if(!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw new Exception400("비밀번호가 유효하지 않습니다.");
         }
     }
 
     // 회원 생성
-    protected Member newMember(MemberRequestDTO.signUpDTO requestDTO) {
+    protected Member newMember(MemberAuthRequestDTO.signUpDTO requestDTO) {
         return Member.builder()
                 .nickName(requestDTO.nickName())
                 .email(requestDTO.email())
@@ -181,14 +182,14 @@ public class MemberAuthService {
     }
 
     // 토큰 발급
-    protected MemberResponseDTO.authTokenDTO getAuthTokenDTO(String email, String password, HttpServletRequest httpServletRequest) {
+    protected MemberAuthResponseDTO.authTokenDTO getAuthTokenDTO(String email, String password, HttpServletRequest httpServletRequest) {
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                 = new UsernamePasswordAuthenticationToken(email, password);
         AuthenticationManager manager = authenticationManagerBuilder.getObject();
         Authentication authentication = manager.authenticate(usernamePasswordAuthenticationToken);
 
-        MemberResponseDTO.authTokenDTO authTokenDTO = jwtTokenProvider.generateToken(authentication);
+        MemberAuthResponseDTO.authTokenDTO authTokenDTO = jwtTokenProvider.generateToken(authentication);
 
         refreshTokenRedisRepository.save(RefreshToken.builder()
                 .id(authentication.getName())

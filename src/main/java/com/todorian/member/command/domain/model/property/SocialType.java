@@ -1,4 +1,4 @@
-package com.todorian.member.command.domain.model;
+package com.todorian.member.command.domain.model.property;
 
 public enum SocialType {
     GOOGLE,

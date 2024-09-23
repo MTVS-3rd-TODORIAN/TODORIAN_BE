@@ -1,39 +1,102 @@
 package com.todorian.coin.domain.service;
 
+import com.todorian._core.error.exception.Exception400;
+import com.todorian._core.error.exception.Exception403;
 import com.todorian.coin.domain.model.Coin;
-import com.todorian.coin.domain.model.CoinCreateRequestDto;
 import com.todorian.coin.domain.model.CoinFindResponseDto;
+import com.todorian.coin.domain.model.CoinSaveRequestDto;
 import com.todorian.coin.domain.repository.CoinRepository;
+import com.todorian.member.command.domain.repository.MemberRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.webjars.NotFoundException;
 
 @Service
 public class CoinService {
 
-    private CoinRepository coinrepository;
+    private final CoinRepository coinRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public CoinService(CoinRepository coinrepository) {
-        this.coinrepository = coinrepository;
+    public CoinService(CoinRepository coinRepository, MemberRepository memberRepository) {
+        this.coinRepository = coinRepository;
+        this.memberRepository = memberRepository;
     }
 
-    public void createCoin(CoinCreateRequestDto coinCreateRequestDto) {
-        Coin coin = new Coin(
-            coinCreateRequestDto.getCoinDateTime(),
-            coinCreateRequestDto.getCharacterId(),
-            coinCreateRequestDto.getAdvertisementId(),
-            coinCreateRequestDto.getGameId(),
-            coinCreateRequestDto.getItemId(),
-            coinCreateRequestDto.getGivenMemberId(),
-            coinCreateRequestDto.getMemberId(),
-            coinCreateRequestDto.getCoinAmount(),
-            coinCreateRequestDto.getCoinReason()
-        );
-        coinrepository.save(coin);
+    // 1. Create
+    @Transactional
+    public ResponseEntity<CoinFindResponseDto> save(CoinSaveRequestDto coinSaveRequestDto) {
+
+        memberRepository.findById(coinSaveRequestDto.getMemberId()).orElseThrow(
+            () -> new Exception403(
+                "Cannot find member with id " + coinSaveRequestDto.getMemberId()));
+
+        if (coinSaveRequestDto.getCoinReason() == null) {
+            throw new Exception400("Cannot find coin reason");
+        }
+
+        Coin coin = Coin.builder()
+            .memberId(coinSaveRequestDto.getMemberId())
+            .coinDateTime(coinSaveRequestDto.getCoinDateTime())
+            .coinAmount(coinSaveRequestDto.getCoinAmount())
+            .coinReason(coinSaveRequestDto.getCoinReason())
+            .coinForeignId(coinSaveRequestDto.getCoinForeignId())
+            .build();
+        coinRepository.save(coin);
+
+        CoinFindResponseDto coinFindResponseDto = CoinFindResponseDto.builder()
+            .coinId(coin.getCoinId())       // @GeneratedValue 가 있다면 Not Null
+            .memberId(coin.getMemberId())
+            .coinAmount(coin.getCoinAmount())
+            .coinReason(coin.getCoinReason())
+            .coinForeignId(coin.getCoinForeignId())
+            .build();
+
+        return ResponseEntity.ok(coinFindResponseDto);
     }
 
-    public CoinFindResponseDto findById(long coinId) {
-        return new CoinFindResponseDto(
-            coinrepository.findById(coinId).orElseThrow(IllegalArgumentException::new));
+    // 2. 한 회원의 코인 내역 전체 조회
+    public ResponseEntity<List<CoinFindResponseDto>> findByMemberId(Long memberId) {
+        List<Coin> coinList = coinRepository.findByMemberId(memberId);
+
+        if (coinList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<CoinFindResponseDto> coinFindResponseDtoList = coinList.stream()
+            .map(coin -> CoinFindResponseDto.builder()
+                .coinId(coin.getCoinId())
+                .memberId(coin.getMemberId())
+                .coinAmount(coin.getCoinAmount())
+                .coinReason(coin.getCoinReason())
+                .coinForeignId(coin.getCoinForeignId())
+                .build())
+            .toList();
+
+        return ResponseEntity.ok(coinFindResponseDtoList);
+    }
+
+    // 3. 코인 내역 아이디를 통한 코인 내역 단일 조회
+    public ResponseEntity<CoinFindResponseDto> findByCoinId(Long coinId) {
+        Coin coin = coinRepository.findById(coinId)
+            .orElseThrow(() -> new NotFoundException("Coin not found with id : " + coinId));
+
+        if (coin == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        CoinFindResponseDto coinFindResponseDto = CoinFindResponseDto.builder()
+            .coinId(coin.getCoinId())
+            .memberId(coin.getMemberId())
+            .coinDateTime(coin.getCoinDateTime())
+            .coinAmount(coin.getCoinAmount())
+            .coinReason(coin.getCoinReason())
+            .coinForeignId(coin.getCoinForeignId())
+            .build();
+
+        return ResponseEntity.ok(coinFindResponseDto);
     }
 }

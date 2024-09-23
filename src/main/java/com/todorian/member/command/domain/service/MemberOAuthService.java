@@ -1,9 +1,9 @@
 package com.todorian.member.command.domain.service;
 
 
-import com.todorian.member.command.application.dto.MemberResponseDTO;
+import com.todorian.member.command.application.dto.MemberAuthResponseDTO;
 
 public interface MemberOAuthService {
 
-    MemberResponseDTO.authTokenDTO kakaoLogin(String code);
+    MemberAuthResponseDTO.authTokenDTO kakaoLogin(String code);
 }
