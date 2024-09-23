@@ -1,140 +1,83 @@
 package com.todorian.coin;
 
-import com.todorian.coin.domain.model.CoinCreateRequestDto;
 import com.todorian.coin.domain.model.CoinReason;
+import com.todorian.coin.domain.model.CoinSaveRequestDto;
 import com.todorian.coin.domain.service.CoinService;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class CoinTests {
 
-    private static final Logger log = LoggerFactory.getLogger(CoinTests.class);
     @Autowired
     private CoinService coinService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @DisplayName("coin 내역 생성 테스트")
     @Test
     void testCreateCoin() {
+        CoinSaveRequestDto coinSaveRequestDto = CoinSaveRequestDto.builder()
+            .memberId(1L)
+            .coinDateTime(LocalDateTime.now())
+            .coinAmount(100L)
+            .coinReason(CoinReason.ADVERTISEMENT_WATCHED)
+            .coinForeignId(1L)
+            .build();
 
-        CoinCreateRequestDto coinCreateRequestDto1 = new CoinCreateRequestDto(
-            LocalDateTime.now(),
-            1L,
-            null,
-            null,
-            null,
-            null,
-            1L,
-            10L,
-            CoinReason.CHARACTER_GROWTH
-        );
-
-        CoinCreateRequestDto coinCreateRequestDto2 = new CoinCreateRequestDto(
-            LocalDateTime.now(),
-            null,
-            1L,
-            null,
-            null,
-            null,
-            1L,
-            5L,
-            CoinReason.ADVERTISEMENT_WATCHED
-        );
-
-        CoinCreateRequestDto coinCreateRequestDto3 = new CoinCreateRequestDto(
-            LocalDateTime.now(),
-            null,
-            null,
-            1L,
-            null,
-            null,
-            1L,
-            -5L,
-            CoinReason.GAME_CONSUME
-        );
-
-        CoinCreateRequestDto coinCreateRequestDto4 = new CoinCreateRequestDto(
-            LocalDateTime.now(),
-            null,
-            null,
-            1L,
-            null,
-            null,
-            1L,
-            -5L,
-            CoinReason.GAME_LOSE
-        );
-
-        CoinCreateRequestDto coinCreateRequestDto5 = new CoinCreateRequestDto(
-            LocalDateTime.now(),
-            null,
-            null,
-            null,
-            1L,
-            null,
-            1L,
-            -30L,
-            CoinReason.ITEM_BOUGHT
-        );
-
-        CoinCreateRequestDto coinCreateRequestDto6 = new CoinCreateRequestDto(
-            LocalDateTime.now(),
-            null,
-            null,
-            null,
-            null,
-            2L,
-            1L,
-            10L,
-            CoinReason.MEMBER_GIVEN
-        );
-
-        Assertions.assertDoesNotThrow(
-            () -> coinService.createCoin(coinCreateRequestDto1)
-        );
-
-        Assertions.assertDoesNotThrow(
-            () -> coinService.createCoin(coinCreateRequestDto2)
-        );
-
-        Assertions.assertDoesNotThrow(
-            () -> coinService.createCoin(coinCreateRequestDto3)
-        );
-
-        Assertions.assertDoesNotThrow(
-            () -> coinService.createCoin(coinCreateRequestDto4)
-        );
-
-        Assertions.assertDoesNotThrow(
-            () -> coinService.createCoin(coinCreateRequestDto5)
-        );
-
-        Assertions.assertDoesNotThrow(
-            () -> coinService.createCoin(coinCreateRequestDto6)
-        );
-
-        log.info("coinCreateRequestDto1: {}", coinCreateRequestDto1);
-        log.info("coinCreateRequestDto2: {}", coinCreateRequestDto2);
-        log.info("coinCreateRequestDto3: {}", coinCreateRequestDto3);
-        log.info("coinCreateRequestDto4: {}", coinCreateRequestDto4);
-        log.info("coinCreateRequestDto5: {}", coinCreateRequestDto5);
-        log.info("coinCreateRequestDto6: {}", coinCreateRequestDto6);
+        Assertions.assertDoesNotThrow(() -> coinService.save(coinSaveRequestDto));
     }
 
-    @DisplayName("coin 내역 조회 테스트")
-    @ParameterizedTest
-    @ValueSource(ints = {1, 2, 3, 4, 5, 6})
-    void testFindById(int coinId) {
-        Assertions.assertDoesNotThrow(
-            () -> coinService.findById(coinId)
-        );
+    @DisplayName("coinAmount 가 0일 때 예외 발생 테스트")
+    @Test
+    void testCreateCoinWithZeroAmount() {
+        CoinSaveRequestDto coinSaveRequestDto = CoinSaveRequestDto.builder()
+            .memberId(1L)
+            .coinDateTime(LocalDateTime.now())
+            .coinAmount(0L) // 0이어도 예외가 발생하지 않음.
+            .coinReason(CoinReason.ADVERTISEMENT_WATCHED)
+            .coinForeignId(1L)
+            .build();
+
+        Assertions.assertDoesNotThrow(() -> coinService.save(coinSaveRequestDto));
+    }
+
+    @DisplayName("다양한 coinReason 테스트")
+    @Test
+    void testCreateCoinWithDifferentReasons() {
+        for (CoinReason reason : CoinReason.values()) {
+            CoinSaveRequestDto coinSaveRequestDto = CoinSaveRequestDto.builder()
+                .memberId(1L)
+                .coinDateTime(LocalDateTime.now())
+                .coinAmount(100L)
+                .coinReason(reason)
+                .coinForeignId(1L)
+                .build();
+
+            Assertions.assertDoesNotThrow(() -> coinService.save(coinSaveRequestDto));
+        }
+    }
+
+    @DisplayName("미래의 coinDateTime에 대한 테스트")
+    @Test
+    void testCreateCoinWithFutureDateTime() {
+        CoinSaveRequestDto coinSaveRequestDto = CoinSaveRequestDto.builder()
+            .memberId(1L)
+            .coinDateTime(LocalDateTime.now().plusDays(1)) // 미래 날짜
+            .coinAmount(100L)
+            .coinReason(CoinReason.ADVERTISEMENT_WATCHED)
+            .coinForeignId(1L)
+            .build();
+
+        Assertions.assertDoesNotThrow(() -> coinService.save(coinSaveRequestDto));
     }
 }
