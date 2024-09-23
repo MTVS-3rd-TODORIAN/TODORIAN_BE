@@ -4,10 +4,9 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
 @Builder
-public class CoinFindResponseDto {
-    private Long coinId;
+@Getter
+public class CoinSaveRequestDto {
     private Long memberId;
     private LocalDateTime coinDateTime;
     private Long coinAmount;
