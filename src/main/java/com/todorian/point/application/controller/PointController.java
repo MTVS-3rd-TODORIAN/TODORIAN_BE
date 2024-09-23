@@ -12,4 +12,5 @@ public class PointController {
     private final PointService pointService;
 
 
+
 }
