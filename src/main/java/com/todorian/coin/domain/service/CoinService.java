@@ -1,11 +1,13 @@
 package com.todorian.coin.domain.service;
 
+import com.todorian._core.error.exception.Exception400;
+import com.todorian._core.error.exception.Exception403;
 import com.todorian.coin.domain.model.Coin;
 import com.todorian.coin.domain.model.CoinFindResponseDto;
 import com.todorian.coin.domain.model.CoinSaveRequestDto;
 import com.todorian.coin.domain.repository.CoinRepository;
+import com.todorian.member.command.domain.repository.MemberRepository;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,15 +18,26 @@ import org.webjars.NotFoundException;
 public class CoinService {
 
     private final CoinRepository coinRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public CoinService(CoinRepository coinRepository) {
+    public CoinService(CoinRepository coinRepository, MemberRepository memberRepository) {
         this.coinRepository = coinRepository;
+        this.memberRepository = memberRepository;
     }
 
     // 1. Create
     @Transactional
     public ResponseEntity<CoinFindResponseDto> save(CoinSaveRequestDto coinSaveRequestDto) {
+
+        memberRepository.findById(coinSaveRequestDto.getMemberId()).orElseThrow(
+            () -> new Exception403(
+                "Cannot find member with id " + coinSaveRequestDto.getMemberId()));
+
+        if (coinSaveRequestDto.getCoinReason() == null) {
+            throw new Exception400("Cannot find coin reason");
+        }
+
         Coin coin = Coin.builder()
             .memberId(coinSaveRequestDto.getMemberId())
             .coinDateTime(coinSaveRequestDto.getCoinDateTime())
@@ -61,7 +74,7 @@ public class CoinService {
                 .coinReason(coin.getCoinReason())
                 .coinForeignId(coin.getCoinForeignId())
                 .build())
-            .collect(Collectors.toList());
+            .toList();
 
         return ResponseEntity.ok(coinFindResponseDtoList);
     }
