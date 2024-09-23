@@ -1,6 +1,7 @@
 package com.todorian.weeklygoals.command.application.controller;
 
 import com.todorian._core.utils.ApiUtils;
+import com.todorian.weeklygoals.command.application.dto.WeeklyGoalsResponseDTO;
 import com.todorian.weeklygoals.command.application.service.WeeklyGoalsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class WeeklyGoalsController {
     @GetMapping("/weekly")
     public ResponseEntity<?> findWeeklyGoals(@RequestParam("memberId") Long memberId) {
         String content = weeklyGoalsService.findWeeklyGoals(memberId);
-        return ResponseEntity.ok().body(ApiUtils.success(content));
+        WeeklyGoalsResponseDTO weeklyGoalsResponseDTO = new WeeklyGoalsResponseDTO(content);
+        return ResponseEntity.ok().body(ApiUtils.success(weeklyGoalsResponseDTO));
     }
 }
