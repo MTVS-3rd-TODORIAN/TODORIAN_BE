@@ -1,4 +1,4 @@
-package com.todorian.todo.domain;
+package com.todorian.todo.domain.model;
 
 import com.todorian.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Entity
 @AllArgsConstructor
@@ -22,6 +20,9 @@ public class Todo extends BaseTimeEntity {
 
     @Column(name = "TODO_CONTENT")
     private String todoContent;
+
+    @Column(name = "MEMBER_ID")
+    private Long memberId;
 
     @Builder
     public Todo(String todoContent) {
