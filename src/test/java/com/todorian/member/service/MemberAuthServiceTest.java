@@ -9,10 +9,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,29 +25,17 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class MemberAuthServiceTest {
 
-    @Autowired
+    @InjectMocks
     private MemberAuthService memberAuthService;
 
-    @Autowired
+    @Mock
     private RefreshTokenRedisRepository refreshTokenRedisRepository;
 
     @Mock
     private HttpServletRequest httpServletRequest;
-
-    @BeforeEach
-    void setUp() {
-        MemberAuthRequestDTO.signUpDTO signUpDTO = new MemberAuthRequestDTO.signUpDTO(
-                "testNickName",
-                "test@test.com",
-                "test1234",
-                "test1234"
-        );
-
-        memberAuthService.signUp(signUpDTO);
-    }
 
     private static Stream<Arguments> createMember() {
         return Stream.of(
