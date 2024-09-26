@@ -3,6 +3,8 @@ package com.todorian.member.service;
 import com.todorian.member.command.application.dto.MemberAuthRequestDTO;
 import com.todorian.member.command.application.dto.MemberAuthResponseDTO;
 import com.todorian.member.command.application.service.MemberAuthService;
+import com.todorian.member.command.domain.model.Member;
+import com.todorian.member.command.domain.repository.MemberRepository;
 import com.todorian.redis.domain.RefreshToken;
 import com.todorian.redis.repository.RefreshTokenRedisRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,11 +21,13 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class MemberAuthServiceTest {
@@ -31,6 +35,10 @@ public class MemberAuthServiceTest {
     @InjectMocks
     private MemberAuthService memberAuthService;
 
+    @Mock
+    private MemberRepository memberRepository;
+    @Mock
+    private PasswordEncoder passwordEncoder;
     @Mock
     private RefreshTokenRedisRepository refreshTokenRedisRepository;
 
@@ -48,6 +56,7 @@ public class MemberAuthServiceTest {
     @MethodSource("createMember")
     void signUp(String userNickName, String userEmail, String userPassword, String userConfirmPassword) {
 
+        // given
         MemberAuthRequestDTO.signUpDTO requestDTO = new MemberAuthRequestDTO.signUpDTO(
                 userNickName,
                 userEmail,
@@ -55,9 +64,17 @@ public class MemberAuthServiceTest {
                 userConfirmPassword
         );
 
-        assertDoesNotThrow(
-                () -> memberAuthService.signUp(requestDTO)
-        );
+        when(memberRepository.findByEmail(userEmail)).thenReturn(Optional.empty());
+
+        String encodedPassword = passwordEncoder.encode(userConfirmPassword);
+        when(passwordEncoder.encode(userConfirmPassword)).thenReturn(encodedPassword);
+        when(passwordEncoder.matches(userPassword, encodedPassword)).thenReturn(true);
+
+        // when
+        memberAuthService.signUp(requestDTO);
+
+        // then
+        verify(memberRepository, times(1)).save(any(Member.class));
     }
 
     @DisplayName("login 테스트")
