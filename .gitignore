@@ -8,6 +8,8 @@ build/
 /src/main/java/com/todorian/Q*.java
 /src/main/resources/application.properties
 application.properties
+src/main/resources/application.yml
+src/main/resources/application.properties
 *.log
 **/*.log
 /log/**.log

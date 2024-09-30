@@ -141,8 +141,9 @@ public class JWTTokenProvider {
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
 
-        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_TYPE)) {
-            return bearerToken.substring(7);
+        // 토큰이 유효하고, 'Bearer '로 시작하며 충분한 길이를 갖는지 확인
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_TYPE) && bearerToken.length() > 7) {
+            return bearerToken.substring(7);  // 'Bearer ' 이후의 실제 토큰만 반환
         }
 
         return null;
