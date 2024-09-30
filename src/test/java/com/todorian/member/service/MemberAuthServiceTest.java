@@ -199,7 +199,6 @@ public class MemberAuthServiceTest {
 
         // Redis에 RefreshToken 업데이트 확인
         verify(refreshTokenRedisRepository, times(1)).save(any(RefreshToken.class));
-
     }
 
     @DisplayName("logout 테스트")
@@ -207,21 +206,27 @@ public class MemberAuthServiceTest {
     void logout() {
 
         // given
-        MemberAuthRequestDTO.authDTO authDTO = new MemberAuthRequestDTO.authDTO(
-                "test1@test.com",
-                "test1234"
-        );
+        String token = "RefreshToken";
+        String userId = "userId";
 
-        MemberAuthResponseDTO.authTokenDTO authTokenDTO = memberAuthService.login(httpServletRequest, authDTO);
+        // 모의 HTTP 요청에서 토큰 추출
+        when(jwtTokenProvider.resolveToken(httpServletRequest)).thenReturn(token);
 
-        // 실제 HTTP 요청에서 토큰 추출
-        when(httpServletRequest.getHeader("Authorization")).thenReturn("Bearer " + authTokenDTO.refreshToken());
+        // 유효성 검사 통과
+        when(jwtTokenProvider.validateToken(token)).thenReturn(true);
+
+        // Redis 에서 저장된 RefreshToken 가져오기
+        RefreshToken refreshToken = RefreshToken.builder()
+                .id(userId)
+                .authorities(List.of(new SimpleGrantedAuthority(Authority.USER.name())))
+                .refreshToken(token)
+                .build();
+        when(refreshTokenRedisRepository.findByRefreshToken(token)).thenReturn(refreshToken);
 
         // when
         memberAuthService.logout(httpServletRequest);
 
         // then
-        RefreshToken refreshToken = refreshTokenRedisRepository.findByRefreshToken(authTokenDTO.refreshToken());
-        assertNull(refreshToken);
+        verify(refreshTokenRedisRepository, times(1)).delete(refreshToken);
     }
 }
