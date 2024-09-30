@@ -187,6 +187,7 @@ public class MemberAuthServiceTest {
                 "newRefreshToken",
                 REFRESH_TOKEN_LIFETIME
         );
+        when(jwtTokenProvider.generateToken(refreshToken.getId(), refreshToken.getAuthorities())).thenReturn(authTokenDTO);
 
         // when
         MemberAuthResponseDTO.authTokenDTO responseDTO = memberAuthService.reissueToken(httpServletRequest);
