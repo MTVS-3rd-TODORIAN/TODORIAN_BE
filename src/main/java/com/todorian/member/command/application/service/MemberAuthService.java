@@ -19,10 +19,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Slf4j
@@ -124,12 +126,7 @@ public class MemberAuthService {
                 refreshToken.getId(), refreshToken.getAuthorities()
         );
 
-        // Redis 에 RefreshToken Update
-        refreshTokenRedisRepository.save(RefreshToken.builder()
-                .id(refreshToken.getId())
-                .authorities(refreshToken.getAuthorities())
-                .refreshToken(authTokenDTO.refreshToken())
-                .build());
+        saveRefreshToken(refreshToken.getId(), refreshToken.getAuthorities(), authTokenDTO);
 
         return authTokenDTO;
     }
@@ -191,13 +188,23 @@ public class MemberAuthService {
 
         MemberAuthResponseDTO.authTokenDTO authTokenDTO = jwtTokenProvider.generateToken(authentication);
 
-        refreshTokenRedisRepository.save(RefreshToken.builder()
-                .id(authentication.getName())
-                .authorities(authentication.getAuthorities())
-                .refreshToken(authTokenDTO.refreshToken())
-                .build()
-        );
+        saveRefreshToken(authentication.getName(), authentication.getAuthorities(), authTokenDTO);
 
         return authTokenDTO;
+    }
+
+    // RefreshToken 저장
+    private void saveRefreshToken(
+            String id,
+            Collection<? extends GrantedAuthority> authorities,
+            MemberAuthResponseDTO.authTokenDTO authTokenDTO
+    ) {
+        RefreshToken refreshToken = RefreshToken.builder()
+                .id(id)
+                .authorities(authorities)
+                .refreshToken(authTokenDTO.refreshToken())
+                .build();
+
+        refreshTokenRedisRepository.save(refreshToken);
     }
 }

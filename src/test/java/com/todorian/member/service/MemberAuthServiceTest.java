@@ -12,7 +12,6 @@ import com.todorian.member.command.domain.repository.MemberRepository;
 import com.todorian.redis.domain.RefreshToken;
 import com.todorian.redis.repository.RefreshTokenRedisRepository;
 import jakarta.servlet.http.HttpServletRequest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,17 +20,16 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -98,14 +96,14 @@ public class MemberAuthServiceTest {
         verify(memberRepository, times(1)).save(any(Member.class));
     }
 
-    private static Stream<Arguments> loginMember() {
+    private static Stream<Arguments> givenMember() {
         return Stream.of(
                 Arguments.of("test1@test.com", "test1234!")
         );
     }
 
     @DisplayName("login 테스트")
-    @MethodSource("loginMember")
+    @MethodSource("givenMember")
     @ParameterizedTest
     void login(String userEmail, String userPassword) {
 
@@ -161,22 +159,46 @@ public class MemberAuthServiceTest {
     void reissueToken() {
 
         // given
-        MemberAuthRequestDTO.authDTO authDTO = new MemberAuthRequestDTO.authDTO(
-                "test1@test.com",
-                "test1234"
+        String token = "RefreshToken";
+        String userId = "userId";
+
+        // 모의 HTTP 요청에서 토큰 추출
+        when(jwtTokenProvider.resolveToken(httpServletRequest)).thenReturn(token);
+
+        // 유효성 검사 통과
+        when(jwtTokenProvider.validateToken(token)).thenReturn(true);
+
+        // RefreshToken 타입 확인
+        when(jwtTokenProvider.isRefreshToken(token)).thenReturn(true);
+
+        // Redis 에서 저장된 RefreshToken 가져오기
+        RefreshToken refreshToken = RefreshToken.builder()
+                .id(userId)
+                .authorities(List.of(new SimpleGrantedAuthority(Authority.USER.name())))
+                .refreshToken(token)
+                .build();
+        when(refreshTokenRedisRepository.findByRefreshToken(token)).thenReturn(refreshToken);
+
+        // 새로운 AccessToken 및 RefreshToken 생성
+        MemberAuthResponseDTO.authTokenDTO authTokenDTO = new MemberAuthResponseDTO.authTokenDTO(
+                "Bearer",
+                "newAccessToken",
+                ACCESS_TOKEN_LIFETIME,
+                "newRefreshToken",
+                REFRESH_TOKEN_LIFETIME
         );
 
-        MemberAuthResponseDTO.authTokenDTO authTokenDTO = memberAuthService.login(httpServletRequest, authDTO);
-
-        // 실제 HTTP 요청에서 토큰 추출
-        when(httpServletRequest.getHeader("Authorization")).thenReturn("Bearer " + authTokenDTO.refreshToken());
-
         // when
-        MemberAuthResponseDTO.authTokenDTO newAuthTokenDTO = memberAuthService.reissueToken(httpServletRequest);
+        MemberAuthResponseDTO.authTokenDTO responseDTO = memberAuthService.reissueToken(httpServletRequest);
 
         // then
-        assertNotNull(newAuthTokenDTO);
-        System.out.println("newAuthTokenDTO = " + newAuthTokenDTO);
+        assertNotNull(responseDTO);
+        assertEquals("newAccessToken", responseDTO.accessToken());
+        assertEquals("newRefreshToken", responseDTO.refreshToken());
+
+        // Redis에 RefreshToken 업데이트 확인
+        verify(refreshTokenRedisRepository, times(1)).save(any(RefreshToken.class));
+
     }
 
     @DisplayName("logout 테스트")
