@@ -19,9 +19,7 @@ public class ApiUtils {
         return new ApiResult<>(false, null, data);
     }
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
+    @Getter @Setter @AllArgsConstructor
     public static class ApiResult<T> {
         private final boolean success;
         private final T response;

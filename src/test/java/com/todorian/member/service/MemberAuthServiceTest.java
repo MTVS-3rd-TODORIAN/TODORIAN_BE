@@ -64,7 +64,6 @@ public class MemberAuthServiceTest {
     // Refresh token의 시간 : 3일
     private static final long REFRESH_TOKEN_LIFETIME = 3 * 24 * 60 * 60 * 1000L;
 
-
     private static Stream<Arguments> createMember() {
         return Stream.of(
                 Arguments.of("testNickName1", "test1@test.com", "test1234!", "test1234!")
