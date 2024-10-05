@@ -1,4 +1,6 @@
-package com.todorian.character.command.domain.model;
+package com.todorian.character.command.application.dto;
+
+import com.todorian.character.command.domain.model.CharacterCategory;
 
 public class CharacterCreateRequestDTO {
 
