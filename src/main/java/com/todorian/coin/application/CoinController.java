@@ -1,5 +1,6 @@
 package com.todorian.coin.application;
 
+import com.todorian._core.utils.SecurityUtils;
 import com.todorian.coin.domain.model.CoinFindResponseDto;
 import com.todorian.coin.domain.model.CoinSaveRequestDto;
 import com.todorian.coin.domain.service.CoinService;
@@ -25,6 +26,8 @@ public class CoinController {
 
     @PostMapping
     ResponseEntity<CoinFindResponseDto> save(CoinSaveRequestDto coinSaveRequestDto) {
+        Long memberId = SecurityUtils.getCurrentMemberId();
+        
         return coinService.save(coinSaveRequestDto);
     }
 
