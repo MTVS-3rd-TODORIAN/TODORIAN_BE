@@ -17,7 +17,7 @@ import java.util.Optional;
 public class TodoController {
     private final TodoService todoService;
 
-    @PostMapping("/{todoId}/complete")
+    @PostMapping("/todo/{todoId}/complete")
     public ResponseEntity<?> complete(@PathVariable Long todoId){
         Todo todo = todoService.findTodoById(todoId).orElseThrow();
         todo.setCompleted(true);
