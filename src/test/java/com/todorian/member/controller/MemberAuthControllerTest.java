@@ -58,4 +58,23 @@ public class MemberAuthControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         verify(memberAuthService, times(1)).signUp(any(MemberAuthRequestDTO.signUpDTO.class));
     }
+
+    private static Stream<Arguments> givenMember() {
+        return Stream.of(
+                Arguments.of("test1@test.com", "test1234!")
+        );
+    }
+
+    @DisplayName("로그인")
+    @MethodSource("givenMember")
+    @ParameterizedTest
+    void login(String email, String password) {
+
+        // given
+        MemberAuthRequestDTO.authDTO requestDTO = new MemberAuthRequestDTO.authDTO(
+                email, password
+        );
+
+
+    }
 }
