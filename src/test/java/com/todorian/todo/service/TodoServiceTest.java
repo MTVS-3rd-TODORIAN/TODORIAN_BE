@@ -1,10 +1,10 @@
 package com.todorian.todo.service;
 
-import com.todorian.todo.domain.Todo;
-import com.todorian.todo.domain.TodoCreateRequestDTO;
+import com.todorian.todo.application.service.TodoService;
+import com.todorian.todo.domain.model.Todo;
+import com.todorian.todo.application.dto.TodoCreateRequestDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,8 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -63,7 +61,7 @@ class TodoServiceTest {
     @ParameterizedTest
     @ValueSource(longs = {1})
     void findTodoById(Long todoId) {
-        Todo foundTodo = todoService.findTodoById(todoId);
+        Todo foundTodo = todoService.findTodoById(todoId).orElseThrow();
 
         Assertions.assertNotNull(foundTodo);
         Assertions.assertEquals(todoId, foundTodo.getTodoId());
