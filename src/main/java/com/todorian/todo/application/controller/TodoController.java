@@ -3,11 +3,14 @@ package com.todorian.todo.application.controller;
 import com.todorian._core.utils.ApiUtils;
 import com.todorian.todo.application.service.TodoService;
 import com.todorian.todo.domain.model.Todo;
+import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,14 +34,20 @@ public class TodoController {
         List<Todo> todos = todoService.findAllTodosByMemberId(memberId);
         return ResponseEntity.ok().body(ApiUtils.success(todos));
     }
-//
-//    // 회원 한 명의 할일 날짜별로 조회
-//    @GetMapping("/todo/{day}")
-//    public ResponseEntity<?> getTodoListByDays(@RequestParam("memberId") Long memberId,
-//                                               @PathVariable("day") String day) {
-//        // 메소드 실행 검증 및 날짜 데이터 변경(formatting)
-//        List<Todo> todos = todoService.findAllByMemberIdAndCreateAt(memberId, LocalDateTime.now());
-//        // 날짜별, 회원별로 조회하는 로직 추가 예정
-//        return ResponseEntity.ok().body(ApiUtils.success(todos));
-//    }
+
+    // 회원 한 명의 할일 날짜별로 조회
+    @GetMapping("/todo/{memberId}/{day}")
+    public ResponseEntity<?> getTodoListByDays(@PathVariable("memberId") Long memberId,
+                                               @PathVariable("day") String day) {
+        LocalDate selectedDay;
+        // 메소드 실행 검증 및 날짜 데이터 변경(formatting)
+        try {
+            selectedDay = LocalDate.parse(day, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        } catch (DateTimeParseException e) {
+            return ResponseEntity.badRequest().body(ApiUtils.error("날짜 형식이 잘못되었습니다."));
+        }
+
+        List<Todo> todos = todoService.findAllByMemberIdAndCreateAt(memberId, selectedDay);
+        return ResponseEntity.ok().body(ApiUtils.success(todos));
+    }
 }

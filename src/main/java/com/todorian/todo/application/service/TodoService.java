@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +43,7 @@ public class TodoService {
         return todoRepository.findAllByMemberId(memberId);
     }
 
-    public List<Todo> findAllByMemberIdAndCreateAt(Long memberId, LocalDateTime day) {
-//        return todoRepository.findAllByMemberIdAndCreateAt(memberId, day);
-        return null;
+    public List<Todo> findAllByMemberIdAndCreateAt(Long memberId, LocalDate selectedDay) {
+        return todoRepository.findByCreateAtDateAndMemberId(selectedDay, memberId);
     }
 }
