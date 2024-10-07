@@ -1,4 +1,6 @@
 spring:
   profiles:
     active:
-      - prod
+      - local
+JWT:
+  SECRET: 85458w4e4r6weasdfgasdfasfasdf546sd54fasf6sda4f5465d4safd45fa4s6fd45a6sd4f5
