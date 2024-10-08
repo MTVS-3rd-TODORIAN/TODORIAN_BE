@@ -7,7 +7,6 @@ import com.todorian.membercharacter.command.application.service.MemberCharacterF
 import com.todorian.membercharacter.command.domain.model.MemberCharacter;
 import com.todorian.membercharacter.command.application.dto.MemberCharacterCreateRequestDTO;
 import com.todorian.membercharacter.command.domain.repository.MemberCharacterRepository;
-import com.todorian.membercharacter.command.application.service.MemberCharacterService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
