@@ -1,6 +1,5 @@
-package com.todorian.membercharacter.command.domain.model;
+package com.todorian.membercharacter.command.application.dto;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 public class MemberCharacterUpdateRequestDTO {
@@ -8,15 +7,16 @@ public class MemberCharacterUpdateRequestDTO {
     private long memberCharacterId;
     private long memberId;
     private long characterId;
-    private Date acquisitionTime;
+    private int growthPoint;
 
     public MemberCharacterUpdateRequestDTO() {
     }
 
-    public MemberCharacterUpdateRequestDTO(long memberId, long characterId, Date acquisitionTime) {
+    public MemberCharacterUpdateRequestDTO(long memberCharacterId, long memberId, long characterId, int growthPoint) {
+        this.memberCharacterId = memberCharacterId;
         this.memberId = memberId;
         this.characterId = characterId;
-        this.acquisitionTime = acquisitionTime;
+        this.growthPoint = growthPoint;
     }
 
     public long getMemberCharacterId() {
@@ -31,8 +31,8 @@ public class MemberCharacterUpdateRequestDTO {
         return characterId;
     }
 
-    public Date getAcquisitionTime() {
-        return acquisitionTime;
+    public int getGrowthPoint() {
+        return growthPoint;
     }
 
     @Override
@@ -41,8 +41,7 @@ public class MemberCharacterUpdateRequestDTO {
                 "memberCharacterId=" + memberCharacterId +
                 ", memberId=" + memberId +
                 ", characterId=" + characterId +
-                ", acquisitionTime=" + acquisitionTime +
+                ", growthPoint=" + growthPoint +
                 '}';
-
     }
 }
