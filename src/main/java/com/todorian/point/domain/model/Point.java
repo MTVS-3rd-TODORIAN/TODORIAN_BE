@@ -2,23 +2,20 @@ package com.todorian.point.domain.model;
 
 import com.todorian.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Table(name = "tbl_point")
+@Table(name = "tbl_todo")
 public class Point extends BaseTimeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "POINT_ID")
     private Long pointId;
 
-    @Column(name = "POINT_CONTENT")
+    @Column(name = "TODO_CONTENT")
     private String pointContent;
 
     @Column(name = "MEMBER_ID")
