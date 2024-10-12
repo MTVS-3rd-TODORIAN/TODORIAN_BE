@@ -2,10 +2,7 @@ package com.todorian.todo.domain.model;
 
 import com.todorian.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @AllArgsConstructor
@@ -24,8 +21,16 @@ public class Todo extends BaseTimeEntity {
     @Column(name = "MEMBER_ID")
     private Long memberId;
 
+    private boolean completed;
+
     @Builder
-    public Todo(String todoContent) {
+    public Todo(String todoContent, Long memberId, boolean completed) {
         this.todoContent = todoContent;
+        this.memberId = memberId;
+        this.completed = completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }

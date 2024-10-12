@@ -33,7 +33,13 @@ public class Character {
 
     public Character(){}
 
-    public Character(String characterName, int characterPrice, String characterDescription, String characterImgsrc, CharacterCategory characterCategory) {
+    public Character(
+            String characterName,
+            int characterPrice,
+            String characterDescription,
+            String characterImgsrc,
+            CharacterCategory characterCategory
+    ) {
         this.characterName = characterName;
         this.characterPrice = characterPrice;
         this.characterDescription = characterDescription;
@@ -75,5 +81,29 @@ public class Character {
                 ", characterImgsrc='" + characterImgsrc + '\'' +
                 ", characterCategory=" + characterCategory +
                 '}';
+    }
+
+    public void setCharacterId(long characterId) {
+        this.characterId = characterId;
+    }
+
+    public void setCharacterName(String characterName) {
+        this.characterName = characterName;
+    }
+
+    public void setCharacterPrice(int characterPrice) {
+        this.characterPrice = characterPrice;
+    }
+
+    public void setCharacterDescription(String characterDescription) {
+        this.characterDescription = characterDescription;
+    }
+
+    public void setCharacterImgsrc(String characterImgsrc) {
+        this.characterImgsrc = characterImgsrc;
+    }
+
+    public void setCharacterCategory(CharacterCategory characterCategory) {
+        this.characterCategory = characterCategory;
     }
 }
