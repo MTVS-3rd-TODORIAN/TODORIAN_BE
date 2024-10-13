@@ -96,4 +96,9 @@ public class CoinService {
 
         return ResponseEntity.ok(coinFindResponseDto);
     }
+
+    // 4. 한 member 의 코인 합계 가져오기.
+    public ResponseEntity<Long> findTotalCoinAmountByMemberId(Long memberId) {
+        return ResponseEntity.ok(coinRepository.findTotalCoinAmountByMemberId(memberId));
+    }
 }

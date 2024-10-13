@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/coin")
+@RequestMapping("/api/coins")
 public class CoinController {
 
     private final CoinService coinService;
@@ -36,6 +36,11 @@ public class CoinController {
     ResponseEntity<List<CoinFindResponseDto>> findByMemberId(
         @PathVariable("memberId") Long memberId) {
         return coinService.findByMemberId(memberId);
+    }
+
+    @GetMapping("/{memberId}/totalCoinAmount")
+    ResponseEntity<Long> findTotalCoinAmountByMemberId(@PathVariable("memberId") Long memberId) {
+        return coinService.findTotalCoinAmountByMemberId(memberId);
     }
 
     @GetMapping("/{coinId}")
