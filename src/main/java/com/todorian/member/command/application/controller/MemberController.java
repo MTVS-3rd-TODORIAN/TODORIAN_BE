@@ -1,7 +1,9 @@
 package com.todorian.member.command.application.controller;
 
 import com.todorian._core.utils.ApiUtils;
+import com.todorian._core.utils.ApiUtils.ApiResult;
 import com.todorian.member.command.application.dto.MemberResponseDTO;
+import com.todorian.member.command.application.dto.MemberResponseDTO.getMemberProfileDTO;
 import com.todorian.member.command.application.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +26,15 @@ public class MemberController {
         Member Profile
      */
     @GetMapping("/profile")
-    public ResponseEntity<?> getMemberProfile() {
+    public ResponseEntity<ApiResult<getMemberProfileDTO>> getMemberProfile() {
 
         MemberResponseDTO.getMemberProfileDTO responseDTO = memberService.getMemberProfile(getCurrentMemberId());
 
         return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
+    }
+
+    @GetMapping("/id")
+    public ResponseEntity<Long> getMemberId() {
+        return ResponseEntity.ok(getCurrentMemberId());
     }
 }
