@@ -7,7 +7,8 @@
     <property name="FILE_LOG_PATTERN"
               value="[%d{yyyy-MM-dd HH:mm:ss}:%-4relative] [%thread] %-5level [%C.%M:%L] - %msg%n"/>
 
-    <springProfile name="!prod">
+<!--    <springProfile name="!prod">-->
+    <springProfile name="prod">
         <include resource="log/console-appender.xml"/>
 
         <logger name="com.todorian" level="DEBUG" />
@@ -16,15 +17,15 @@
         </root>
     </springProfile>
 
-    <springProfile name="prod">
-        <include resource="log/file-info-appender.xml"/>
-        <include resource="log/file-warn-appender.xml"/>
-        <include resource="log/file-error-appender.xml"/>
+<!--    <springProfile name="prod">-->
+<!--        <include resource="log/file-info-appender.xml"/>-->
+<!--        <include resource="log/file-warn-appender.xml"/>-->
+<!--        <include resource="log/file-error-appender.xml"/>-->
 
-        <root level="INFO">
-            <appender-ref ref="FILE-INFO"/>
-            <appender-ref ref="FILE-WARN"/>
-            <appender-ref ref="FILE-ERROR"/>
-        </root>
-    </springProfile>
+<!--        <root level="INFO">-->
+<!--            <appender-ref ref="FILE-INFO"/>-->
+<!--            <appender-ref ref="FILE-WARN"/>-->
+<!--            <appender-ref ref="FILE-ERROR"/>-->
+<!--        </root>-->
+<!--    </springProfile>-->
 </configuration>

@@ -25,14 +25,12 @@ public class TodorianApplication {
         SpringApplication.run(TodorianApplication.class, args);
     }
 
-    @Profile("local")
+    @Profile("local") // profile 이 local 일 때만 돌아 감
     @Bean
     CommandLineRunner localServerStart(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
-        return args -> {
-            memberRepository.saveAll(Arrays.asList(
-                    newMember("test@test.com", "test1234!", passwordEncoder)
-            ));
-        };
+        return args -> memberRepository.saveAll(Arrays.asList(
+                newMember("test@test.com", "test1234!", passwordEncoder)
+        ));
     }
 
     private Member newMember(String email, String password, PasswordEncoder passwordEncoder) {
