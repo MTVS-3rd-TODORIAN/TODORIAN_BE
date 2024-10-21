@@ -56,8 +56,8 @@ public class CoinService {
     }
 
     // 2. 한 회원의 코인 내역 전체 조회
-    public ResponseEntity<List<CoinFindResponseDto>> findByMemberId(Long memberId) {
-        List<Coin> coinList = coinRepository.findByMemberId(memberId);
+    public ResponseEntity<List<CoinFindResponseDto>> findByMemberIdOrderByCoinDateTimeDesc(Long memberId) {
+        List<Coin> coinList = coinRepository.findByMemberIdOrderByCoinDateTimeDesc(memberId);
 
         if (coinList.isEmpty()) {
             return ResponseEntity.noContent().build();

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CoinRepository extends JpaRepository<Coin, Long> {
 
-    List<Coin> findByMemberId(Long memberId);
+    List<Coin> findByMemberIdOrderByCoinDateTimeDesc(Long memberId);
 
     @Query("SELECT SUM(c.coinAmount) FROM Coin c WHERE c.memberId = :memberId")
     Long findTotalCoinAmountByMemberId(@Param("memberId") Long memberId);
