@@ -33,7 +33,7 @@ public class Coin {
     @Builder
     public Coin(Long memberId, LocalDateTime coinDateTime, Long coinAmount, CoinReason coinReason, Long coinForeignId) {
         this.memberId = memberId;
-        this.coinDateTime = coinDateTime;
+        this.coinDateTime = (coinDateTime != null) ? coinDateTime : LocalDateTime.now();
         this.coinAmount = coinAmount;
         this.coinReason = coinReason;
         this.coinForeignId = coinForeignId;

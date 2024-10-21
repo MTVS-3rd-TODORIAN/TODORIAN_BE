@@ -12,12 +12,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
-public class CoinSaveRequestDto {
-    @Setter
+public class CoinSaveResponseDto {
     private Long memberId;
     private LocalDateTime coinDateTime;
     private Long coinAmount;
-    private CoinReason coinReason; //     "coinReason": "GAME_WIN",
-
+    private CoinReason coinReason;
     private Long coinForeignId;
 }
