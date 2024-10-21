@@ -6,14 +6,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class WeeklyGoalsService {
     private final WeeklyGoalsRepository weeklyGoalsRepository;
 
-    public String findWeeklyGoals(Long memberId) {
-        WeeklyGoals weeklyGoals = weeklyGoalsRepository.findByMemberId(memberId);
+    public String findWeeklyGoals(LocalDate selectedDate, Long memberId) {
+        WeeklyGoals weeklyGoals = weeklyGoalsRepository.findByMemberIdAndCreatedAt(selectedDate, memberId);
         return weeklyGoals.getContent();
     }
 
