@@ -2,6 +2,7 @@ package com.todorian.todo.application.controller;
 
 import com.todorian._core.utils.ApiUtils;
 import com.todorian._core.utils.SecurityUtils;
+import com.todorian.todo.application.dto.TodoRequestDTO;
 import com.todorian.todo.application.service.TodoService;
 import com.todorian.todo.domain.model.Todo;
 import java.time.format.DateTimeFormatter;
@@ -51,10 +52,18 @@ public class TodoController {
     }
 
     // 관리자 아이디로 할 일 저장
-    @PostMapping("/todo/save")
+    @PostMapping("/todo/save2")
     public ResponseEntity<?> save(@RequestBody Todo todo) {
         System.out.println(SecurityUtils.getCurrentMemberId());
-        todoService.save(todo);
+        todoService.save2L(todo);
         return ResponseEntity.ok(ApiUtils.success("할 일이 저장되었습니다."));
+    }
+
+    // 할 일 저장 api 구현
+    @PostMapping("/todo/save")
+    public ResponseEntity<?> save(@RequestBody TodoRequestDTO.saveTodoDTO dto) {
+        todoService.save(dto, SecurityUtils.getCurrentMemberId());
+        return ResponseEntity.ok()
+                .body(ApiUtils.success("할 일이 성공적으로 저장되었습니다."));
     }
 }
