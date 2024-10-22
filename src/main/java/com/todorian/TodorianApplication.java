@@ -25,23 +25,38 @@ public class TodorianApplication {
         SpringApplication.run(TodorianApplication.class, args);
     }
 
+    public static PasswordEncoder passwordEncoder;
+
     @Profile("local")
     @Bean
     CommandLineRunner localServerStart(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             memberRepository.saveAll(Arrays.asList(
-                newMember("test@test.com", "test1234!", passwordEncoder)
+                newMember("Dorian", "test@test.com", "test1234"),
+                newMember("During", "test1@test.com", "test1234!"),
+                newAdmin("INUK", "admin@admin.com", "admin1234")
             ));
         };
     }
 
-    private Member newMember(String email, String password, PasswordEncoder passwordEncoder) {
+    private Member newMember(String nickName, String email, String password) {
         return Member.builder()
-                .nickName("Dorian")
+                .nickName(nickName)
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .socialType(SocialType.NONE)
                 .authority(Authority.USER)
+                .status(Status.ACTIVE)
+                .build();
+    }
+
+    private Member newAdmin(String nickName, String email, String password) {
+        return Member.builder()
+                .nickName(nickName)
+                .email(email)
+                .password(passwordEncoder.encode(password))
+                .socialType(SocialType.NONE)
+                .authority(Authority.ADMIN)
                 .status(Status.ACTIVE)
                 .build();
     }
