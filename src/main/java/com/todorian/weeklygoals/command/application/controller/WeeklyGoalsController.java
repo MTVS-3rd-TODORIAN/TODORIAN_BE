@@ -2,6 +2,7 @@ package com.todorian.weeklygoals.command.application.controller;
 
 import com.todorian._core.utils.ApiUtils;
 import com.todorian._core.utils.SecurityUtils;
+import com.todorian.weeklygoals.command.application.dto.WeeklyGoalsRequestDTO;
 import com.todorian.weeklygoals.command.application.dto.WeeklyGoalsResponseDTO;
 import com.todorian.weeklygoals.command.application.service.WeeklyGoalsService;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,11 @@ public class WeeklyGoalsController {
         }
         String content = weeklyGoalsService.findWeeklyGoals(selectedDay, SecurityUtils.getCurrentMemberId());
         return ResponseEntity.ok().body(ApiUtils.success(content));
+    }
+
+    @PostMapping("/weekly/save")
+    public ResponseEntity<?> saveWeeklyGoals(@RequestBody WeeklyGoalsRequestDTO.createDTO dto) {
+        weeklyGoalsService.save(dto, SecurityUtils.getCurrentMemberId());
+        return ResponseEntity.ok().body(ApiUtils.success("주간 목표가 저장되었습니다."));
     }
 }
