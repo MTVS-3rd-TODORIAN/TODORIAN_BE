@@ -1,22 +1,24 @@
-package com.todorian.character.command.domain.service;
+package com.todorian.character.command.application.service;
 
-import com.todorian.character.command.domain.model.Character;
-import com.todorian.character.command.domain.model.CharacterCreateRequestDTO;
+import com.todorian.character.command.application.dto.CharacterCreateRequestDTO;
 import com.todorian.character.command.domain.repository.CharacterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import com.todorian.character.command.domain.model.Character;
 
 @Service
-public class CharacterService {
+public class CharacterCreateService {
 
-    private final CharacterRepository characterRepository;
+    private CharacterRepository characterRepository;
 
     @Autowired
-    public CharacterService(CharacterRepository characterRepository) {
+    public CharacterCreateService(CharacterRepository characterRepository) {
         this.characterRepository = characterRepository;
     }
 
-    public void save(CharacterCreateRequestDTO characterInfo){
+    @Transactional
+    public void createCharacter(CharacterCreateRequestDTO characterInfo) {
         Character character = new Character(
                 characterInfo.getCharacterName(),
                 characterInfo.getCharacterPrice(),

@@ -8,14 +8,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Table(name = "tbl_todo")
+@Table(name = "tbl_point")
 public class Point extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "POINT_ID")
     private Long pointId;
 
-    @Column(name = "TODO_CONTENT")
+    @Column(name = "POINT_CONTENT")
     private String pointContent;
 
     @Column(name = "MEMBER_ID")

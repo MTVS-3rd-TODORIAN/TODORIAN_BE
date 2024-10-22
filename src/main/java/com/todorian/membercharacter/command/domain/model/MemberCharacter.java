@@ -1,34 +1,37 @@
 package com.todorian.membercharacter.command.domain.model;
 
+import com.todorian.BaseTimeEntity;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
-@Table(name="tbl_membercharacter")
-public class MemberCharacter {
+@Table(name="tbl_member_character")
+public class MemberCharacter extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="membercharacter_id")
+    @Column(name="member_character_id")
     private long memberCharacterId;
 
     @Column(name="member_id")
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name="member_id")
     private long memberId;
 
     @Column(name="character_id")
     private long characterId;
 
-    @Column(name="acquisition_time")
-    private Date acquisitionTime;
+    @Column(name="growth_point")
+    private int growthPoint;
 
     public MemberCharacter() {}
 
-    public MemberCharacter(long memberId, long characterId, Date acquisitionTime) {
+    public MemberCharacter(long memberId, long characterId, int growthPoint) {
         this.memberId = memberId;
         this.characterId = characterId;
-        this.acquisitionTime = acquisitionTime;
+        this.growthPoint = growthPoint;
     }
 
     public long getMemberCharacterId() {
@@ -43,8 +46,24 @@ public class MemberCharacter {
         return characterId;
     }
 
-    public Date getAcquisitionTime() {
-        return acquisitionTime;
+    public int getGrowthPoint() {
+        return growthPoint;
+    }
+
+    public void setMemberCharacterId(long memberCharacterId) {
+        this.memberCharacterId = memberCharacterId;
+    }
+
+    public void setMemberId(long memberId) {
+        this.memberId = memberId;
+    }
+
+    public void setCharacterId(long characterId) {
+        this.characterId = characterId;
+    }
+
+    public void setGrowthPoint(int growthPoint) {
+        this.growthPoint = growthPoint;
     }
 
     @Override
@@ -53,7 +72,7 @@ public class MemberCharacter {
                 "memberCharacterId=" + memberCharacterId +
                 ", memberId=" + memberId +
                 ", characterId=" + characterId +
-                ", acquisitionTime=" + acquisitionTime +
+                ", growthPoint=" + growthPoint +
                 '}';
     }
 }

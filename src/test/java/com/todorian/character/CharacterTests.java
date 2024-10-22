@@ -1,8 +1,8 @@
 package com.todorian.character;
 
 import com.todorian.character.command.domain.model.CharacterCategory;
-import com.todorian.character.command.domain.model.CharacterCreateRequestDTO;
-import com.todorian.character.command.domain.service.CharacterService;
+import com.todorian.character.command.application.dto.CharacterCreateRequestDTO;
+import com.todorian.character.command.application.service.CharacterFindService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 public class CharacterTests {
 
     @Autowired
-    private CharacterService characterService;
+    private CharacterFindService characterFindService;
 
     private static Stream<Arguments> createCharacter(){
         return Stream.of(
@@ -37,7 +37,7 @@ public class CharacterTests {
                 characterDescription, characterImgsrc, characterCategory);
 
         Assertions.assertDoesNotThrow(
-                () -> characterService.save(characterCreateRequestDTO)
+                () -> characterFindService.save(characterCreateRequestDTO)
         );
     }
 

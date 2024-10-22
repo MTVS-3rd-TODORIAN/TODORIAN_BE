@@ -1,9 +1,12 @@
 package com.todorian.memberCharacter.command.domain.service;
 
+import com.todorian.membercharacter.command.application.dto.MemberCharacterFindResponseDTO;
+import com.todorian.membercharacter.command.application.service.MemberCharacterCreateService;
+import com.todorian.membercharacter.command.application.service.MemberCharacterDeleteService;
+import com.todorian.membercharacter.command.application.service.MemberCharacterFindService;
 import com.todorian.membercharacter.command.domain.model.MemberCharacter;
-import com.todorian.membercharacter.command.domain.model.MemberCharacterCreateRequestDTO;
+import com.todorian.membercharacter.command.application.dto.MemberCharacterCreateRequestDTO;
 import com.todorian.membercharacter.command.domain.repository.MemberCharacterRepository;
-import com.todorian.membercharacter.command.domain.service.MemberCharacterService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,9 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
@@ -29,25 +29,27 @@ public class MemberCharacterTests {
     @Autowired
     private MemberCharacterRepository memberCharacterRepository;
     @Autowired
-    private MemberCharacterService memberCharacterService;
+    private MemberCharacterFindService memberCharacterFindService;
+    private MemberCharacterCreateService memberCharacterCreateService;
+    private MemberCharacterDeleteService memberCharacterDeleteService;
 
     private static Stream<Arguments> createMemberCharacter(){
 
         return Stream.of(
-                Arguments.of(1, 1, new Date()),
-                Arguments.of(2, 2, new Date())
+                Arguments.of(1, 1, 10),
+                Arguments.of(2, 2, 10)
         );
     }
 
     @DisplayName("회원캐릭터 추가 테스트")
     @ParameterizedTest
     @MethodSource("createMemberCharacter")
-    void testCreateMemberCharacter(long memberId, long characterId, Date acquisitionDate) {
+    void testCreateMemberCharacter(long memberId, long characterId, int growthPoint) {
         MemberCharacterCreateRequestDTO memberCharacterCreateRequestDTO
-                = new MemberCharacterCreateRequestDTO(memberId, characterId, acquisitionDate);
+                = new MemberCharacterCreateRequestDTO(memberId, characterId, growthPoint);
 
         Assertions.assertDoesNotThrow(
-                () -> memberCharacterService.createMemberCharacter(memberCharacterCreateRequestDTO)
+                () -> memberCharacterCreateService.createMemberCharacter(memberCharacterCreateRequestDTO)
         );
     }
 
@@ -56,8 +58,8 @@ public class MemberCharacterTests {
     void testFindAllMemberCharacters(){
         Assertions.assertDoesNotThrow(
                 () -> {
-                    List<MemberCharacter> memberCharacters
-                            = memberCharacterService.findAllMemberCharacters();
+                    List<MemberCharacterFindResponseDTO> memberCharacters
+                            = memberCharacterFindService.findAllMemberCharacters();
 
                     memberCharacters.forEach(System.out::println);
                 }
@@ -70,8 +72,8 @@ public class MemberCharacterTests {
     void testFindMemberCharacterById(long id){
         Assertions.assertDoesNotThrow(
                 () -> {
-                    MemberCharacter memberCharacter
-                            = memberCharacterService.findMemberCharacterById(id);
+                    MemberCharacterFindResponseDTO memberCharacter
+                            = memberCharacterFindService.findMemberCharacterById(id);
                     System.out.println("memberCharacter = " + memberCharacter);
                 }
         );
@@ -83,10 +85,10 @@ public class MemberCharacterTests {
     void testRemoveMemberCharacter(long memberCharacterId){
 
         Assertions.assertDoesNotThrow(
-                () -> memberCharacterService.removeMemberCharacter(memberCharacterId)
+                () -> memberCharacterDeleteService.deleteMemberCharacterById(memberCharacterId)
         );
 
-        memberCharacterService.findAllMemberCharacters().forEach(System.out::println);
+        memberCharacterFindService.findAllMemberCharacters().forEach(System.out::println);
     }
 
 }

@@ -1,6 +1,9 @@
-package com.todorian.character.command.domain.model;
+package com.todorian.character.command.application.dto;
 
-public class CharacterCreateRequestDTO {
+import com.todorian.character.command.application.service.CharacterUpdateService;
+import com.todorian.character.command.domain.model.CharacterCategory;
+
+public class CharacterUpdateRequestDTO {
 
     private long characterId;
     private String characterName;
@@ -9,15 +12,7 @@ public class CharacterCreateRequestDTO {
     private String characterImgsrc;
     private CharacterCategory characterCategory;
 
-    public CharacterCreateRequestDTO() {}
-
-    public CharacterCreateRequestDTO(String characterName, int characterPrice, String characterDescription, String characterImgsrc, CharacterCategory characterCategory) {
-        this.characterName = characterName;
-        this.characterPrice = characterPrice;
-        this.characterDescription = characterDescription;
-        this.characterImgsrc = characterImgsrc;
-        this.characterCategory = characterCategory;
-    }
+    public CharacterUpdateRequestDTO(){}
 
     public long getCharacterId() {
         return characterId;
@@ -45,7 +40,8 @@ public class CharacterCreateRequestDTO {
 
     @Override
     public String toString() {
-        return "CharacterCreateRequestDTO{" +
+        return "CharacterUpdateRequestDTO{" +
+                "characterId=" + characterId +
                 ", characterName='" + characterName + '\'' +
                 ", characterPrice=" + characterPrice +
                 ", characterDescription='" + characterDescription + '\'' +

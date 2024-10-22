@@ -46,4 +46,12 @@ public class TodoService {
     public List<Todo> findAllByMemberIdAndCreateAt(Long memberId, LocalDate selectedDay) {
         return todoRepository.findByCreateAtDateAndMemberId(selectedDay, memberId);
     }
+
+    public void save(Todo requestTodo) {
+        Todo todo = Todo.builder()
+                .todoContent(requestTodo.getTodoContent())
+                .memberId(2L)
+                .build();
+        todoRepository.save(todo);
+    }
 }

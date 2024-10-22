@@ -15,7 +15,7 @@ spring:
     show-sql: true
     database: mysql
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -27,6 +27,3 @@ logging:
   level:
     '[com.todorian]': debug
     '[org.hibernate.type]': trace
-
-server:
-  port: 7878

@@ -30,7 +30,7 @@ public class TodorianApplication {
     CommandLineRunner localServerStart(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             memberRepository.saveAll(Arrays.asList(
-                    newMember("test@test.com", "test1234!", passwordEncoder)
+                newMember("test@test.com", "test1234!", passwordEncoder)
             ));
         };
     }
