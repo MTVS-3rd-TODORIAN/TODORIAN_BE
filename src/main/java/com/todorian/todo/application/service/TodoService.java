@@ -1,16 +1,19 @@
 package com.todorian.todo.application.service;
 
 import com.todorian.todo.application.dto.TodoRequestDTO;
+import com.todorian.todo.application.dto.TodoResponseDTO;
 import com.todorian.todo.domain.model.Todo;
 import com.todorian.todo.domain.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -63,5 +66,23 @@ public class TodoService {
                 .completed(false)
                 .build();
         todoRepository.save(todo);
+    }
+
+    // 주 별 할일 조회
+    public List<TodoResponseDTO.weekTodoDTO> getWeekTodoContents(Long memberId, LocalDate day) {
+        // input 날짜에 해당하는 주의 월, 일 날짜 데이터
+        LocalDateTime startDate = day.with(DayOfWeek.MONDAY).atStartOfDay();
+        LocalDateTime endDate = day.with(DayOfWeek.SUNDAY).atTime(23,59, 59);
+
+        // 값을 가져 올 날짜 범위와 memberId로 할 일 조회
+        List<Todo> getTodos = todoRepository.findAllByMemberIdAndCreateAt(memberId, startDate, endDate);
+
+        AtomicInteger idx = new AtomicInteger(1);
+
+        // dto로 반환
+        return getTodos.stream().map(t ->
+                new TodoResponseDTO.weekTodoDTO(t.getTodoContent(), idx.getAndIncrement())
+        ).collect(Collectors.toList());
+
     }
 }
