@@ -4,6 +4,7 @@ import com.todorian._core.error.exception.Exception401;
 import com.todorian._core.error.exception.Exception403;
 import com.todorian._core.jwt.JWTTokenFilter;
 import com.todorian._core.jwt.JWTTokenProvider;
+import com.todorian.member.command.domain.model.property.Authority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +38,10 @@ public class SecurityConfig {
             "api/admin/login"
     };
 
+    private static final String[] ADMIN_LIST = {
+            "api/admin/**"
+    };
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -60,6 +65,7 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((request) -> request
                         .requestMatchers(WHITE_LIST).permitAll()
+                        .requestMatchers(ADMIN_LIST).hasAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .headers(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> {
