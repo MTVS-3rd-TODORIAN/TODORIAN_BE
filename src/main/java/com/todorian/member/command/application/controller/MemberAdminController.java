@@ -1,8 +1,8 @@
 package com.todorian.member.command.application.controller;
 
 import com.todorian._core.utils.ApiUtils;
-import com.todorian.member.command.application.dto.MemberAdminRequestDTO;
-import com.todorian.member.command.application.dto.MemberAdminResponseDTO;
+import com.todorian.member.command.application.dto.MemberRequestDTO;
+import com.todorian.member.command.application.dto.MemberResponseDTO;
 import com.todorian.member.command.application.service.MemberAdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +24,9 @@ public class MemberAdminController {
         관리자 로그인
      */
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody MemberAdminRequestDTO.loginDTO requestDTO) {
+    public ResponseEntity<?> login(@RequestBody MemberRequestDTO.authDTO requestDTO) {
 
-        MemberAdminResponseDTO.loginDTO responseDTO = memberAdminService.login(requestDTO);
+        MemberResponseDTO.loginDTO responseDTO = memberAdminService.login(requestDTO);
 
         return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }

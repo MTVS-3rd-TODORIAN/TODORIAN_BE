@@ -3,6 +3,7 @@ package com.todorian.member.command.application.controller;
 import com.todorian._core.utils.ApiUtils;
 import com.todorian.member.command.application.dto.MemberAuthRequestDTO;
 import com.todorian.member.command.application.dto.MemberAuthResponseDTO;
+import com.todorian.member.command.application.dto.MemberRequestDTO;
 import com.todorian.member.command.application.service.MemberAuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -38,7 +39,7 @@ public class MemberAuthController {
         기본 로그인
      */
     @PostMapping("/login")
-    public ResponseEntity<?> login(HttpServletRequest httpServletRequest, @Valid @RequestBody MemberAuthRequestDTO.authDTO requestDTO) {
+    public ResponseEntity<?> login(HttpServletRequest httpServletRequest, @Valid @RequestBody MemberRequestDTO.authDTO requestDTO) {
 
         MemberAuthResponseDTO.authTokenDTO responseDTO = memberAuthService.login(httpServletRequest, requestDTO);
 

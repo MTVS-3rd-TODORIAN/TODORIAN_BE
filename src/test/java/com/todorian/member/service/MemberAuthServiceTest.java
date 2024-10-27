@@ -2,6 +2,7 @@ package com.todorian.member.service;
 
 import com.todorian.member.command.application.dto.MemberAuthRequestDTO;
 import com.todorian.member.command.application.dto.MemberAuthResponseDTO;
+import com.todorian.member.command.application.dto.MemberRequestDTO;
 import com.todorian.member.command.application.service.MemberAuthService;
 import com.todorian.redis.domain.RefreshToken;
 import com.todorian.redis.repository.RefreshTokenRedisRepository;
@@ -72,7 +73,7 @@ public class MemberAuthServiceTest {
     @Test
     void login() {
 
-        MemberAuthRequestDTO.authDTO requestDTO = new MemberAuthRequestDTO.authDTO(
+        MemberRequestDTO.authDTO requestDTO = new MemberRequestDTO.authDTO(
                 "test1@test.com",
                 "test1234"
         );
@@ -93,7 +94,7 @@ public class MemberAuthServiceTest {
     void reissueToken() {
 
         // given
-        MemberAuthRequestDTO.authDTO authDTO = new MemberAuthRequestDTO.authDTO(
+        MemberRequestDTO.authDTO authDTO = new MemberRequestDTO.authDTO(
                 "test1@test.com",
                 "test1234"
         );
@@ -116,7 +117,7 @@ public class MemberAuthServiceTest {
     void logout() {
 
         // given
-        MemberAuthRequestDTO.authDTO authDTO = new MemberAuthRequestDTO.authDTO(
+        MemberRequestDTO.authDTO authDTO = new MemberRequestDTO.authDTO(
                 "test1@test.com",
                 "test1234"
         );

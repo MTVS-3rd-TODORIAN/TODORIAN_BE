@@ -2,6 +2,7 @@ package com.todorian.member.command.application.service;
 
 import com.todorian._core.error.exception.Exception400;
 import com.todorian._core.jwt.JWTTokenProvider;
+import com.todorian.member.command.application.dto.MemberRequestDTO;
 import com.todorian.member.command.domain.model.property.Authority;
 import com.todorian.member.command.domain.model.Member;
 import com.todorian.member.command.domain.model.property.SocialType;
@@ -79,7 +80,7 @@ public class MemberAuthService {
     /*
         기본 로그인
      */
-    public MemberAuthResponseDTO.authTokenDTO login(HttpServletRequest httpServletRequest, MemberAuthRequestDTO.authDTO requestDTO) {
+    public MemberAuthResponseDTO.authTokenDTO login(HttpServletRequest httpServletRequest, MemberRequestDTO.authDTO requestDTO) {
 
         // 1. 이메일 확인
         Member member = memberRepository.findByEmail(requestDTO.email())

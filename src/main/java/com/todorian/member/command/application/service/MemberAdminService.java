@@ -2,8 +2,8 @@ package com.todorian.member.command.application.service;
 
 import com.todorian._core.error.exception.Exception400;
 import com.todorian._core.error.exception.Exception403;
-import com.todorian.member.command.application.dto.MemberAdminRequestDTO;
-import com.todorian.member.command.application.dto.MemberAdminResponseDTO;
+import com.todorian.member.command.application.dto.MemberRequestDTO;
+import com.todorian.member.command.application.dto.MemberResponseDTO;
 import com.todorian.member.command.domain.model.Member;
 import com.todorian.member.command.domain.model.property.Authority;
 import com.todorian.member.command.domain.repository.MemberRepository;
@@ -26,11 +26,10 @@ public class MemberAdminService {
     /*
         관리자 로그인
      */
-    public MemberAdminResponseDTO.loginDTO login(MemberAdminRequestDTO.loginDTO requestDTO) {
+    public MemberResponseDTO.loginDTO login(MemberRequestDTO.authDTO requestDTO) {
 
         // 1. 이메일 확인
-        Member member = memberRepository.findByEmail(requestDTO.email())
-                .orElseThrow(() -> new Exception400("가입 되지 않은 이메일입니다."));
+        Member member = getMemberByEmail(requestDTO);
 
         // 2. 비밀번호 확인
         checkValidPassword(requestDTO.password(), member.getPassword());
@@ -39,6 +38,12 @@ public class MemberAdminService {
         checkAdminAuthority(member);
 
         return null;
+    }
+
+    // 회원 확인 - 이메일
+    private Member getMemberByEmail(MemberRequestDTO.authDTO requestDTO) {
+        return memberRepository.findByEmail(requestDTO.email())
+                .orElseThrow(() -> new Exception400("가입 되지 않은 이메일입니다."));
     }
 
     // 비밀번호 확인

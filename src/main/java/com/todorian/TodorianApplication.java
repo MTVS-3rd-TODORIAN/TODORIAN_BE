@@ -34,7 +34,7 @@ public class TodorianApplication {
             memberRepository.saveAll(Arrays.asList(
                 newMember("Dorian", "test@test.com", "test1234"),
                 newMember("During", "test1@test.com", "test1234!"),
-                newAdmin("INUK", "admin@admin.com", "admin1234")
+                newAdmin("INUK", "admin@test.com", "test1234")
             ));
         };
     }
