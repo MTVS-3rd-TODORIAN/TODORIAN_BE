@@ -1,5 +1,5 @@
 package com.todorian.system.command.domain.model.property;
 
 public enum ValueType {
-    STRING, BOOLEAN, LONG, DOUBLE, DATE
+    STRING, BOOLEAN, LONG, DOUBLE
 }
