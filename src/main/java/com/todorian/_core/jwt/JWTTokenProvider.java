@@ -36,9 +36,9 @@ public class JWTTokenProvider {
 
     // jwt 토큰 암호화를 위한 키
     private final Key secretKey;
-    // Access token의 시간 : 15분
+    // Access token 의 시간 : 15분
     private static final long ACCESS_TOKEN_LIFETIME = 15 * 60 * 1000L;
-    // Refresh token의 시간 : 3일
+    // Refresh token 의 시간 : 3일
     private static final long REFRESH_TOKEN_LIFETIME = 3 * 24 * 60 * 60 * 1000L;
 
     public JWTTokenProvider(@Value("${JWT.SECRET}") String secretKey) {

@@ -6,6 +6,7 @@ import com.todorian.member.command.application.dto.MemberResponseDTO;
 import com.todorian.member.command.application.service.MemberAdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/admin")
 public class MemberAdminController {
 
-    private MemberAdminService memberAdminService;
+    private final MemberAdminService memberAdminService;
 
     /*
         관리자 로그인
@@ -28,6 +29,9 @@ public class MemberAdminController {
 
         MemberResponseDTO.authTokenDTO responseDTO = memberAdminService.login(requestDTO);
 
-        return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, responseDTO.grantType() + " " + responseDTO.accessToken())
+                .header("Refresh-Token", responseDTO.grantType() + " " + responseDTO.refreshToken())
+                .body(ApiUtils.success(null));
     }
 }

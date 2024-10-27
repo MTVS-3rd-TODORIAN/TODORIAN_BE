@@ -2,13 +2,21 @@ package com.todorian.member.command.application.service;
 
 import com.todorian._core.error.exception.Exception400;
 import com.todorian._core.error.exception.Exception403;
+import com.todorian._core.jwt.JWTTokenProvider;
 import com.todorian.member.command.application.dto.MemberRequestDTO;
 import com.todorian.member.command.application.dto.MemberResponseDTO;
 import com.todorian.member.command.domain.model.Member;
 import com.todorian.member.command.domain.model.property.Authority;
 import com.todorian.member.command.domain.repository.MemberRepository;
+import com.todorian.redis.domain.RefreshToken;
+import com.todorian.redis.repository.RefreshTokenRedisRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberAdminService {
 
     private final MemberRepository memberRepository;
+    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
     private final PasswordEncoder passwordEncoder;
+    private final JWTTokenProvider jwtTokenProvider;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     /*
         관리자 로그인
@@ -37,7 +48,27 @@ public class MemberAdminService {
         // 3. 회원 권한 확인
         checkAdminAuthority(member);
 
-        return null;
+        return getAuthTokenDTO(requestDTO.email(), requestDTO.password());
+    }
+
+    // 토큰 발급
+    protected MemberResponseDTO.authTokenDTO getAuthTokenDTO(String email, String password) {
+
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
+                = new UsernamePasswordAuthenticationToken(email, password);
+        AuthenticationManager manager = authenticationManagerBuilder.getObject();
+        Authentication authentication = manager.authenticate(usernamePasswordAuthenticationToken);
+
+        MemberResponseDTO.authTokenDTO authTokenDTO = jwtTokenProvider.generateToken(authentication);
+
+        refreshTokenRedisRepository.save(RefreshToken.builder()
+                .id(authentication.getName())
+                .authorities(authentication.getAuthorities())
+                .refreshToken(authTokenDTO.refreshToken())
+                .build()
+        );
+
+        return authTokenDTO;
     }
 
     // 회원 확인 - 이메일

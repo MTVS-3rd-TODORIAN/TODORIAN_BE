@@ -32,8 +32,9 @@ public class SecurityConfig {
 
     private static final String[] WHITE_LIST = {
             "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**",
+            "/h2-console/**",  // h2-console 경로 추가
             "/api/auth/**",
-            "/h2-console/**"  // h2-console 경로 추가
+            "api/admin/login"
     };
 
     @Bean
@@ -60,9 +61,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((request) -> request
                         .requestMatchers(WHITE_LIST).permitAll()
                         .anyRequest().authenticated())
-                .headers(headers -> headers
-                        .frameOptions().disable()  // H2 콘솔에서 프레임 사용 허용
-                )
+                .headers(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> {
                     exception.authenticationEntryPoint(authenticationEntryPoint());
                     exception.accessDeniedHandler(accessDeniedHandler());
