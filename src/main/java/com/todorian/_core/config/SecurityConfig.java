@@ -39,7 +39,8 @@ public class SecurityConfig {
     };
 
     private static final String[] ADMIN_LIST = {
-            "api/admin/**"
+            "api/admin/**",
+            "api/setting/**"
     };
 
     @Bean
