@@ -2,14 +2,11 @@ package com.todorian.member.command.application.service;
 
 import com.todorian._core.error.exception.Exception400;
 import com.todorian._core.jwt.JWTTokenProvider;
-import com.todorian.member.command.application.dto.MemberRequestDTO;
+import com.todorian.member.command.application.dto.*;
 import com.todorian.member.command.domain.model.property.Authority;
 import com.todorian.member.command.domain.model.Member;
 import com.todorian.member.command.domain.model.property.SocialType;
 import com.todorian.member.command.domain.model.property.Status;
-import com.todorian.member.command.application.dto.MemberCreateRequestDTO;
-import com.todorian.member.command.application.dto.MemberAuthRequestDTO;
-import com.todorian.member.command.application.dto.MemberAuthResponseDTO;
 import com.todorian.member.command.domain.repository.MemberRepository;
 import com.todorian.redis.domain.RefreshToken;
 import com.todorian.redis.repository.RefreshTokenRedisRepository;
@@ -80,7 +77,7 @@ public class MemberAuthService {
     /*
         기본 로그인
      */
-    public MemberAuthResponseDTO.authTokenDTO login(HttpServletRequest httpServletRequest, MemberRequestDTO.authDTO requestDTO) {
+    public MemberResponseDTO.authTokenDTO login(HttpServletRequest httpServletRequest, MemberRequestDTO.authDTO requestDTO) {
 
         // 1. 이메일 확인
         Member member = memberRepository.findByEmail(requestDTO.email())
@@ -98,7 +95,7 @@ public class MemberAuthService {
     /*
         토큰 재발급
      */
-    public MemberAuthResponseDTO.authTokenDTO reissueToken(HttpServletRequest httpServletRequest) {
+    public MemberResponseDTO.authTokenDTO reissueToken(HttpServletRequest httpServletRequest) {
 
         // Request Header 에서 JWT Token 추출
         String token = jwtTokenProvider.resolveToken(httpServletRequest);
@@ -121,7 +118,7 @@ public class MemberAuthService {
         }
 
         // Redis 에 저장된 RefreshToken 정보를 기반으로 JWT Token 생성
-        MemberAuthResponseDTO.authTokenDTO authTokenDTO = jwtTokenProvider.generateToken(
+        MemberResponseDTO.authTokenDTO authTokenDTO = jwtTokenProvider.generateToken(
                 refreshToken.getId(), refreshToken.getAuthorities()
         );
 
@@ -183,14 +180,14 @@ public class MemberAuthService {
     }
 
     // 토큰 발급
-    protected MemberAuthResponseDTO.authTokenDTO getAuthTokenDTO(String email, String password, HttpServletRequest httpServletRequest) {
+    protected MemberResponseDTO.authTokenDTO getAuthTokenDTO(String email, String password, HttpServletRequest httpServletRequest) {
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                 = new UsernamePasswordAuthenticationToken(email, password);
         AuthenticationManager manager = authenticationManagerBuilder.getObject();
         Authentication authentication = manager.authenticate(usernamePasswordAuthenticationToken);
 
-        MemberAuthResponseDTO.authTokenDTO authTokenDTO = jwtTokenProvider.generateToken(authentication);
+        MemberResponseDTO.authTokenDTO authTokenDTO = jwtTokenProvider.generateToken(authentication);
 
         refreshTokenRedisRepository.save(RefreshToken.builder()
                 .id(authentication.getName())

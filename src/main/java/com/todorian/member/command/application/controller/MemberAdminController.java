@@ -26,7 +26,7 @@ public class MemberAdminController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody MemberRequestDTO.authDTO requestDTO) {
 
-        MemberResponseDTO.loginDTO responseDTO = memberAdminService.login(requestDTO);
+        MemberResponseDTO.authTokenDTO responseDTO = memberAdminService.login(requestDTO);
 
         return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }

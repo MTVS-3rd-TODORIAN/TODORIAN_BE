@@ -4,6 +4,7 @@ import com.todorian._core.utils.ApiUtils;
 import com.todorian.member.command.application.dto.MemberAuthRequestDTO;
 import com.todorian.member.command.application.dto.MemberAuthResponseDTO;
 import com.todorian.member.command.application.dto.MemberRequestDTO;
+import com.todorian.member.command.application.dto.MemberResponseDTO;
 import com.todorian.member.command.application.service.MemberAuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -41,7 +42,7 @@ public class MemberAuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(HttpServletRequest httpServletRequest, @Valid @RequestBody MemberRequestDTO.authDTO requestDTO) {
 
-        MemberAuthResponseDTO.authTokenDTO responseDTO = memberAuthService.login(httpServletRequest, requestDTO);
+        MemberResponseDTO.authTokenDTO responseDTO = memberAuthService.login(httpServletRequest, requestDTO);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, responseDTO.grantType() + " " + responseDTO.accessToken())
@@ -55,7 +56,7 @@ public class MemberAuthController {
     @PostMapping("/reissue")
     public ResponseEntity<?> reissueToken(HttpServletRequest httpServletRequest) {
 
-        MemberAuthResponseDTO.authTokenDTO responseDTO = memberAuthService.reissueToken(httpServletRequest);
+        MemberResponseDTO.authTokenDTO responseDTO = memberAuthService.reissueToken(httpServletRequest);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, responseDTO.grantType() + " " + responseDTO.accessToken())

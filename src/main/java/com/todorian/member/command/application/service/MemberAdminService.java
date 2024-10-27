@@ -26,7 +26,7 @@ public class MemberAdminService {
     /*
         관리자 로그인
      */
-    public MemberResponseDTO.loginDTO login(MemberRequestDTO.authDTO requestDTO) {
+    public MemberResponseDTO.authTokenDTO login(MemberRequestDTO.authDTO requestDTO) {
 
         // 1. 이메일 확인
         Member member = getMemberByEmail(requestDTO);
