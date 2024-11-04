@@ -1,6 +1,8 @@
 name: Docker Image CI
 
 on:
+  push:
+    branches: [ "dev" ]
   pull_request:
     branches: [ "dev" ]
 
@@ -52,7 +54,7 @@ jobs:
           format: YYYYMMDD_HH-mm-ss
           utcOffset: "+09:00"
 
-      - name: Create docker-compose.yml with environment variables
+      - name: Create docker-compose.yml
         run: |
           cat <<EOF > docker-compose.yml
           version: '3.8'
@@ -60,13 +62,10 @@ jobs:
             app:
               image: "${{ steps.login-ecr.outputs.registry }}/todorian:todorian"
               ports:
-                - "8080:8080"
+                - "80:8080"
               environment:
                 - SPRING_REDIS_HOST=redis
                 - SPRING_REDIS_PORT=6379
-                - DB_URL=${{ secrets.DB_URL }}
-                - DB_USERNAME=${{ secrets.DB_USERNAME }}
-                - DB_PASSWORD=${{ secrets.DB_PASSWORD }}
               depends_on:
                 - redis
             redis:
@@ -75,7 +74,7 @@ jobs:
                 - "6379:6379"
           EOF
 
-      - name: Prepare Docker Compose Deployment Package
+      - name: Prepare Deployment Package
         run: |
           mkdir -p deploy
           cp docker-compose.yml deploy/docker-compose.yml
