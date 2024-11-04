@@ -16,6 +16,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -43,6 +44,12 @@ jobs:
           docker buildx build --platform=linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Create .env file
+        run: |
+          echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" > .env
+          echo "ECR_REPOSITORY=todorian" >> .env
+          echo "IMAGE_TAG=todorian" >> .env
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
