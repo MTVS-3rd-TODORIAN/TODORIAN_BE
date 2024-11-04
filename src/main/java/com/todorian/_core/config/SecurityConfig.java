@@ -4,6 +4,7 @@ import com.todorian._core.error.exception.Exception401;
 import com.todorian._core.error.exception.Exception403;
 import com.todorian._core.jwt.JWTTokenFilter;
 import com.todorian._core.jwt.JWTTokenProvider;
+import com.todorian.member.command.domain.model.property.Authority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,8 +33,14 @@ public class SecurityConfig {
 
     private static final String[] WHITE_LIST = {
             "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**",
+            "/h2-console/**",  // h2-console 경로 추가
             "/api/auth/**",
-            "/h2-console/**"  // h2-console 경로 추가
+            "api/admin/login"
+    };
+
+    private static final String[] ADMIN_LIST = {
+            "api/admin/**",
+            "api/setting/**"
     };
 
     @Bean
@@ -59,10 +66,9 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((request) -> request
                         .requestMatchers(WHITE_LIST).permitAll()
+                        .requestMatchers(ADMIN_LIST).hasAuthority("ADMIN")
                         .anyRequest().authenticated())
-                .headers(headers -> headers
-                        .frameOptions().disable()  // H2 콘솔에서 프레임 사용 허용
-                )
+                .headers(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> {
                     exception.authenticationEntryPoint(authenticationEntryPoint());
                     exception.accessDeniedHandler(accessDeniedHandler());

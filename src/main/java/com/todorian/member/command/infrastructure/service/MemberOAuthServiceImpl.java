@@ -3,6 +3,7 @@ package com.todorian.member.command.infrastructure.service;
 import com.todorian._core.error.exception.Exception500;
 import com.todorian._core.jwt.JWTTokenProvider;
 import com.todorian.member.command.application.dto.MemberAuthResponseDTO;
+import com.todorian.member.command.application.dto.MemberResponseDTO;
 import com.todorian.member.command.domain.model.property.Authority;
 import com.todorian.member.command.domain.model.Member;
 import com.todorian.member.command.domain.model.property.SocialType;
@@ -52,7 +53,7 @@ public class MemberOAuthServiceImpl implements MemberOAuthService {
      */
     // 카카오로부터 받은 최신 사용자 정보로 데이터베이스 내의 사용자 정보를 갱신할 필요가 있을까?
     @Transactional
-    public MemberAuthResponseDTO.authTokenDTO kakaoLogin(String code) {
+    public MemberResponseDTO.authTokenDTO kakaoLogin(String code) {
 
         // 토큰 발급
         String accessToken = generateAccessToken(code);
@@ -140,7 +141,7 @@ public class MemberOAuthServiceImpl implements MemberOAuthService {
     }
 
     // OAuth Token 발급
-    protected MemberAuthResponseDTO.authTokenDTO getOAuthTokenDTO(Member member) {
+    protected MemberResponseDTO.authTokenDTO getOAuthTokenDTO(Member member) {
         UserDetails userDetails = new User(member.getEmail(), "",
                 Collections.singletonList(new SimpleGrantedAuthority(member.getAuthority().toString())));
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
