@@ -33,6 +33,7 @@ public class TodorianApplication {
             memberRepository.saveAll(Arrays.asList(
                 newMember("Dorian", "test@test.com", "test1234", passwordEncoder),
                 newMember("During", "test1@test.com", "test1234!", passwordEncoder),
+                newMember("weed", "weed@weed", "weed12", passwordEncoder),
                 newAdmin("INUK", "admin@test.com", "test1234", passwordEncoder)
             ));
         };

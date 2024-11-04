@@ -53,36 +53,37 @@ public class TodoService {
     public void save2L(Todo requestTodo) {
         Todo todo = Todo.builder()
                 .todoContent(requestTodo.getTodoContent())
-                .memberId(2L)
+                .memberId(4L)
                 .build();
         todoRepository.save(todo);
     }
 
     // 할 일 저장
-    public void save(TodoRequestDTO.saveTodoDTO dto, Long memberId) {
+    public Todo save(TodoRequestDTO.saveTodoDTO dto, Long memberId) {
         Todo todo = Todo.builder()
                 .todoContent(dto.todoContent())
                 .memberId(memberId)
                 .completed(false)
                 .build();
         todoRepository.save(todo);
+        return todo;
     }
 
-    // 주 별 할일 조회
     public List<TodoResponseDTO.weekTodoDTO> getWeekTodoContents(Long memberId, LocalDate day) {
-        // input 날짜에 해당하는 주의 월, 일 날짜 데이터
+        // 해당 주의 시작 날짜(월요일)와 종료 날짜(일요일) 계산
         LocalDateTime startDate = day.with(DayOfWeek.MONDAY).atStartOfDay();
-        LocalDateTime endDate = day.with(DayOfWeek.SUNDAY).atTime(23,59, 59);
+        LocalDateTime endDate = day.with(DayOfWeek.SUNDAY).atTime(23, 59, 59);
 
-        // 값을 가져 올 날짜 범위와 memberId로 할 일 조회
+        // 지정한 날짜 범위와 memberId로 할 일 조회
         List<Todo> getTodos = todoRepository.findAllByMemberIdAndCreateAt(memberId, startDate, endDate);
+        List<TodoResponseDTO.weekTodoDTO> weekTodoDTOS = new ArrayList<>();
 
-        AtomicInteger idx = new AtomicInteger(1);
+        // 할 일 목록을 순회하며 요일을 인덱스에 매핑
+        for (Todo todo : getTodos) {
+            int dayIndex = todo.getCreatedAt().getDayOfWeek().getValue();
+            weekTodoDTOS.add(new TodoResponseDTO.weekTodoDTO(todo.getTodoContent(), dayIndex-1));
+        }
 
-        // dto로 반환
-        return getTodos.stream().map(t ->
-                new TodoResponseDTO.weekTodoDTO(t.getTodoContent(), idx.getAndIncrement())
-        ).collect(Collectors.toList());
-
+        return weekTodoDTOS;
     }
 }

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface WeeklyGoalsRepository extends JpaRepository<WeeklyGoals, Long> {
-    @Query("select w from WeeklyGoals w where DATE(w.createdAt) = :date and w.memberId = :memberId")
-    WeeklyGoals findByMemberIdAndCreatedAt(@Param("date") LocalDate date, @Param("memberId") Long memberId);
+    @Query("select w from WeeklyGoals w where w.week = :week and w.memberId = :memberId")
+    List<WeeklyGoals> findByMemberIdAndCreatedAt(@Param("week") int week, @Param("memberId") Long memberId);
 
 }
