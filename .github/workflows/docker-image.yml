@@ -54,26 +54,6 @@ jobs:
           format: YYYYMMDD_HH-mm-ss
           utcOffset: "+09:00"
 
-      - name: Create docker-compose.yml
-        run: |
-          cat <<EOF > docker-compose.yml
-          version: '3.8'
-          services:
-            app:
-              image: "${{ steps.login-ecr.outputs.registry }}/todorian:todorian"
-              ports:
-                - "80:8080"
-              environment:
-                - SPRING_REDIS_HOST=redis
-                - SPRING_REDIS_PORT=6379
-              depends_on:
-                - redis
-            redis:
-              image: redis:latest
-              ports:
-                - "6379:6379"
-          EOF
-
       - name: Prepare Deployment Package
         run: |
           mkdir -p deploy
@@ -87,7 +67,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: ${{ secrets.EB_APP_NAME }}
           environment_name: ${{ secrets.EB_ENV_NAME }}
-          version_label: earth-docker-${{steps.current-time.outputs.formattedTime}}
+          version_label: earth-docker-${{ steps.current-time.outputs.formattedTime }}-${{ github.job }}
           region: ${{ secrets.AWS_REGION }}
           deployment_package: deploy/deploy.zip
           wait_for_environment_recovery: 200
