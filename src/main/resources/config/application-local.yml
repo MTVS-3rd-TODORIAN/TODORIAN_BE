@@ -21,7 +21,7 @@ spring:
         format_sql: true
 
 jwt:
-  secret: ${JWT.SECRET}
+  secret: ${ secrets.JWT_SECRET }
 
 logging:
   level:
