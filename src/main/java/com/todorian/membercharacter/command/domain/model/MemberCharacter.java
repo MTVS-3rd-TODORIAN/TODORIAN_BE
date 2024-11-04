@@ -23,15 +23,19 @@ public class MemberCharacter extends BaseTimeEntity {
     @Column(name="character_id")
     private long characterId;
 
+    @Column(name = "step")
+    private int step;
+
     @Column(name="growth_point")
     private int growthPoint;
 
     public MemberCharacter() {}
 
-    public MemberCharacter(long memberId, long characterId, int growthPoint) {
+    public MemberCharacter(long memberId, long characterId) {
         this.memberId = memberId;
         this.characterId = characterId;
-        this.growthPoint = growthPoint;
+        this.step = 0;
+        this.growthPoint = 0;
     }
 
     public long getMemberCharacterId() {

@@ -17,7 +17,6 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-
     public MemberResponseDTO.getMemberProfileDTO getMemberProfile(Long currentMemberId) {
 
         Member member = memberRepository.findById(currentMemberId)
