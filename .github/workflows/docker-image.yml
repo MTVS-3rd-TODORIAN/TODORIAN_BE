@@ -35,6 +35,9 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Clean generated sources
+        run: rm -rf build
+
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
