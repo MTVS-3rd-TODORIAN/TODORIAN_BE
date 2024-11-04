@@ -64,6 +64,9 @@ jobs:
               environment:
                 - SPRING_REDIS_HOST=redis
                 - SPRING_REDIS_PORT=6379
+                - DB_URL=${{ secrets.DB_URL }}
+                - DB_USERNAME=${{ secrets.DB_USERNAME }}
+                - DB_PASSWORD=${{ secrets.DB_PASSWORD }}
               depends_on:
                 - redis
             redis:
