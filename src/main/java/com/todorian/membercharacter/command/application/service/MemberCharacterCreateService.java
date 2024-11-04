@@ -22,8 +22,7 @@ public class MemberCharacterCreateService {
 
         MemberCharacter memberCharacter = new MemberCharacter(
                 memberCharacterInfo.getMemberId(),
-                memberCharacterInfo.getCharacterId(),
-                memberCharacterInfo.getGrowthPoint()
+                memberCharacterInfo.getCharacterId()
         );
 
         memberCharacterRepository.save(memberCharacter);
