@@ -18,6 +18,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -53,10 +54,30 @@ jobs:
           format: YYYYMMDD_HH-mm-ss
           utcOffset: "+09:00"
 
-      - name: Generate deployment package
+      - name: Create docker-compose.yml
+        run: |
+          cat <<EOF > docker-compose.yml
+          version: '3.8'
+          services:
+            app:
+              image: "${{ steps.login-ecr.outputs.registry }}/todorian:todorian"
+              ports:
+                - "80:8080"
+              environment:
+                - SPRING_REDIS_HOST=redis
+                - SPRING_REDIS_PORT=6379
+              depends_on:
+                - redis
+            redis:
+              image: redis:latest
+              ports:
+                - "6379:6379"
+          EOF
+
+      - name: Prepare Deployment Package
         run: |
           mkdir -p deploy
-          cp Dockerrun.aws.json deploy/Dockerrun.aws.json
+          cp docker-compose.yml deploy/docker-compose.yml
           cd deploy && zip -r deploy.zip .
 
       - name: Beanstalk Deploy

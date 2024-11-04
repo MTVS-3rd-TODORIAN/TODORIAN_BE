@@ -1,4 +1,29 @@
 spring:
-  profiles:
-    active:
-      - prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB.URL}
+    username: ${DB.USERNAME}
+    password: ${DB.PASSWORD}
+
+  application:
+    name: todorian
+
+  jpa:
+    show-sql: true
+    database: mysql
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+jwt:
+  secret: ${ secrets.JWT_SECRET }
+
+logging:
+  level:
+    '[com.todorian]': debug
+    '[org.hibernate.type]': trace
+
+server:
+  port: 8080
