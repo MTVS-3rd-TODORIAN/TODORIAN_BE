@@ -2,15 +2,12 @@ version: '3.8'
 
 services:
   app:
-    image: "${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}"
+    image: "221082200491.dkr.ecr.ap-northeast-2.amazonaws.com/todorian:todorian"
     ports:
-      - "8080:8080"
+      - "80:8080"
     environment:
       - SPRING_REDIS_HOST=redis
       - SPRING_REDIS_PORT=6379
-      - DB.URL=${DB.URL}
-      - DB.USERNAME=${DB.USERNAME}
-      - DB.PASSWORD=${DB.PASSWORD}
     depends_on:
       - redis
 
