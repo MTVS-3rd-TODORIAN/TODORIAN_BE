@@ -65,16 +65,6 @@ public class MemberCharacterController {
 
     }
 
-    @PatchMapping("/member-characters/{id}")
-    public void updateMemberCharacterById(
-            @PathVariable long id,
-            MemberCharacterUpdateRequestDTO memberCharacterInfo
-    ) {
-
-        memberCharacterUpdateService.updateMemberCharacterById(id, memberCharacterInfo);
-
-    }
-
     @DeleteMapping("/member-characters/{id}")
     public void deleteMemberCharacterById(@PathVariable long id) {
 

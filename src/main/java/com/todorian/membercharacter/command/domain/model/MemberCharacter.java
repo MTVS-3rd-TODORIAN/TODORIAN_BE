@@ -2,10 +2,13 @@ package com.todorian.membercharacter.command.domain.model;
 
 import com.todorian.BaseTimeEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name="tbl_member_character")
 public class MemberCharacter extends BaseTimeEntity {
@@ -26,48 +29,19 @@ public class MemberCharacter extends BaseTimeEntity {
     @Column(name = "step")
     private int step;
 
+    @Column
+    private int usedGrowthPoint;
+
     @Column(name="growth_point")
     private int growthPoint;
 
-    public MemberCharacter() {}
-
+    @Builder
     public MemberCharacter(long memberId, long characterId) {
         this.memberId = memberId;
         this.characterId = characterId;
         this.step = 0;
+        this.usedGrowthPoint = 0;
         this.growthPoint = 0;
-    }
-
-    public long getMemberCharacterId() {
-        return memberCharacterId;
-    }
-
-    public long getMemberId() {
-        return memberId;
-    }
-
-    public long getCharacterId() {
-        return characterId;
-    }
-
-    public int getGrowthPoint() {
-        return growthPoint;
-    }
-
-    public void setMemberCharacterId(long memberCharacterId) {
-        this.memberCharacterId = memberCharacterId;
-    }
-
-    public void setMemberId(long memberId) {
-        this.memberId = memberId;
-    }
-
-    public void setCharacterId(long characterId) {
-        this.characterId = characterId;
-    }
-
-    public void setGrowthPoint(int growthPoint) {
-        this.growthPoint = growthPoint;
     }
 
     @Override
