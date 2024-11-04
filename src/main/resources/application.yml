@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${secrets.SPRING_DATASOURCE_URL}
+    username: ${secrets.SPRING_DATASOURCE_USERNAME}
+    password: ${secrets.SPRING_DATASOURCE_PASSWORD}
   application:
     name: todorian
 
@@ -15,10 +15,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
-#  data:
-#    redis:
-#      host: localhost
-#      port: 6379
+  data:
+    redis:
+      host: ${secrets.SPRING_REDIS_HOST}
+      port: ${secrets.SPRING_REDIS_PORT}
 
 jwt:
   secret: ${ secrets.JWT_SECRET }
