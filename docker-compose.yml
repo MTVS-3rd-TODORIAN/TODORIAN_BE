@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     image: "221082200491.dkr.ecr.ap-northeast-2.amazonaws.com/todorian:todorian"
