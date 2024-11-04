@@ -45,12 +45,6 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-      - name: Create .env file
-        run: |
-          echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" > .env
-          echo "ECR_REPOSITORY=todorian" >> .env
-          echo "IMAGE_TAG=todorian" >> .env
-
       - name: Get current time
         uses: 1466587594/get-current-time@v2
         id: current-time
@@ -58,7 +52,30 @@ jobs:
           format: YYYYMMDD_HH-mm-ss
           utcOffset: "+09:00"
 
-      - name: Generate deployment package
+      - name: Create docker-compose.yml with environment variables
+        run: |
+          cat <<EOF > docker-compose.yml
+          version: '3.8'
+          services:
+            app:
+              image: "${{ steps.login-ecr.outputs.registry }}/todorian:todorian"
+              ports:
+                - "8080:8080"
+              environment:
+                - SPRING_REDIS_HOST=redis
+                - SPRING_REDIS_PORT=6379
+                - DB_URL=${{ secrets.DB_URL }}
+                - DB_USERNAME=${{ secrets.DB_USERNAME }}
+                - DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+              depends_on:
+                - redis
+            redis:
+              image: redis:latest
+              ports:
+                - "6379:6379"
+          EOF
+
+      - name: Prepare Docker Compose Deployment Package
         run: |
           mkdir -p deploy
           cp docker-compose.yml deploy/docker-compose.yml
