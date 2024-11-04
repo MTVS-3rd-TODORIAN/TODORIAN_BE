@@ -4,7 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-/build/generated/
+/build
 /src/main/java/com/todorian/Q*.java
 /src/main/resources/application.properties
 application.properties
@@ -242,10 +242,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-
-### Gradle ###
-**/build/
-!src/**/build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
