@@ -2,11 +2,18 @@ package com.todorian.character.command.application.dto;
 
 import com.todorian.character.command.domain.model.Character;
 import com.todorian.character.command.domain.model.CharacterCategory;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+import java.util.List;
+
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 public class CharacterFindResponseDTO {
 
 
@@ -23,13 +30,11 @@ public class CharacterFindResponseDTO {
     private String characterDescription;
 
     // 캐릭터 이미지 주소
-    private String characterImgsrc;
+    private List<String> characterImgsrc;
 
     private CharacterCategory characterCategory;
 
-    public CharacterFindResponseDTO() {}
-
-    public CharacterFindResponseDTO(long characterId, String characterName, int characterPrice, String characterDescription, String characterImgsrc, CharacterCategory characterCategory) {
+    public CharacterFindResponseDTO(long characterId, String characterName, int characterPrice, String characterDescription, List<String> characterImgsrc, CharacterCategory characterCategory) {
         this.characterId = characterId;
         this.characterName = characterName;
         this.characterPrice = characterPrice;
@@ -45,53 +50,5 @@ public class CharacterFindResponseDTO {
         this.characterDescription = character.getCharacterDescription();
         this.characterImgsrc = character.getCharacterImgsrc();
         this.characterCategory = character.getCharacterCategory();
-    }
-
-    public long getCharacterId() {
-        return characterId;
-    }
-
-    public void setCharacterId(long characterId) {
-        this.characterId = characterId;
-    }
-
-    public String getCharacterName() {
-        return characterName;
-    }
-
-    public void setCharacterName(String characterName) {
-        this.characterName = characterName;
-    }
-
-    public int getCharacterPrice() {
-        return characterPrice;
-    }
-
-    public void setCharacterPrice(int characterPrice) {
-        this.characterPrice = characterPrice;
-    }
-
-    public String getCharacterDescription() {
-        return characterDescription;
-    }
-
-    public void setCharacterDescription(String characterDescription) {
-        this.characterDescription = characterDescription;
-    }
-
-    public String getCharacterImgsrc() {
-        return characterImgsrc;
-    }
-
-    public void setCharacterImgsrc(String characterImgsrc) {
-        this.characterImgsrc = characterImgsrc;
-    }
-
-    public CharacterCategory getCharacterCategory() {
-        return characterCategory;
-    }
-
-    public void setCharacterCategory(CharacterCategory characterCategory) {
-        this.characterCategory = characterCategory;
     }
 }
