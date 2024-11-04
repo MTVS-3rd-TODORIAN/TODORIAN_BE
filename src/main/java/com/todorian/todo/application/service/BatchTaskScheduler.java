@@ -20,8 +20,6 @@ public class BatchTaskScheduler {
     // 1분에 한 번씩 스케줄링하여 완료된 할 일을 DB에 저장
     @Scheduled(fixedRate = 60000) // 60000ms = 1분
     public void saveCompletedTasksToDB() {
-
-        System.out.println("BatchTaskScheduler.saveCompletedTasksToDB: TODO 배치 실행");
         log.info("BatchTaskScheduler.saveCompletedTasksToDB: TODO 배치 실행");
         List<Todo> completedTasks = todoService.getCompletedTasks();
 
