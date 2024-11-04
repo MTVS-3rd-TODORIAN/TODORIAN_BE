@@ -32,6 +32,7 @@ public class SecurityConfig {
     private final JWTTokenProvider jwtTokenProvider;
 
     private static final String[] WHITE_LIST = {
+            "/**",
             "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**",
             "/h2-console/**",  // h2-console 경로 추가
             "/api/auth/**",
