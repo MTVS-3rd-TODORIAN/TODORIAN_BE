@@ -4,8 +4,8 @@ services:
     ports:
       - "80:8080"
     environment:
-      - SPRING_REDIS_HOST=${SPRING_REDIS_HOST}
-      - SPRING_REDIS_PORT=${SPRING_REDIS_PORT}
+      - SPRING_REDIS_HOST=${secrets.SPRING_REDIS_HOST}
+      - SPRING_REDIS_PORT=${secrets.SPRING_REDIS_PORT}
     depends_on:
       - redis
     networks:
@@ -13,7 +13,7 @@ services:
 
   redis:
     image: redis:latest
-    container_name: aws_beanstalk/current-app
+    container_name: redis
     ports:
       - "6379:6379"
     networks:
