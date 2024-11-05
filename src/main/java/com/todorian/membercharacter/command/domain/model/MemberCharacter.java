@@ -12,10 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name="tbl_member_character")
-@Getter
 @Setter
 @ToString
-@NoArgsConstructor
 @AllArgsConstructor
 public class MemberCharacter extends BaseTimeEntity {
 
@@ -48,15 +46,7 @@ public class MemberCharacter extends BaseTimeEntity {
         this.memberId = memberId;
         this.characterId = characterId;
         this.growthPoint = growthPoint;
- 
-    @Column(name = "step")
-    private int step;
-
-    @Column
-    private int usedGrowthPoint;
-
-    @Column(name="growth_point")
-    private int growthPoint;
+    }
 
     @Builder
     public MemberCharacter(long memberId, long characterId) {
