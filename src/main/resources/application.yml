@@ -17,7 +17,7 @@ spring:
         format_sql: true
   data:
     redis:
-      host: ${secrets.SPRING_REDIS_HOST}
+      host: ${SPRING_REDIS_HOST}
       port: 6379
 
 jwt:
