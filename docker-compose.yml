@@ -3,6 +3,7 @@ services:
     image: "221082200491.dkr.ecr.ap-northeast-2.amazonaws.com/todorian:todorian"
     ports:
       - "80:8080"
+    mem_limit: 512m
     depends_on:
       - redis
     environment:
