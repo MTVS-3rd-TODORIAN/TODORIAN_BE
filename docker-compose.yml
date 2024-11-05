@@ -2,7 +2,7 @@ services:
   app:
     image: "221082200491.dkr.ecr.ap-northeast-2.amazonaws.com/todorian:todorian"
     ports:
-      - "80:8080"
+      - "8080:8080"
     environment:
       - SPRING_REDIS_HOST=${secrets.SPRING_DATA_REDIS_HOST}
       - SPRING_REDIS_PORT=${secrets.SPRING_DATA_REDIS_PORT}
