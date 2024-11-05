@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url:
-    username:
-    password:
+    url: ${DB.URL}
+    username: ${DB.USERNAME}
+    password: ${DB.PASSWORD}
 
   application:
     name: todorian
@@ -24,3 +24,6 @@ logging:
   level:
     '[com.todorian]': debug
     '[org.hibernate.type]': trace
+
+server:
+  port: 8080

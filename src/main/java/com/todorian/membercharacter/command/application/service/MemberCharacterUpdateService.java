@@ -27,7 +27,6 @@ public class MemberCharacterUpdateService {
         this.memberCharacterRepository = memberCharacterRepository;
         this.characterRepository = characterRepository;
     }
-
 //    @Transactional
 //    public void updateMemberCharacterById(long id, MemberCharacterUpdateRequestDTO memberCharacterInfo){
 //

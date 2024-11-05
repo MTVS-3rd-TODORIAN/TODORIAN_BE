@@ -3,8 +3,8 @@ package com.todorian.weeklygoals.command.application.controller;
 import com.todorian._core.utils.ApiUtils;
 import com.todorian._core.utils.SecurityUtils;
 import com.todorian.weeklygoals.command.application.dto.WeeklyGoalsRequestDTO;
-import com.todorian.weeklygoals.command.application.dto.WeeklyGoalsResponseDTO;
 import com.todorian.weeklygoals.command.application.service.WeeklyGoalsService;
+import com.todorian.weeklygoals.command.domain.model.WeeklyGoals;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,13 +29,13 @@ public class WeeklyGoalsController {
         } catch (DateTimeParseException e) {
             return ResponseEntity.badRequest().body(ApiUtils.error("날짜 형식이 잘못되었습니다."));
         }
-        String content = weeklyGoalsService.findWeeklyGoals(selectedDay, SecurityUtils.getCurrentMemberId());
-        return ResponseEntity.ok().body(ApiUtils.success(content));
+        ArrayList<String> contents = weeklyGoalsService.findWeeklyGoals(selectedDay, SecurityUtils.getCurrentMemberId());
+        return ResponseEntity.ok().body(ApiUtils.success(contents));
     }
 
     @PostMapping("/weekly/save")
     public ResponseEntity<?> saveWeeklyGoals(@RequestBody WeeklyGoalsRequestDTO.createDTO dto) {
-        weeklyGoalsService.save(dto, SecurityUtils.getCurrentMemberId());
-        return ResponseEntity.ok().body(ApiUtils.success("주간 목표가 저장되었습니다."));
+        WeeklyGoals save = weeklyGoalsService.save(dto, SecurityUtils.getCurrentMemberId());
+        return ResponseEntity.ok().body(ApiUtils.success(save));
     }
 }

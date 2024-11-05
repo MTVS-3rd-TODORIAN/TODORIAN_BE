@@ -65,9 +65,9 @@ public class TodoController {
 
     @PostMapping("/todo/save")
     public ResponseEntity<?> save(@RequestBody TodoRequestDTO.saveTodoDTO dto) {
-        todoService.save(dto, getCurrentMemberId());
+        Todo save = todoService.save(dto, getCurrentMemberId());
         return ResponseEntity.ok()
-                .body(ApiUtils.success("할 일이 성공적으로 저장되었습니다."));
+                .body(ApiUtils.success(save));
     }
     // 주간 페이지 날짜 별 할일 목록
 

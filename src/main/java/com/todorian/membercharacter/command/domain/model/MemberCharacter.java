@@ -3,10 +3,13 @@ package com.todorian.membercharacter.command.domain.model;
 import com.todorian.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name="tbl_member_character")
 @Getter
@@ -45,5 +48,22 @@ public class MemberCharacter extends BaseTimeEntity {
         this.memberId = memberId;
         this.characterId = characterId;
         this.growthPoint = growthPoint;
+ 
+    @Column(name = "step")
+    private int step;
+
+    @Column
+    private int usedGrowthPoint;
+
+    @Column(name="growth_point")
+    private int growthPoint;
+
+    @Builder
+    public MemberCharacter(long memberId, long characterId) {
+        this.memberId = memberId;
+        this.characterId = characterId;
+        this.step = 0;
+        this.usedGrowthPoint = 0;
+        this.growthPoint = 0;
     }
 }
