@@ -1,102 +1,34 @@
 package com.todorian.membercharacter.command.application.dto;
 
 import com.todorian.membercharacter.command.domain.model.MemberCharacter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class MemberCharacterFindResponseDTO {
-    private long memberCharacterId;
-    private long memberId;
-    private long characterId;
-    private int growthPoint;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedDate;
 
-    public MemberCharacterFindResponseDTO() {}
+    private Long characterId;
+    private Integer step;
+    private Integer usedGrowthPoint;
+    private Integer growthPoint;
+    private Boolean completedStatus;
+    private List<String> characterImgsrc;
 
-    public MemberCharacterFindResponseDTO(
-            long memberCharacterId,
-            long memberId,
-            long characterId,
-            int growthPoint,
-            LocalDateTime createdAt,
-            LocalDateTime updatedDate
-    ) {
-        this.memberCharacterId = memberCharacterId;
-        this.memberId = memberId;
-        this.characterId = characterId;
-        this.growthPoint = growthPoint;
-        this.createdAt = createdAt;
-        this.updatedDate = updatedDate;
+    public MemberCharacterFindResponseDTO(Object[] result){
+
+        this.characterId = (Long) result[0];
+        this.step = (Integer) result[1];
+        this.usedGrowthPoint = (Integer) result[2];
+        this.growthPoint = (Integer) result[2];
+        this.completedStatus = (Boolean) result[3];
+        this.characterImgsrc = (List<String>) result[4];
     }
 
-    public MemberCharacterFindResponseDTO(MemberCharacter memberCharacter) {
-        this.memberCharacterId = memberCharacter.getMemberCharacterId();
-        this.memberId = memberCharacter.getMemberId();
-        this.characterId = memberCharacter.getCharacterId();
-        this.growthPoint = memberCharacter.getGrowthPoint();
-        this.createdAt = memberCharacter.getCreatedAt();
-        this.updatedDate = memberCharacter.getUpdatedDate();
-    }
-
-    public long getMemberCharacterId() {
-        return memberCharacterId;
-    }
-
-    public void setMemberCharacterId(long memberCharacterId) {
-        this.memberCharacterId = memberCharacterId;
-    }
-
-    public long getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(long memberId) {
-        this.memberId = memberId;
-    }
-
-    public long getCharacterId() {
-        return characterId;
-    }
-
-    public void setCharacterId(long characterId) {
-        this.characterId = characterId;
-    }
-
-    public int getGrowthPoint() {
-        return growthPoint;
-    }
-
-    public void setGrowthPoint(int growthPoint) {
-        this.growthPoint = growthPoint;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(LocalDateTime updatedDate) {
-        this.updatedDate = updatedDate;
-    }
-
-    @Override
-    public String toString() {
-        return "MemberCharacterFindResponseDTO{" +
-                "memberCharacterId=" + memberCharacterId +
-                ", memberId=" + memberId +
-                ", characterId=" + characterId +
-                ", growthPoint=" + growthPoint +
-                ", createdAt=" + createdAt +
-                ", updatedDate=" + updatedDate +
-                '}';
-    }
 }
