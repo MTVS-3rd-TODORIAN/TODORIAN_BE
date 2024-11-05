@@ -55,4 +55,8 @@ public class MemberCharacterFindService {
 
         return currentMemberCharacter;
     }
+
+    public MemberCharacter findOneMemberCharacter(Long memberId) {
+        return memberCharacterRepository.findOneByMemberId(memberId);
+    }
 }
