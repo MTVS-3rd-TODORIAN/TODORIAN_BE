@@ -18,7 +18,7 @@ spring:
   data:
     redis:
       host: ${secrets.SPRING_DATA_REDIS_HOST}
-      port: ${secrets.SPRINT_DATA_REDIS_PORT}
+      port: ${secrets.SPRING_DATA_REDIS_PORT}
 
 jwt:
   secret: ${ secrets.JWT_SECRET }
