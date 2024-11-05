@@ -1,9 +1,7 @@
 #!/bin/bash
-
-# 모든 기존 컨테이너와 네트워크를 정리
-echo "Stopping and removing all containers and networks..."
-docker compose down
-
-# 새로운 컨테이너와 네트워크를 생성
-echo "Starting docker-compose up..."
-docker compose up -d
+# 기존 redis 컨테이너 중지 및 제거
+# shellcheck disable=SC2046
+if [ $(docker ps -q -f name=redis) ]; then
+  docker stop redis
+  docker rm redis
+fi
