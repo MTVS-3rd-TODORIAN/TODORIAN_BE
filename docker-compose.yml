@@ -6,11 +6,12 @@ services:
     depends_on:
       - redis
     environment:
-      - SPRING_DATASOURCE_URL=$${SPRING_DATASOURCE_URL}
-      - SPRING_DATASOURCE_USERNAME=$${SPRING_DATASOURCE_USERNAME}
-      - SPRING_DATASOURCE_PASSWORD=$${SPRING_DATASOURCE_PASSWORD}
-      - SPRING_DATA_REDIS_HOST=$${SPRING_DATA_REDIS_HOST}
-      - SPRING_DATA_REDIS_PORT=$${SPRING_DATA_REDIS_PORT}
+      - SPRING_DATASOURCE_URL=jdbc:mysql://awseb-e-a7gjdqggpy-stack-awsebrdsdatabase-finezinwjjmp.cpiycgkkk147.ap-northeast-2.rds.amazonaws.com:3306/TODORIAN
+      - SPRING_DATASOURCE_USERNAME=todorian
+      - SPRING_DATASOURCE_PASSWORD=todorian
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+      - JWT_SECRET=8704b6707c11f6225d354c624a41212651b1c8357ef609ecb42688d3a25ac4bdea3b92accfd5acc4108a53eb44f36caf0941c80616967e503e17e251ef078ba9
     networks:
       - app-network
 
