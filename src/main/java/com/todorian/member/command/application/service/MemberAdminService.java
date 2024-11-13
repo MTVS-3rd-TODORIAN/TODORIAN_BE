@@ -7,6 +7,7 @@ import com.todorian.member.command.application.dto.MemberRequestDTO;
 import com.todorian.member.command.application.dto.MemberResponseDTO;
 import com.todorian.member.command.domain.model.Member;
 import com.todorian.member.command.domain.model.property.Authority;
+import com.todorian.member.command.domain.model.property.Status;
 import com.todorian.member.command.domain.repository.MemberRepository;
 import com.todorian.redis.domain.RefreshToken;
 import com.todorian.redis.repository.RefreshTokenRedisRepository;
@@ -46,7 +47,7 @@ public class MemberAdminService {
         checkValidPassword(requestDTO.password(), member.getPassword());
 
         // 3. 회원 권한 확인
-        checkAdminAuthority(member);
+        validateAdmin(member);
 
         return getAuthTokenDTO(requestDTO.email(), requestDTO.password());
     }
@@ -85,11 +86,23 @@ public class MemberAdminService {
         }
     }
 
-    // 회원 권한 확인
-    private void checkAdminAuthority(Member member) {
+    // 계정 유효성 검사
+    private void validateAdmin(Member member) {
+        checkMemberStatus(member.getStatus());
+        checkMemberAuthority(member.getAuthority());
+    }
 
-        if(member.getAuthority() != Authority.ADMIN) {
-            throw new Exception403("관리자 권한이 없는 계정입니다.");
+    // 계정 상태 확인
+    private void checkMemberStatus(Status status) {
+        if (status != Status.ACTIVE) {
+            throw new Exception400("해당 계정을 사용하실 수 없습니다.");
+        }
+    }
+
+    // 계정 권한 확인
+    private void checkMemberAuthority(Authority authority) {
+        if (authority != Authority.ADMIN) {
+            throw new Exception403("해당 계정은 관리 권한이 없습니다.");
         }
     }
 }
