@@ -1,11 +1,8 @@
-package com.todorian.todo.point.command.application.domain;
+package com.todorian.todo.point.command.domain.model;
 
 import com.todorian.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Entity
@@ -17,6 +14,7 @@ public class TodoPoint extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     // TODO: Todo 난이도에 대한 비율 산정 (난이도가 없어서 구현 불가)
+    @Setter
     @Column
     private Integer ratio;
 

@@ -1,4 +1,4 @@
-package com.todorian.todo.point.command.application.domain;
+package com.todorian.todo.point.command.domain.model;
 
 import com.todorian.BaseTimeEntity;
 import jakarta.persistence.*;
