@@ -21,12 +21,27 @@ public class TodoPointCommandService {
      */
     public Integer patchTodoPointRatio(Integer ratio) {
 
-        TodoPoint todoPoint = todoPointCommandRepository.findFirstByOrderByUpdatedDate()
+        TodoPoint previousTodoPoint = todoPointCommandRepository.findFirstByOrderByCreatedAt()
                 .orElseThrow(() -> new Exception400("설정된 행동 포인트 정산 비율이 없습니다."));
 
-        todoPoint.setRatio(ratio);
+        TodoPoint todoPoint = newTodoPoint(previousTodoPoint.getCurrentRatio(), ratio);
         todoPointCommandRepository.save(todoPoint);
 
-        return ratio;
+        return todoPoint.getCurrentRatio();
+    }
+
+    /*
+        TodoPoint History 생성
+     */
+    public void createTodoPointHistory() {
+
+    }
+
+    // TodoPoint 생성
+    protected TodoPoint newTodoPoint(Integer previousRatio, Integer newRatio) {
+        return TodoPoint.builder()
+                .previousRatio(previousRatio)
+                .currentRatio(newRatio)
+                .build();
     }
 }

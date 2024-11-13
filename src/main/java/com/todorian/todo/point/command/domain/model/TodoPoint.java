@@ -13,13 +13,14 @@ public class TodoPoint extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    // TODO: Todo 난이도에 대한 비율 산정 (난이도가 없어서 구현 불가)
-    @Setter
     @Column
-    private Integer ratio;
+    private Integer previousRatio;
+    @Column
+    private Integer currentRatio;
 
     @Builder
-    public TodoPoint(Integer ratio) {
-        this.ratio = ratio;
+    public TodoPoint(Integer previousRatio, Integer currentRatio) {
+        this.previousRatio = previousRatio;
+        this.currentRatio = currentRatio;
     }
 }

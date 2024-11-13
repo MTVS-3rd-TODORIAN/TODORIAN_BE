@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface TodoPointCommandRepository extends JpaRepository<TodoPoint, Long> {
 
-    @Query("SELECT t FROM TodoPoint t ORDER BY t.updatedDate DESC")
-    Optional<TodoPoint> findFirstByOrderByUpdatedDate();
+    @Query("SELECT t FROM TodoPoint t ORDER BY t.createdAt DESC")
+    Optional<TodoPoint> findFirstByOrderByCreatedAt();
 }
