@@ -4,13 +4,10 @@ import com.todorian._core.utils.ApiUtils;
 import com.todorian.admin.command.application.dto.AdminCommandRequestDTO;
 import com.todorian.admin.command.application.dto.AdminCommandResponseDTO;
 import com.todorian.admin.command.application.service.AdminCommandService;
-import com.todorian.member.command.application.dto.MemberRequestDTO;
-import com.todorian.member.command.application.dto.MemberResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,16 +21,13 @@ public class AdminCommandController {
     private final AdminCommandService adminCommandService;
 
     /*
-        관리자 로그인
+        ToddPoint Ratio 변경
      */
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AdminCommandRequestDTO.authDTO requestDTO) {
+    @PutMapping("/todo-point")
+    public ResponseEntity<?> patchTodoPointRatio(@RequestBody AdminCommandRequestDTO.patchTodoPointRatioDTO requestDTO) {
 
-        AdminCommandResponseDTO.authTokenDTO responseDTO = adminCommandService.login(requestDTO);
+        AdminCommandResponseDTO.patchTodoPointRatioDTO responseDTO = adminCommandService.patchTodoPointRatio(requestDTO);
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, responseDTO.grantType() + " " + responseDTO.accessToken())
-                .header("Refresh-Token", responseDTO.grantType() + " " + responseDTO.refreshToken())
-                .body(ApiUtils.success(null));
+        return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
 }
