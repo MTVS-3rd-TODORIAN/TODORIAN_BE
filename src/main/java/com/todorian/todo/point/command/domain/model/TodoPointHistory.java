@@ -18,13 +18,7 @@ public class TodoPointHistory extends BaseTimeEntity {
     private Long id;
 
     @Column
-    private Integer previousRatio;
+    private Long memberId;
     @Column
-    private Integer currentRatio;
-
-    @Builder
-    public TodoPointHistory(Integer previousRatio, Integer currentRatio) {
-        this.previousRatio = previousRatio;
-        this.currentRatio = currentRatio;
-    }
+    private Long todoPointId;
 }

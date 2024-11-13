@@ -13,6 +13,10 @@ public class TodoPoint extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private TodoPointType todoPointType;
     @Column
     private Integer previousRatio;
     @Column
