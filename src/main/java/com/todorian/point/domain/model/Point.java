@@ -19,5 +19,7 @@ public class Point extends BaseTimeEntity {
     private Integer pointQuantity;
 
     @Builder
-
+    public Point(Integer pointQuantity) {
+        this.pointQuantity = pointQuantity;
+    }
 }
