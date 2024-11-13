@@ -15,15 +15,9 @@ public class Point extends BaseTimeEntity {
     @Column(name = "POINT_ID")
     private Long pointId;
 
-    @Column(name = "POINT_CONTENT")
-    private String pointContent;
-
-    @Column(name = "MEMBER_ID")
-    private Long memberId;
+    @Column(name = "POINT_QUANTITY")
+    private Integer pointQuantity;
 
     @Builder
-    public Point(String pointContent, Long memberId) {
-        this.pointContent = pointContent;
-        this.memberId = memberId;
-    }
+
 }
