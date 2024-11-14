@@ -24,9 +24,9 @@ public class TodoPointCommandService {
     /*
         TodoPoint Ratio 변경
      */
-    public Integer patchTodoPointRatio(Integer ratio) {
+    public Integer patchTodoPointRatio(TodoPointType todoPointType, Integer ratio) {
 
-        TodoPoint previousTodoPoint = todoPointCommandRepository.findFirstByOrderByCreatedAt()
+        TodoPoint previousTodoPoint = todoPointCommandRepository.findFirstByTodoPointTypeOrderByCreatedAt(todoPointType)
                 .orElseThrow(() -> new Exception400("설정된 행동 포인트 정산 비율이 없습니다."));
 
         TodoPoint todoPoint = newTodoPoint(previousTodoPoint.getCurrentRatio(), ratio);

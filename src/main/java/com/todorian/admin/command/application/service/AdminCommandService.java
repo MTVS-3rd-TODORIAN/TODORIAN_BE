@@ -3,6 +3,7 @@ package com.todorian.admin.command.application.service;
 import com.todorian.admin.command.application.dto.AdminCommandRequestDTO;
 import com.todorian.admin.command.application.dto.AdminCommandResponseDTO;
 import com.todorian.todo.point.command.application.service.TodoPointCommandService;
+import com.todorian.todo.point.command.domain.model.TodoPointType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class AdminCommandService {
      */
     public AdminCommandResponseDTO.patchTodoPointRatioDTO patchTodoPointRatio(AdminCommandRequestDTO.patchTodoPointRatioDTO requestDTO) {
 
-        Integer ratio = todoPointCommandService.patchTodoPointRatio(requestDTO.ratio());
+        Integer ratio = todoPointCommandService.patchTodoPointRatio(TodoPointType.fromString(requestDTO.todoPointType()), requestDTO.ratio());
 
         return new AdminCommandResponseDTO.patchTodoPointRatioDTO(
                 ratio
