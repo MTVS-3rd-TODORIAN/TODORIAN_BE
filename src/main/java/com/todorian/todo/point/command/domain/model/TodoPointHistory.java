@@ -21,4 +21,13 @@ public class TodoPointHistory extends BaseTimeEntity {
     private Long memberId;
     @Column
     private Long todoPointId;
+    @Column
+    private UsageType usageType;
+
+    @Builder
+    public TodoPointHistory(Long memberId, Long todoPointId, UsageType usageType) {
+        this.memberId = memberId;
+        this.todoPointId = todoPointId;
+        this.usageType = usageType;
+    }
 }
