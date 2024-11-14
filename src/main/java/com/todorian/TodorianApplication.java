@@ -5,6 +5,7 @@ import com.todorian.member.command.domain.model.Member;
 import com.todorian.member.command.domain.model.property.SocialType;
 import com.todorian.member.command.domain.model.property.Status;
 import com.todorian.member.command.domain.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,18 +31,32 @@ public class TodorianApplication {
     CommandLineRunner localServerStart(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             memberRepository.saveAll(Arrays.asList(
-                newMember("test@test.com", "test1234!", passwordEncoder)
+                newMember("Dorian", "test@test.com", "test1234", passwordEncoder),
+                newMember("During", "test1@test.com", "test1234!", passwordEncoder),
+                newMember("weed", "weed@weed", "weed12", passwordEncoder),
+                newAdmin("INUK", "admin@test.com", "test1234", passwordEncoder)
             ));
         };
     }
 
-    private Member newMember(String email, String password, PasswordEncoder passwordEncoder) {
+    private Member newMember(String nickName, String email, String password, PasswordEncoder passwordEncoder) {
         return Member.builder()
-                .nickName("Dorian")
+                .nickName(nickName)
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .socialType(SocialType.NONE)
                 .authority(Authority.USER)
+                .status(Status.ACTIVE)
+                .build();
+    }
+
+    private Member newAdmin(String nickName, String email, String password, PasswordEncoder passwordEncoder) {
+        return Member.builder()
+                .nickName(nickName)
+                .email(email)
+                .password(passwordEncoder.encode(password))
+                .socialType(SocialType.NONE)
+                .authority(Authority.ADMIN)
                 .status(Status.ACTIVE)
                 .build();
     }

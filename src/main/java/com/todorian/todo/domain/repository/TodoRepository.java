@@ -15,4 +15,12 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     // 특정 날짜의 Todo 조회
     @Query("SELECT t FROM Todo t WHERE DATE(t.createdAt) = :date AND t.memberId = :memberId")
     List<Todo> findByCreateAtDateAndMemberId(@Param("date") LocalDate date, @Param("memberId") Long memberId);
+
+    // 한 주 단위의 할 일 데이터
+    @Query("select t from Todo t where t.memberId = :memberId and t.createdAt between :startDate and :endDate")
+    List<Todo> findAllByMemberIdAndCreateAt(
+            @Param("memberId") Long memberId,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
+    );
 }

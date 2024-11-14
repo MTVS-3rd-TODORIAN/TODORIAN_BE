@@ -1,5 +1,7 @@
 package com.todorian.membercharacter.command.application.controller;
 
+import com.todorian._core.utils.ApiUtils;
+import com.todorian._core.utils.SecurityUtils;
 import com.todorian.membercharacter.command.application.dto.MemberCharacterCreateRequestDTO;
 import com.todorian.membercharacter.command.application.dto.MemberCharacterFindResponseDTO;
 import com.todorian.membercharacter.command.application.dto.MemberCharacterUpdateRequestDTO;
@@ -7,9 +9,12 @@ import com.todorian.membercharacter.command.application.service.MemberCharacterC
 import com.todorian.membercharacter.command.application.service.MemberCharacterDeleteService;
 import com.todorian.membercharacter.command.application.service.MemberCharacterFindService;
 import com.todorian.membercharacter.command.application.service.MemberCharacterUpdateService;
+import com.todorian.membercharacter.command.domain.model.MemberCharacter;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,24 +43,37 @@ public class MemberCharacterController {
         this.memberCharacterDeleteService = memberCharacterDeleteService;
     }
 
+//    public List<MemberCharacterFindResponseDTO> findAllMemberCharacters() {
+//
+//        List<MemberCharacterFindResponseDTO> foundMemberCharacters;
+//
+//        foundMemberCharacters = memberCharacterFindService.findAllMemberCharacters();
+//
+//        return foundMemberCharacters;
+//    }
+
     @GetMapping("/member-characters")
-    public List<MemberCharacterFindResponseDTO> findAllMemberCharacters() {
+    public List<MemberCharacterFindResponseDTO> findMemberCharactersByMemberId() {
 
-        List<MemberCharacterFindResponseDTO> foundMemberCharacters;
+        Long memberId = SecurityUtils.getCurrentMemberId();
 
-        foundMemberCharacters = memberCharacterFindService.findAllMemberCharacters();
+        List<MemberCharacterFindResponseDTO> foundMemberCharacter;
 
-        return foundMemberCharacters;
-    }
-
-    @GetMapping("/member-characters/{id}")
-    public MemberCharacterFindResponseDTO findMemberCharacterById(@PathVariable long id) {
-
-        MemberCharacterFindResponseDTO foundMemberCharacter;
-
-        foundMemberCharacter = memberCharacterFindService.findMemberCharacterById(id);
+        foundMemberCharacter
+                = memberCharacterFindService.findMemberCharactersByMemberId(memberId);
 
         return foundMemberCharacter;
+    }
+
+    @GetMapping("/member-characters/current-member-character")
+    public MemberCharacterFindResponseDTO findCurrentMemberCharacterByMemberId(){
+
+        Long memberId = SecurityUtils.getCurrentMemberId();
+
+        MemberCharacterFindResponseDTO currentMemberCharacter
+                = memberCharacterFindService.findCurrentMemberCharacterByMemberId(memberId);
+
+        return currentMemberCharacter;
     }
 
     @PostMapping("/member-characters")
@@ -71,7 +89,7 @@ public class MemberCharacterController {
             MemberCharacterUpdateRequestDTO memberCharacterInfo
     ) {
 
-        memberCharacterUpdateService.updateMemberCharacterById(id, memberCharacterInfo);
+        // memberCharacterUpdateService.updateMemberCharacterById(id, memberCharacterInfo);
 
     }
 
@@ -80,5 +98,20 @@ public class MemberCharacterController {
 
         memberCharacterDeleteService.deleteMemberCharacterById(id);
 
+    }
+
+    @PutMapping("/member-characters/using-growth-point")
+    public void useGrowthPoint(){
+        Long memberId = SecurityUtils.getCurrentMemberId();
+
+        MemberCharacter memberCharacter = memberCharacterFindService.findMemberCharacterById(memberId);
+
+        memberCharacterUpdateService.useGrowthPoint(memberCharacter);
+    }
+
+    @GetMapping("/member-character/find-one")
+    public ResponseEntity<?> findOneMemberCharacterById() {
+        MemberCharacter oneMemberCharacter = memberCharacterFindService.findOneMemberCharacter(SecurityUtils.getCurrentMemberId());
+        return ResponseEntity.ok(ApiUtils.success(oneMemberCharacter));
     }
 }

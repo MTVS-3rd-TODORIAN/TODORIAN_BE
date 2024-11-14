@@ -7,6 +7,7 @@ import com.todorian.membercharacter.command.domain.repository.MemberCharacterRep
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -19,19 +20,43 @@ public class MemberCharacterFindService {
         this.memberCharacterRepository = memberCharacterRepository;
     }
 
-    public List<MemberCharacterFindResponseDTO> findAllMemberCharacters(){
+//    public List<MemberCharacterFindResponseDTO> findAllMemberCharacters(){
+//
+//        List<MemberCharacterFindResponseDTO> memberCharacterList
+//                = memberCharacterRepository.findAll()
+//                .stream()
+//                .map(MemberCharacterFindResponseDTO::new)
+//                .toList();
+//
+//        return memberCharacterList;
+//    }
 
-        List<MemberCharacterFindResponseDTO> memberCharacterList
-                = memberCharacterRepository.findAll()
-                .stream()
-                .map(MemberCharacterFindResponseDTO::new)
-                .toList();
+    public MemberCharacter findMemberCharacterById(long id){
+        return memberCharacterRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+
+    }
+
+    public List<MemberCharacterFindResponseDTO> findMemberCharactersByMemberId(Long memberId) {
+
+        List<MemberCharacterFindResponseDTO> memberCharacterList =
+                memberCharacterRepository
+                        .findMemberCharactersByMemberId(memberId)
+                        .stream()
+                        .map(MemberCharacterFindResponseDTO::new)
+                        .toList();
 
         return memberCharacterList;
     }
 
-    public MemberCharacterFindResponseDTO findMemberCharacterById(long id){
-        return new MemberCharacterFindResponseDTO(memberCharacterRepository.findById(id).orElseThrow(IllegalArgumentException::new));
+    public MemberCharacterFindResponseDTO findCurrentMemberCharacterByMemberId(Long memberId) {
 
+        MemberCharacterFindResponseDTO currentMemberCharacter =
+                new MemberCharacterFindResponseDTO(memberCharacterRepository.findCurrentMemberCharacterByMemberId(memberId));
+
+        return currentMemberCharacter;
+    }
+
+    public MemberCharacter findOneMemberCharacter(Long memberId) {
+        return memberCharacterRepository.findOneByMemberId(memberId);
     }
 }

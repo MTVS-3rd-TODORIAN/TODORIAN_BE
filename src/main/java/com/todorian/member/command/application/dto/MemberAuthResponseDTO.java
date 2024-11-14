@@ -6,16 +6,6 @@ import java.time.LocalDateTime;
 
 public class MemberAuthResponseDTO {
 
-    // 토큰 발급
-    public record authTokenDTO(
-            String grantType,
-            String accessToken,
-            Long accessTokenValidTime,
-            String refreshToken,
-            Long refreshTokenValidTime
-    ) {
-    }
-
     // Kakao Token
     public record KakaoTokenDTO(
             @JsonProperty("token_type")

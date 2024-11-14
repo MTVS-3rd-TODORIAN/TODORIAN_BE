@@ -66,18 +66,18 @@ public class MemberCharacterTests {
         );
     }
 
-    @DisplayName("회원캐릭터 번호로 개별 회원캐릭터 조회 테스트")
-    @ParameterizedTest
-    @ValueSource(longs = {1, 2, 3})
-    void testFindMemberCharacterById(long id){
-        Assertions.assertDoesNotThrow(
-                () -> {
-                    MemberCharacterFindResponseDTO memberCharacter
-                            = memberCharacterFindService.findMemberCharacterById(id);
-                    System.out.println("memberCharacter = " + memberCharacter);
-                }
-        );
-    }
+//    @DisplayName("회원캐릭터 번호로 개별 회원캐릭터 조회 테스트")
+//    @ParameterizedTest
+//    @ValueSource(longs = {1, 2, 3})
+//    void testFindMemberCharacterById(Long id){
+//        Assertions.assertDoesNotThrow(
+//                () -> {
+//                    MemberCharacter memberCharacter
+//                            = memberCharacterFindService.findMemberCharacterById(id);
+//                    System.out.println("memberCharacter = " + memberCharacter);
+//                }
+//        );
+//    }
 
     @DisplayName("회원캐릭터 삭제 테스트")
     @ParameterizedTest

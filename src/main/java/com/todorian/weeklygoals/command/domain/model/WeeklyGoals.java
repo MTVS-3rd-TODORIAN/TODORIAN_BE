@@ -19,16 +19,15 @@ public class WeeklyGoals extends BaseTimeEntity {
     private Long id;
 
     private String content;
-    private String week;
-    @ColumnDefault("'N'")
-    private String successYN;
+    private int week;
+    private boolean completed;
     private Long memberId;
 
     @Builder
-    public WeeklyGoals(String content, String week, String successYN, Long memberId) {
+    public WeeklyGoals(String content, int week, boolean completed, Long memberId) {
         this.content = content;
         this.week = week;
-        this.successYN = successYN;
+        this.completed = completed;
         this.memberId = memberId;
     }
 }

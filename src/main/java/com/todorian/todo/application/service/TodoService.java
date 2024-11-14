@@ -1,16 +1,19 @@
 package com.todorian.todo.application.service;
 
+import com.todorian.todo.application.dto.TodoRequestDTO;
+import com.todorian.todo.application.dto.TodoResponseDTO;
 import com.todorian.todo.domain.model.Todo;
 import com.todorian.todo.domain.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -45,5 +48,42 @@ public class TodoService {
 
     public List<Todo> findAllByMemberIdAndCreateAt(Long memberId, LocalDate selectedDay) {
         return todoRepository.findByCreateAtDateAndMemberId(selectedDay, memberId);
+    }
+    // 2L 아이디로 할 일 저장(테스트용)
+    public void save2L(Todo requestTodo) {
+        Todo todo = Todo.builder()
+                .todoContent(requestTodo.getTodoContent())
+                .memberId(4L)
+                .build();
+        todoRepository.save(todo);
+    }
+
+    // 할 일 저장
+    public Todo save(TodoRequestDTO.saveTodoDTO dto, Long memberId) {
+        Todo todo = Todo.builder()
+                .todoContent(dto.todoContent())
+                .memberId(memberId)
+                .completed(false)
+                .build();
+        todoRepository.save(todo);
+        return todo;
+    }
+
+    public List<TodoResponseDTO.weekTodoDTO> getWeekTodoContents(Long memberId, LocalDate day) {
+        // 해당 주의 시작 날짜(월요일)와 종료 날짜(일요일) 계산
+        LocalDateTime startDate = day.with(DayOfWeek.MONDAY).atStartOfDay();
+        LocalDateTime endDate = day.with(DayOfWeek.SUNDAY).atTime(23, 59, 59);
+
+        // 지정한 날짜 범위와 memberId로 할 일 조회
+        List<Todo> getTodos = todoRepository.findAllByMemberIdAndCreateAt(memberId, startDate, endDate);
+        List<TodoResponseDTO.weekTodoDTO> weekTodoDTOS = new ArrayList<>();
+
+        // 할 일 목록을 순회하며 요일을 인덱스에 매핑
+        for (Todo todo : getTodos) {
+            int dayIndex = todo.getCreatedAt().getDayOfWeek().getValue();
+            weekTodoDTOS.add(new TodoResponseDTO.weekTodoDTO(todo.getTodoContent(), dayIndex-1));
+        }
+
+        return weekTodoDTOS;
     }
 }

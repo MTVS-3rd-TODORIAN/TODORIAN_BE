@@ -2,31 +2,45 @@ package com.todorian.membercharacter.command.domain.model;
 
 import com.todorian.BaseTimeEntity;
 import jakarta.persistence.*;
+import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name="tbl_member_character")
+@Setter
+@ToString
+@AllArgsConstructor
 public class MemberCharacter extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="member_character_id")
-    private long memberCharacterId;
+    private Long memberCharacterId;
 
     @Column(name="member_id")
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name="member_id")
-    private long memberId;
+    private Long memberId;
 
     @Column(name="character_id")
-    private long characterId;
+    private Long characterId;
+
+    @Column(name="step")
+    private Integer step;
+
+    @Column(name="used_growth_point")
+    private Integer usedGrowthPoint;
 
     @Column(name="growth_point")
-    private int growthPoint;
+    private Integer growthPoint;
 
-    public MemberCharacter() {}
+    @Column(name="completed_status")
+    private Boolean completedStatus;
 
     public MemberCharacter(long memberId, long characterId, int growthPoint) {
         this.memberId = memberId;
@@ -34,45 +48,12 @@ public class MemberCharacter extends BaseTimeEntity {
         this.growthPoint = growthPoint;
     }
 
-    public long getMemberCharacterId() {
-        return memberCharacterId;
-    }
-
-    public long getMemberId() {
-        return memberId;
-    }
-
-    public long getCharacterId() {
-        return characterId;
-    }
-
-    public int getGrowthPoint() {
-        return growthPoint;
-    }
-
-    public void setMemberCharacterId(long memberCharacterId) {
-        this.memberCharacterId = memberCharacterId;
-    }
-
-    public void setMemberId(long memberId) {
+    @Builder
+    public MemberCharacter(long memberId, long characterId) {
         this.memberId = memberId;
-    }
-
-    public void setCharacterId(long characterId) {
         this.characterId = characterId;
-    }
-
-    public void setGrowthPoint(int growthPoint) {
-        this.growthPoint = growthPoint;
-    }
-
-    @Override
-    public String toString() {
-        return "MemberCharacter{" +
-                "memberCharacterId=" + memberCharacterId +
-                ", memberId=" + memberId +
-                ", characterId=" + characterId +
-                ", growthPoint=" + growthPoint +
-                '}';
+        this.step = 0;
+        this.usedGrowthPoint = 0;
+        this.growthPoint = 0;
     }
 }

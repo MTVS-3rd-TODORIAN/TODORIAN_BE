@@ -38,13 +38,13 @@ public class CharacterController {
         this.characterDeleteService = characterDeleteService;
     }
 
-    @GetMapping("/characters")
-    public List<CharacterFindResponseDTO> findAllCharacters(){
-
-        List<CharacterFindResponseDTO> foundCharacters = characterFindService.findAllCharacters();
-
-        return foundCharacters;
-    }
+//    @GetMapping("/characters")
+//    public List<CharacterFindResponseDTO> findAllCharacters(){
+//
+//        List<CharacterFindResponseDTO> foundCharacters = characterFindService.findAllCharacters();
+//
+//        return foundCharacters;
+//    }
 
     @GetMapping("/characters/{id}")
     public CharacterFindResponseDTO findCharacterById(@PathVariable long id){
