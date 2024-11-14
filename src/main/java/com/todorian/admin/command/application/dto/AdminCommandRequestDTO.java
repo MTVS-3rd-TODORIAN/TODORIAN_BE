@@ -8,4 +8,10 @@ public class AdminCommandRequestDTO {
             Integer ratio
     ) {
     }
+
+    public record patchCharacterGrowthCriteriaDTO(
+            Integer step,
+            Integer growthCriteria
+    ) {
+    }
 }
