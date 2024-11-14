@@ -23,7 +23,8 @@ public class TodoPoint extends BaseTimeEntity {
     private Integer currentRatio;
 
     @Builder
-    public TodoPoint(Integer previousRatio, Integer currentRatio) {
+    public TodoPoint(TodoPointType todoPointType, Integer previousRatio, Integer currentRatio) {
+        this.todoPointType = todoPointType;
         this.previousRatio = previousRatio;
         this.currentRatio = currentRatio;
     }
