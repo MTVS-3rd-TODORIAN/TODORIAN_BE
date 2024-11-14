@@ -2,7 +2,11 @@ package com.todorian.todo.point.command.application.service;
 
 import com.todorian._core.error.exception.Exception400;
 import com.todorian.todo.point.command.domain.model.TodoPoint;
+import com.todorian.todo.point.command.domain.model.TodoPointHistory;
+import com.todorian.todo.point.command.domain.model.TodoPointType;
+import com.todorian.todo.point.command.domain.model.UsageType;
 import com.todorian.todo.point.command.domain.repository.TodoPointCommandRepository;
+import com.todorian.todo.point.command.domain.repository.TodoPointHistoryCommandRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TodoPointCommandService {
 
     private final TodoPointCommandRepository todoPointCommandRepository;
+    private final TodoPointHistoryCommandRepository todoPointHistoryCommandRepository;
 
     /*
         TodoPoint Ratio 변경
@@ -33,8 +38,14 @@ public class TodoPointCommandService {
     /*
         TodoPoint History 생성
      */
-    public void createTodoPointHistory() {
+    public void createTodoPointHistory(Long memberId, Long todoPointId, UsageType usageType) {
 
+        TodoPointHistory todoPointHistory = TodoPointHistory.builder()
+                .memberId(memberId)
+                .todoPointId(todoPointId)
+                .usageType(usageType)
+                .build();
+        todoPointHistoryCommandRepository.save(todoPointHistory);
     }
 
     // TodoPoint 생성
