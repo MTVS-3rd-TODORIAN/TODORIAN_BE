@@ -28,4 +28,11 @@ public class AdminCommandService {
                 ratio
         );
     }
+
+    /*
+        Character Level 별 growthCriteria 변경
+     */
+    public void patchCharacterGrowthCriteria(Long characterId, AdminCommandRequestDTO.patchCharacterGrowthCriteriaDTO requestDTO) {
+
+    }
 }
