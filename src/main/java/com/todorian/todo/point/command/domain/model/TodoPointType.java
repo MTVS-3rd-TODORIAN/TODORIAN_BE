@@ -3,6 +3,7 @@ package com.todorian.todo.point.command.domain.model;
 import com.todorian._core.error.exception.Exception400;
 
 public enum TodoPointType {
+    // _TODO -> GP, GP -> EXP, GP -> Coin
     TODO, FEED, REMAIN;
 
     public static TodoPointType fromString(String todoPointType) {
