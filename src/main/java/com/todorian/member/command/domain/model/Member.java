@@ -14,7 +14,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "member_tb")
+@Table(name = "tbl_member")
 public class Member extends BaseTimeEntity {
 
     @Id

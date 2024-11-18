@@ -23,6 +23,7 @@ import static com.todorian._core.utils.SecurityUtils.getCurrentMemberId;
 public class TodoController {
     private final TodoService todoService;
 
+    // 할 일 수행
     @PostMapping("/todo/{todoId}/complete")
     public ResponseEntity<?> complete(@PathVariable("todoId") Long todoId) {
         Todo todo = todoService.findTodoById(todoId).orElseThrow();

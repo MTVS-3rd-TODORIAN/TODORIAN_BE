@@ -33,6 +33,4 @@ public class BatchTaskScheduler {
             todoService.clearCompletedTasks();
         }
     }
-
-
 }
