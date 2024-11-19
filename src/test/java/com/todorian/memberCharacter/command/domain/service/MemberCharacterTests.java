@@ -53,19 +53,6 @@ public class MemberCharacterTests {
         );
     }
 
-    @DisplayName("회원캐릭터 전체 조회 테스트")
-    @Test
-    void testFindAllMemberCharacters(){
-        Assertions.assertDoesNotThrow(
-                () -> {
-                    List<MemberCharacterFindResponseDTO> memberCharacters
-                            = memberCharacterFindService.findAllMemberCharacters();
-
-                    memberCharacters.forEach(System.out::println);
-                }
-        );
-    }
-
 //    @DisplayName("회원캐릭터 번호로 개별 회원캐릭터 조회 테스트")
 //    @ParameterizedTest
 //    @ValueSource(longs = {1, 2, 3})

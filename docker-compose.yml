@@ -17,13 +17,105 @@ services:
       - app-network
 
   redis:
-    image: redis:latest
-    container_name: redis
+    container_name: todorian-redis
+    image: redis:6.2.6-alpine
     ports:
-      - "6379:6379"
+      - ${REDIS_PORT}:6379
     networks:
-      - app-network
+      - db-network
+      - cache-network
+    restart: always
+    profiles: ["cache", "required"]
+
+  prometheus:
+    container_name: todorian-prometheus
+    image: prom/prometheus:v2.37.6
+    volumes:
+      - todorian-prometheus-data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: always
+    ports:
+      - "9090:9090"
+    networks:
+      - metric-network
+    profiles:
+      - metric
+
+  grafana:
+    container_name: todorian-grafana
+    image: grafana/grafana:latest
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - "3000:3000"
+    volumes:
+      - todorian-grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - metric-network
+    profiles:
+      - metric
+
+  elasticsearch:
+    container_name: todorian-elasticsearch
+    image: elasticsearch:7.17.16
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - ./elasticsearch:/usr/share/elasticsearch/data
+    # Elastic search 계정정보
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: true
+      xpack.security.transport.ssl.enabled: true
+      ELASTIC_USERNAME: "todorian"
+      ELASTIC_PASSWORD: "todorian!"
+      network.host : 0.0.0.0
+    networks:
+      - elk-network
+    profiles:
+      - elk
+
+  # Logstash 설정
+  logstash:
+    container_name: neetopia-logstash
+    image: docker.elastic.co/logstash/logstash:7.17.16
+    ports:
+      - 5000:5000
+      - 9600:9600
+    volumes:
+      - ./logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk-network
+    profiles:
+      - elk
+
+  # Kibana 설정
+  kibana:
+    container_name: neetopia-kibana
+    image: kibana:7.17.16
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
+    networks:
+      - elk-network
+    profiles:
+      - elk
 
 networks:
-  app-network:
+  db-network:
+  cache-network:
+  elk-network:
+  metric-network:
     driver: bridge
+
+volumes:
+  todorian-grafana-data:
+  todorian-prometheus-data:
