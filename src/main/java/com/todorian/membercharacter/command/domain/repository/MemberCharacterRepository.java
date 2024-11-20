@@ -5,6 +5,7 @@ import com.todorian.membercharacter.command.application.dto.MemberCharacterFindR
 import com.todorian.membercharacter.command.domain.model.MemberCharacter;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
 import java.util.List;
@@ -20,4 +21,7 @@ public interface MemberCharacterRepository extends JpaRepository<MemberCharacter
             "FROM Character c LEFT JOIN MemberCharacter m ON c.characterId = m.characterId " +
             "WHERE m.memberId = :memberId AND m.completedStatus = false")
     Object[] findCurrentMemberCharacterByMemberId(Long memberId);
+
+    @Query("select m from MemberCharacter m where m.memberId = :memberId order by m.characterId desc limit 1")
+    MemberCharacter findOneByMemberId(@Param("memberId") Long memberId);
 }

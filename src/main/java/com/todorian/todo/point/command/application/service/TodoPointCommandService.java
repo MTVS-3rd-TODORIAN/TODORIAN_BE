@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Slf4j
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -48,6 +50,13 @@ public class TodoPointCommandService {
         todoPointHistoryCommandRepository.save(todoPointHistory);
     }
 
+    // Point 증가 비율 조회 (주)
+    public Integer getTodoPointRatio() {
+        Optional<TodoPoint> findTodoPoint =
+                todoPointCommandRepository.findFirstByTodoPointTypeOrderByCreatedAt(TodoPointType.TODO);
+        return findTodoPoint.orElseThrow().getCurrentRatio();
+    }
+
     // TodoPoint 생성
     protected TodoPoint newTodoPoint(Integer previousRatio, Integer newRatio) {
         return TodoPoint.builder()
@@ -55,4 +64,6 @@ public class TodoPointCommandService {
                 .currentRatio(newRatio)
                 .build();
     }
+
+
 }

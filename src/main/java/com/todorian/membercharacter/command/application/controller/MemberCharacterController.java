@@ -1,5 +1,6 @@
 package com.todorian.membercharacter.command.application.controller;
 
+import com.todorian._core.utils.ApiUtils;
 import com.todorian._core.utils.SecurityUtils;
 import com.todorian.membercharacter.command.application.dto.MemberCharacterCreateRequestDTO;
 import com.todorian.membercharacter.command.application.dto.MemberCharacterFindResponseDTO;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -107,4 +109,9 @@ public class MemberCharacterController {
         memberCharacterUpdateService.useGrowthPoint(memberCharacter);
     }
 
+    @GetMapping("/member-character/find-one")
+    public ResponseEntity<?> findOneMemberCharacterById() {
+        MemberCharacter oneMemberCharacter = memberCharacterFindService.findOneMemberCharacter(SecurityUtils.getCurrentMemberId());
+        return ResponseEntity.ok(ApiUtils.success(oneMemberCharacter));
+    }
 }

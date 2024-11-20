@@ -2,11 +2,15 @@ package com.todorian.todo.application.controller;
 
 import com.todorian._core.utils.ApiUtils;
 import com.todorian._core.utils.SecurityUtils;
+import com.todorian.membercharacter.command.application.service.MemberCharacterFindService;
+import com.todorian.membercharacter.command.domain.model.MemberCharacter;
 import com.todorian.todo.application.dto.TodoRequestDTO;
 import com.todorian.todo.application.dto.TodoResponseDTO;
 import com.todorian.todo.application.service.TodoService;
 import com.todorian.todo.domain.model.Todo;
 import java.time.format.DateTimeFormatter;
+
+import com.todorian.todo.point.command.application.service.TodoPointCommandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +26,26 @@ import static com.todorian._core.utils.SecurityUtils.getCurrentMemberId;
 @RequestMapping("/api")
 public class TodoController {
     private final TodoService todoService;
+    private final TodoPointCommandService todoPointCommandService;
+    private final MemberCharacterFindService memberCharacterFindService;
 
     // 할 일 수행
     @PostMapping("/todo/{todoId}/complete")
     public ResponseEntity<?> complete(@PathVariable("todoId") Long todoId) {
+        // 현재 memebrId 조회
+        Long currentMemberId = getCurrentMemberId();
+
         Todo todo = todoService.findTodoById(todoId).orElseThrow();
+
+        // 현재 todoPoint 증가량 조회
+        Integer todoPointRatio = todoPointCommandService.getTodoPointRatio();
+
+        // 현재 캐릭터 포인트 증가
+        MemberCharacter oneMemberCharacter = memberCharacterFindService.findOneMemberCharacter(currentMemberId);
+        Integer prevPoint = oneMemberCharacter.getGrowthPoint();
+        // 포인트 수정
+        oneMemberCharacter.setGrowthPoint(prevPoint + todoPointRatio);
+
         todo.setCompleted(true);
         todoService.completeTodo(todo);
         return ResponseEntity.ok(ApiUtils.success("할일이 완료되었습니다."));
