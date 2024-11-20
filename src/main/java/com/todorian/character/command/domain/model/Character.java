@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,16 +31,17 @@ public class Character extends BaseTimeEntity {
     // 캐릭터 가격
     private Integer characterPrice;
 
-    @Column(name="character_descriptrion")
+    @Column(name="character_description")
     // 캐릭터 묘사
     private String characterDescription;
 
     @Column(name="character_imgsrc")
     @ElementCollection
     // 캐릭터 이미지 주소 리스트
-    private List<String> characterImgsrc;
+    private List<String> characterImgsrc = new ArrayList<String>();
 
     @Column(name="character_category")
+    @Enumerated(EnumType.STRING)
     private CharacterCategory characterCategory;
 
     @Column(name="growth_criteira")

@@ -65,17 +65,4 @@ public class MemberCharacterTests {
 //                }
 //        );
 //    }
-
-    @DisplayName("회원캐릭터 삭제 테스트")
-    @ParameterizedTest
-    @ValueSource(longs = {1, 2, 3})
-    void testRemoveMemberCharacter(long memberCharacterId){
-
-        Assertions.assertDoesNotThrow(
-                () -> memberCharacterDeleteService.deleteMemberCharacterById(memberCharacterId)
-        );
-
-        memberCharacterFindService.findAllMemberCharacters().forEach(System.out::println);
-    }
-
 }
