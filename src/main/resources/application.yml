@@ -15,6 +15,12 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
 #discord
 #  environment: prod
 #  webhook-url: https://discord.com/api/webhooks/1298910673836703795/VoW2yqBbI_DZQ-3tUVgAzLfnhyqmU5RIO5vu6hUMCwvAzSuHUJ920zpX0hm5JnZ-cUSj
