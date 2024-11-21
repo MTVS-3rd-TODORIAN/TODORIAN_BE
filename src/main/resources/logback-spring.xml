@@ -9,7 +9,7 @@
 
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <!-- 로그 스태시 주소 -->
-        <destination>43.201.146.105:5000</destination>
+        <destination>54.180.248.135:5000</destination>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
         </encoder>
     </appender>
