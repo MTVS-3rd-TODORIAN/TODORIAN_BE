@@ -2,110 +2,57 @@ package com.todorian.friendship.command.domain.model;
 
 import com.todorian.member.command.domain.model.Member;
 import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_friendship")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Friendship {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "friendship_id")
-    private long friendshipId;  // 자동 생성되는 ID
+    private Long id;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;  // 관계 생성 시간
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "requester_id", nullable = false)
+    private Member requester;
 
-    @Column(name = "modified_at")
-    private LocalDateTime modifiedAt;  // 관계 수정 시간
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "receiver_id", nullable = false)
+    private Member receiver;
 
-    // Enum 타입을 사용하는 상태 필드 (ACTIVE 활성, BLOCKED 차단 , REMOVED 삭제)
     @Enumerated(EnumType.STRING)
-    @Column(name = "friendship_status", nullable = false)
-    private FriendshipStatus friendshipStatus;
+    @Column(nullable = false)
+    private FriendshipStatus status;
 
-    // 회원(Member)와의 연관관계 설정 (Many-to-One 관계)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id_1", nullable = false)
-    private Member member1;  // 첫 번째 회원
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id_2", nullable = false)
-    private Member member2;  // 두 번째 회원
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
-    public Friendship() {}
-
-    // 필수 필드를 초기화하는 생성자
-    public Friendship(Member member1, Member member2) {
-        if (member1 == null || member2 == null) {
-            throw new IllegalArgumentException("Members cannot be null");
-        }
-        if (member1.equals(member2)) {
-            throw new IllegalArgumentException("Members cannot be the same.");
-        }
-        this.member1 = member1;
-        this.member2 = member2;
-        this.createdAt = LocalDateTime.now();
-        this.friendshipStatus = FriendshipStatus.ACTIVE;  // 기본 상태는 ACTIVE
+    @Builder
+    public Friendship(Member requester, Member receiver, FriendshipStatus status) {
+        this.requester = requester;
+        this.receiver = receiver;
+        this.status = status;
     }
 
-    public long getFriendshipId() {
-        return friendshipId;
+    public void accept() {
+        this.status = FriendshipStatus.ACTIVE;
     }
 
-    public void setFriendshipId(long friendshipId) {
-        this.friendshipId = friendshipId;
+    public void reject() {
+        this.status = FriendshipStatus.REMOVED;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(LocalDateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
-
-    public FriendshipStatus getFriendshipStatus() {
-        return friendshipStatus;
-    }
-
-    public void setFriendshipStatus(FriendshipStatus friendshipStatus) {
-        this.friendshipStatus = friendshipStatus;
-    }
-
-    public Member getMember1() {
-        return member1;
-    }
-
-    public void setMember1(Member member1) {
-        this.member1 = member1;
-    }
-
-    public Member getMember2() {
-        return member2;
-    }
-
-    public void setMember2(Member member2) {
-        this.member2 = member2;
-    }
-
-    @Override
-    public String toString() {
-        return "Friendship{" +
-                "friendshipId=" + friendshipId +
-                ", createdAt=" + createdAt +
-                ", modifiedAt=" + modifiedAt +
-                ", friendshipStatus=" + friendshipStatus +
-                ", member1=" + member1 +
-                ", member2=" + member2 +
-                '}';
+    public void block() {
+        this.status = FriendshipStatus.BLOCKED;
     }
 }
