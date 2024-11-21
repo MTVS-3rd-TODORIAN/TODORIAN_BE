@@ -1,7 +1,27 @@
 spring:
   profiles:
     active:
-      - dev
+      - default, dev
 #      - local
 #  config:
 #    import: optional:file:.env[.properties]
+
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
+  port: ${SERVER.PORT}
+
+management:
+  endpoints:
+    web:
+      base-path: /api/actuator
+      exposure:
+        include: "prometheus"
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  endpoint:
+    prometheus:
+      enabled: true
