@@ -25,21 +25,21 @@ public class SystemSetting {
     @Enumerated(EnumType.STRING)
     private ValueType valueType;
     @Column(nullable = false)
-    private String value;
+    private String settingValue;
 
     @Builder
-    public SystemSetting(SettingKey settingKey, ValueType valueType, String value) {
+    public SystemSetting(SettingKey settingKey, ValueType valueType, String settingValue) {
         this.settingKey = settingKey;
         this.valueType = valueType;
-        this.value = value;
+        this.settingValue = settingValue;
     }
 
-    public Object getValue() {
+    public Object getSettingValue() {
         return switch (valueType) {
-            case BOOLEAN -> Boolean.parseBoolean(value);
-            case LONG -> Long.parseLong(value);
-            case DOUBLE -> Double.parseDouble(value);
-            default -> value;
+            case BOOLEAN -> Boolean.parseBoolean(settingValue);
+            case LONG -> Long.parseLong(settingValue);
+            case DOUBLE -> Double.parseDouble(settingValue);
+            default -> settingValue;
         };
     }
 }
