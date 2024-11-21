@@ -52,6 +52,7 @@ public class TodoPointCommandService {
 
     // Point 증가 비율 조회 (주)
     public Integer getTodoPointRatio() {
+        // a
         Optional<TodoPoint> findTodoPoint =
                 todoPointCommandRepository.findFirstByTodoPointTypeOrderByCreatedAt(TodoPointType.TODO);
         return findTodoPoint.orElseThrow().getCurrentRatio();
