@@ -39,6 +39,7 @@ out/
 
 ### YML ###
 src/main/resources/application-local.yml
+src/main/resources/config/application-dev.yml
 src/main/resources/application-dev.yml
 /src/main/resources/application.properties
 application.properties
