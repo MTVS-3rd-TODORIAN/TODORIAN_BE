@@ -35,7 +35,6 @@ jobs:
         DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        SERVER_PORT: ${{ secrets.SERVER_PORT }}
       run: ./gradlew clean build -x test
 
     - name: Configure AWS credentials
@@ -61,7 +60,6 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         SPRING_DATA_REDIS_HOST: ${{ secrets.SPRING_DATA_REDIS_HOST }}
         SPRING_DATA_REDIS_PORT: ${{ secrets.SPRING_DATA_REDIS_PORT }}
-        SERVER_PORT: ${{ secrets.SERVER_PORT }}
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: todorian
         IMAGE_TAG: todorian
@@ -76,7 +74,6 @@ jobs:
           --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
           --build-arg SPRING_DATA_REDIS_HOST=${{ secrets.SPRING_DATA_REDIS_HOST }} \
           --build-arg SPRING_DATA_REDIS_PORT=${{ secrets.SPRING_DATA_REDIS_PORT }} \
-          --build-arg SERVER_PORT=${{ secrets.SERVER_PORT }} \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
@@ -103,4 +100,4 @@ jobs:
         version_label: todorian-docker-${{steps.current-time.outputs.formattedTime}}
         region: ${{ secrets.AWS_REGION }}
         deployment_package: deploy/deploy.zip
-        wait_for_environment_recovery: 200
+        wait_for_environment_recovery: 100
