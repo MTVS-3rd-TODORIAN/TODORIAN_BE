@@ -1,5 +1,6 @@
 package com.todorian._core.jwt;
 
+import com.todorian._core.error.exception.Exception400;
 import com.todorian.member.command.application.dto.MemberAuthResponseDTO;
 import com.todorian.member.command.application.dto.MemberResponseDTO;
 import io.jsonwebtoken.*;
@@ -90,15 +91,14 @@ public class JWTTokenProvider {
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
             return true;
         } catch (SecurityException | MalformedJwtException | SignatureException e) {
-            log.info("올바르지 않은 서명의 JWT Token 입니다.", e);
+            throw new Exception400("올바르지 않은 서명의 JWT Token 입니다.");
         } catch (ExpiredJwtException e) {
-            log.info("만료된 JWT Token 입니다.", e);
+            throw new Exception400("만료된 JWT Token 입니다.");
         } catch (UnsupportedJwtException e) {
-            log.info("지원되지 않는 형식의 JWT Token 입니다.", e);
+            throw new Exception400("지원되지 않는 형식의 JWT Token 입니다.");
         } catch (IllegalArgumentException e) {
-            log.info("JWT Claims가 비어있습니다.", e);
+            throw new Exception400("JWT Claims가 비어있습니다.");
         }
-        return false;
     }
 
     public Claims parseClaims(String accessToken) {

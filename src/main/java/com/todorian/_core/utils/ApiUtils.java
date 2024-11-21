@@ -3,6 +3,7 @@ package com.todorian._core.utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
 public class ApiUtils {
@@ -22,13 +23,17 @@ public class ApiUtils {
     @Getter
     @Setter
     @AllArgsConstructor
+    @ToString
     public static class ApiResult<T> {
         private final boolean success;
         private final T response;
         private final T error;
     }
 
-    @Getter @Setter @AllArgsConstructor
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @ToString
     public static class ApiError {
         private final String message;
         private final int status;

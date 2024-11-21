@@ -40,7 +40,7 @@ public class JWTTokenFilter extends GenericFilterBean {
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                log.info(authentication.getName() + " 님이 로그인 하였습니다.");
+                log.info("{} 님이 로그인 하였습니다.", authentication.getName());
             }
         }
 
