@@ -1,69 +1,35 @@
 services:
-  app:
-    image: "221082200491.dkr.ecr.ap-northeast-2.amazonaws.com/todorian:todorian"
-    ports:
-      - "80:8080"
-    mem_limit: 512m
-    depends_on:
-      - redis
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://awseb-e-a7gjdqggpy-stack-awsebrdsdatabase-finezinwjjmp.cpiycgkkk147.ap-northeast-2.rds.amazonaws.com:3306/TODORIAN
-      - SPRING_DATASOURCE_USERNAME=todorian
-      - SPRING_DATASOURCE_PASSWORD=todorian
-      - SPRING_DATA_REDIS_HOST=redis
-      - SPRING_DATA_REDIS_PORT=6379
-      - JWT_SECRET=8704b6707c11f6225d354c624a41212651b1c8357ef609ecb42688d3a25ac4bdea3b92accfd5acc4108a53eb44f36caf0941c80616967e503e17e251ef078ba9
-    networks:
-      - app-network
-
-  redis:
-    container_name: todorian-redis
-    image: redis:6.2.6-alpine
-    ports:
-      - ${REDIS_PORT}:6379
-    networks:
-      - db-network
-      - cache-network
-    restart: always
-    profiles: ["cache", "required"]
-
-  prometheus:
-    container_name: todorian-prometheus
-    image: prom/prometheus:v2.37.6
-    volumes:
-      - todorian-prometheus-data:/prometheus
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    restart: always
-    ports:
-      - "9090:9090"
-    networks:
-      - metric-network
-    profiles:
-      - metric
-
   grafana:
-    container_name: todorian-grafana
-    image: grafana/grafana:latest
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+    image: grafana/grafana
     ports:
-      - "3000:3000"
+      - 3000:3000
     volumes:
-      - todorian-grafana-data:/var/lib/grafana
+      - ./grafana-provisioning:/etc/grafana/provisioning
+      - ./grafana-dashboard:/dashboard
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
     depends_on:
       - prometheus
-    networks:
-      - metric-network
-    profiles:
-      - metric
 
-networks:
-  db-network:
-  cache-network:
-  elk-network:
-  metric-network:
-    driver: bridge
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - --web.enable-remote-write-receiver
+      - --enable-feature=native-histograms
+      - --config.file=/etc/prometheus/prometheus.yml
 
-volumes:
-  todorian-grafana-data:
-  todorian-prometheus-data:
+  k6:
+    image: grafana/k6
+    volumes:
+      - ./k6-scripts:/scripts
+    command: run -o experimental-prometheus-rw /scripts/stress.js
+    environment:
+      - K6_PROMETHEUS_RW_SERVER_URL=http://prometheus:9090/api/v1/write
+      - K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM=true
+    depends_on:
+      - prometheus

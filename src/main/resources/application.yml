@@ -1,4 +1,8 @@
 server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
+
   port: ${SERVER.PORT}
 
 spring:
@@ -18,8 +22,9 @@ spring:
 management:
   endpoints:
     web:
+      base-path: /api/actuator
       exposure:
-        include: "*"
+        include: "prometheus"
 
 #discord
 #  environment: prod
