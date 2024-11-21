@@ -26,6 +26,7 @@ public class AdminCommandService {
     /*
         ToddPoint Ratio 변경
      */
+    @Transactional
     public AdminCommandResponseDTO.patchTodoPointRatioDTO patchTodoPointRatio(AdminCommandRequestDTO.patchTodoPointRatioDTO requestDTO) {
 
         Integer ratio = todoPointCommandService.patchTodoPointRatio(TodoPointType.fromString(requestDTO.todoPointType()), requestDTO.ratio());
@@ -38,6 +39,7 @@ public class AdminCommandService {
     /*
         Character Level 별 growthCriteria 변경
      */
+    @Transactional
     public void patchCharacterGrowthCriteria(Long characterId, AdminCommandRequestDTO.patchCharacterGrowthCriteriaDTO requestDTO) {
 
         characterService.patchCharacterGrowthCriteria(characterId, requestDTO.step(), requestDTO.growthCriteria());
