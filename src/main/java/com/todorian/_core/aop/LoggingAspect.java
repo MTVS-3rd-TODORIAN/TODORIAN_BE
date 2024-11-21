@@ -16,6 +16,8 @@ import java.lang.reflect.Method;
 @Component
 public class LoggingAspect {
 
+    private static final Integer ErrorStackTraceNum = 5;
+
     @Pointcut("execution(* com.todorian..controller..*.*(..))")
     public void pointcut() {}
 
@@ -39,18 +41,40 @@ public class LoggingAspect {
             log.info("Parameter Value = {}", arg);
         }
 
-        // 실제 메소드 실행
-        Object response = proceedingJoinPoint.proceed(args);
+        try {
+            // 실제 메소드 실행
+            Object response = proceedingJoinPoint.proceed(args);
 
-        log.info("Response Type = {}", response.getClass().getSimpleName());
-        log.info("Response Value = {}", response);
+            log.info("Response Type = {}", response.getClass().getSimpleName());
+            log.info("Response Value = {}", response);
 
-        return response;
+            return response;
+
+        } catch (Exception e) {
+
+            log.error("Exception occurred in method: {} with message: {}",
+                    proceedingJoinPoint.getSignature().toShortString(), e.getMessage(), e);
+            log.debug("Stack trace : {}", getShortStackTrace(e));
+
+            throw e;
+        }
     }
 
     // Method 정보 추출
     private Method getMethod(ProceedingJoinPoint proceedingJoinPoint) {
         MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
         return methodSignature.getMethod();
+    }
+
+    // Error Stack Trace
+    private String getShortStackTrace(Exception e) {
+        StackTraceElement[] stackTrace = e.getStackTrace();
+
+        int limit = Math.min(stackTrace.length, ErrorStackTraceNum);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < limit; i++) {
+            sb.append(stackTrace[i].toString()).append("\n");
+        }
+        return sb.toString();
     }
 }
