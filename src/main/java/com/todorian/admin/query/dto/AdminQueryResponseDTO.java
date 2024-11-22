@@ -16,4 +16,16 @@ public class AdminQueryResponseDTO {
             List<Integer> growthCriteria
     ) {
     }
+
+    public record getPointListDTO(
+            List<pointDTO> pointDTOList
+    ) {
+    }
+
+    public record pointDTO(
+            Long todoPointId,
+            String todoPointType,
+            Integer currentRatio
+    ) {
+    }
 }

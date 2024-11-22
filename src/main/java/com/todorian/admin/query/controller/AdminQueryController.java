@@ -28,4 +28,15 @@ public class AdminQueryController {
 
         return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
     }
+
+    /*
+        포인트 정책 조회
+     */
+    @GetMapping("/points")
+    public ResponseEntity<?> getPointList() {
+
+        AdminQueryResponseDTO.getPointListDTO responseDTO = adminQueryService.getPointList();
+
+        return ResponseEntity.ok().body(ApiUtils.success(responseDTO));
+    }
 }
