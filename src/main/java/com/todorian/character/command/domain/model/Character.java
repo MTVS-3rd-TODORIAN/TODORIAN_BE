@@ -38,7 +38,7 @@ public class Character extends BaseTimeEntity {
     @Column(name="character_imgsrc")
     @ElementCollection
     // 캐릭터 이미지 주소 리스트
-    private List<String> characterImgsrc = new ArrayList<String>();
+    private List<String> characterImgsrc = new ArrayList<>();
 
     @Column(name="character_category")
     @Enumerated(EnumType.STRING)
